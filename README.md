@@ -1,1 +1,5 @@
-# info30005-2018-wb
+# We Bare Bears
+## Team Members
+* Mei Chin
+* Kolatat Thangkasemvathana
+## Specifications
