@@ -1,12 +1,12 @@
-const faker = require('faker');
+import * as faker from 'faker';
 
-var people = [];
+export var people = [];
 var randomName;
 var randomEmail;
 var randomCity;
 var randomCompany;
 
-for(i=0; i<10; i++){
+for (var i = 0; i < 10; i++) {
     randomName = faker.name.findName();
     randomEmail = faker.internet.email();
     randomCity = faker.address.city();
@@ -19,16 +19,3 @@ for(i=0; i<10; i++){
         company: randomCompany
     };
 }
-
-module.exports = people;
-
-/**
-module.exports = {
-
-    getAllUsers: people,
-
-    getUser: function(i) {
-        return people[i];
-    }
-}
-*/
