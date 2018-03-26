@@ -10,8 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "debug": "^3.1.0",
     "ejs": "~2.5.8",
     "express": "~4.16.3",
     "faker": "~4.1.0"
+  },
+  "devDependencies": {
+    "@types/ejs": "^2.5.0",
+    "@types/express": "^4.11.1",
+    "@types/faker": "^4.1.2",
+    "@types/node": "^9.6.0"
   }
 }
