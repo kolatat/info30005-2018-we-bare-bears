@@ -8,6 +8,6 @@ app.set('view engine', 'ejs');
 app.use('/', router);
 
 app.listen(PORT, function(){
-    console.log('Express serving at port 3000');
+    console.log(`Express listening on port ${PORT}`);
 })
 
