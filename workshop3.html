@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>INFO30005 :: JavaScript - Workshop #3</title>
+</head>
+<body onload="start()">
+<h1>Hangperson</h1>
+<table border="1" cellpadding="5">
+    <tr>
+        <th id="whead">Word</th>
+    </tr>
+    <tr id="letters">
+
+    </tr>
+</table>
+<div id="guessed"></div>
+<div id="timer"></div>
+<div id="setupBox">
+    <h2>Set Up</h2>
+        <label>Input word
+        <input type="text" id="word">
+        </label>
+        <button onclick="startGame()">Start game</button>
+</div>
+<div id="guessBox">
+    <h2>Guess</h2>
+        <label>Guess a letter
+        <input type="text" maxlength="1" id="abcd" onkeypress="def()">
+        </label>
+        <button onclick="guess()">Guess</button>
+</div>
+
+<div id="restartGame"><button onclick="window.location.reload()">Restart</button></div>
+<script>
+    var word;
+    var guessed = [];
+    var done = 0;
+    var playing = false;
+    function start(){
+        document.querySelector('#guessBox').style.display='none';
+    }
+    var secs;
+    function startGame(){
+        document.querySelector('#setupBox').style.display='none';
+        document.querySelector('#guessBox').style.display='block';
+        word = document.querySelector('#word').value.toUpperCase();
+        var len = word.length;
+        document.querySelector('#whead').setAttribute('colspan', len);
+        var letters = document.querySelector('#letters');
+        letters.innerHTML = '';
+        for(var i = 0; i <len;i++){
+            var letter = document.createElement('td');
+            letter.id = "letter"+i
+            letter.innerText = '-';
+            letters.appendChild(letter);
+        }
+        secs = 0;
+        playing=true;
+        setTimeout(updateTimer, 1000);
+    }
+    function updateTimer(){
+        if(playing){
+            secs++;
+            var ss = '0'+(secs%60);
+            var mm = '0'+(Math.floor(secs/60)%60);
+            var hh = Math.floor(secs/3600);
+            ss = ss.substr(-2);
+            mm = mm.substr(-2);
+            document.querySelector('#timer').innerText = hh+':'+mm+':'+ss;
+            setTimeout(updateTimer, 1000);
+        }
+    }
+    function guess(){
+        var letter = document.querySelector('#abcd').value.toUpperCase()[0];
+        document.querySelector('#abcd').value='';
+        //alert('You guessed '+letter+'!');
+        if(guessed.indexOf(letter)>-1){
+            alert('You already guessed this letter!');
+            return;
+        }
+        guessed.push(letter);
+        for(var i =0; i<word.length; i++){
+            if(word[i] == letter){
+                document.querySelector('#letter'+i).innerText = letter;
+                done++;
+            }
+        }
+        document.querySelector('#guessed').innerText = guessed;
+        if(done==word.length){
+            setTimeout("alert('You win!');",0);
+            playing=false;
+        }
+        document.querySelector('#abcd').focus();
+    }
+    function def(){
+        if(event.key==='Enter'){
+            guess();
+        }
+    }
+</script>
+</body>
+</html>
