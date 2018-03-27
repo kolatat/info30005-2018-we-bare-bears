@@ -6,6 +6,6 @@ develop [![CircleCI](https://circleci.com/gh/kolatat/info30005-2018-wb/tree/deve
 
  * Mei Chin
  * Kolatat Thangkasemvathana
- * Dalzy Eula Mendoza
+ * Dalzy Mendoza
  
 ## Specifications
