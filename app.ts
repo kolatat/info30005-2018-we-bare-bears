@@ -1,7 +1,6 @@
 import * as express from 'express';
 import * as debug from 'debug';
 import router from './routes/usersRoutes';
-import comingSoonRouter from './routes/comingSoonRoutes';
 
 const Log = debug('wbb:main');
 
