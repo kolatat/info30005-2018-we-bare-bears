@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as debug from 'debug';
-import router from './routes/usersRoutes';
+import userRouter from './routes/usersRoutes';
+import indexRouter from './routes/indexRoutes';
 
 const Log = debug('wbb:main');
 
@@ -17,11 +18,8 @@ app.set('view engine', 'ejs');
 //     next();
 // });
 
-app.get('/', function(req, res){
-    res.sendFile('coming_soon.html',  { root: __dirname + "/views/" });
-});
-
-app.use('/users', router);
+app.use('/', indexRouter);
+app.use('/users', userRouter);
 
 
 app.use((req, res) => {
