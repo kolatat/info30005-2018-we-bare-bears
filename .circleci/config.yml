@@ -17,6 +17,11 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - run:
+        name: Versions
+        command: |
+          yarn versions
+          echo "npm: $(npm --version)"
       - checkout
 
       # Download and cache dependencies
