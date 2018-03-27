@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 // });
 
 app.get('/', function(req, res){
-    res.sendfile('coming_soon.html',  { root: __dirname + "/views/" });
+    res.sendFile('coming_soon.html',  { root: __dirname + "/views/" });
 });
 
 app.use('/users', router);
