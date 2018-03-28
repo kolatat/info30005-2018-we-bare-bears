@@ -1,18 +1,17 @@
 body{
-    background: url("/assets/images/recycling-pattern.png") repeat;
-    background-size: 600px;
+    background: url("/assets/images/bg-bears.jpg") no-repeat fixed;
+    background-size: cover;
 
 }
 .maincontent{
-    background: url("/assets/images/halftone-yellow.png") repeat #f2ebcc;
-
+    background: url("/assets/images/halftone-yellow.png") repeat;
+    opacity: 0.9;
     position: absolute;
     width: 50%;
     min-width: 300px;
-    
-    top: 50%;
+    top: 30%;
     left: 50%;
-    padding: 40px 20px 20px;
+    padding: 20px 20px 20px;
     margin-right: -50%;
     transform: translate(-50%, -50%);
     font-family: 'Raleway', sans-serif;
@@ -66,19 +65,26 @@ input[type=submit]{
     font-size: medium;
 }
 
+input[type=submit]:hover{
+    background: #f02e35;
+}
+
 h2{
     font-size: xx-large;
     color: #f05249;
     line-height: 100%;
+    font-family: 'Averia Libre', cursive;
+    font-size: 40px;
 }
 
 .maincontent p{
     font-size: large;
-    margin-bottom: 15px;
+    /*margin-bottom: 15px;*/
 }
 
 .project-name{
     font-weight: bold;
+
 }
 
 #footer{
@@ -94,4 +100,8 @@ h2{
 .right-footer{
     float: right;
     display: inline-block;
+}
+
+p.credits{
+    font-size: small;
 }
