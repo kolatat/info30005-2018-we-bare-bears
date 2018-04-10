@@ -1,0 +1,19 @@
+
+.maincontent {
+    font-family: 'Raleway', sans-serif;
+    font-size: medium;
+    text-align: center;
+}
+
+h2{
+    font-size: xx-large;
+    color: #f05249;
+    line-height: 100%;
+    font-family: 'Averia Libre', cursive;
+    font-size: 40px;
+}
+
+.maincontent p{
+    font-size: large;
+    /*margin-bottom: 15px;*/
+}

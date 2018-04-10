@@ -13,14 +13,8 @@ app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
 
-// app.use('/', (req, res, next) => {
-//     Log(`${req.hostname}[${req.ip}] ${req.method} ${req.url}`);
-//     next();
-// });
-
 app.use('/', indexRouter);
 app.use('/users', userRouter);
-
 
 app.use((req, res) => {
     res.status(404).send(JSON.stringify({
