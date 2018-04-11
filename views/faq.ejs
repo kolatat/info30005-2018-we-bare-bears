@@ -9,13 +9,17 @@
 
     <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
 
+    <script type="text/javascript" src="/js/faq.js"></script>
 </head>
 <body>
-<div class ="maincontent">
-    WHAT
-    HOW
-    WHY
-    FAQ
+<div class ="maincontent" onload="onLoad()">
+    <span class="category" onclick="loadWhat()">WHAT</span>
+    <span class="category" onclick="loadHow()">HOW</span>
+    <span class="category" onclick="loadWhy()">WHY</span>
+    <span class="category" onclick="loadFAQ()">FAQ</span>
+
+    <div id="info-details">
+    </div>
 </div>
 </body>
 </html>
