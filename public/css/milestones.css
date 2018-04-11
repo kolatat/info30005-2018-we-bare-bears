@@ -19,6 +19,13 @@ body{
 
 }
 
+
+/** Let grid cells have rounded edges */
+.page > *{
+    border-radius: 25px;
+}
+
+
 header{
     grid-row: 1/2;
     grid-column: 1/4;
@@ -34,6 +41,20 @@ txt{
     grid-area: txt;
 
     background-color: #FE868C;
+}
+
+
+/** Style Links as buttons */
+.button_link{
+    font: bold 11px 'Raleway';
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
 }
 
 
@@ -61,6 +82,15 @@ act{
     grid-area: act;
 
     background-color: #E6D9B2;
+}
+
+
+/** Let contents of these grid containers be center-oriented */
+vid, quiz, act{
+
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 
