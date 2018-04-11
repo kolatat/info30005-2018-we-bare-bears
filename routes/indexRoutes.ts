@@ -27,4 +27,19 @@ router.get('/milestones/', function(req, res, next) {
     res.render('milestones');
 });
 
+/* GET Video page. */
+router.get('/vid/', function(req, res, next) {
+    res.render('vid');
+});
+
+/* GET Quiz page. */
+router.get('/quiz/', function(req, res, next) {
+    res.render('quiz');
+});
+
+/* GET Action page. */
+router.get('/act/', function(req, res, next) {
+    res.render('act');
+});
+
 export default router;
