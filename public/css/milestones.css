@@ -1,0 +1,73 @@
+body{
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+}
+
+/** CSS Grid setup */
+.page{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 4em 4em 12em min-content;
+    grid-template-areas:
+            "header header header"
+            "txt txt txt"
+            "vid quiz act"
+            "milestones milestones milestones";
+
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+
+}
+
+header{
+    grid-row: 1/2;
+    grid-column: 1/4;
+    grid-area: header;
+
+    background-color: #7DD0E7;
+}
+
+
+txt{
+    grid-row: 2/3;
+    grid-column: 1/4;
+    grid-area: txt;
+
+    background-color: #FE868C;
+}
+
+
+vid{
+    grid-row: 3/4;
+    grid-column: 1/2;
+    grid-area: vid;
+
+    background-color: #BF89CC;
+}
+
+
+quiz{
+    grid-row: 3/4;
+    grid-column: 2/3;
+    grid-area: quiz;
+
+    background-color: #D0FA84;
+}
+
+
+act{
+    grid-row: 3/4;
+    grid-column: 3/4;
+    grid-area: act;
+
+    background-color: #E6D9B2;
+}
+
+
+milestones{
+    grid-row: 4/5;
+    grid-column: 1/4;
+    grid-area: milestones;
+
+    background-color: #FFBF8A;
+}
