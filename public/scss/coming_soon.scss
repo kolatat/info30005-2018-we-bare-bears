@@ -25,6 +25,12 @@ body {
     font-size: large;
     /*margin-bottom: 15px;*/
   }
+  form {
+    text-align: center;
+    table {
+      width: 100%;
+    }
+  }
 }
 
 label {
@@ -39,24 +45,31 @@ input {
   font-size: medium;
   border-radius: 3px;
   outline: none;
-  &[type=email] {
+  &[type=email], &[type=password] {
     border: 1px solid #f07545;
     color: rgba(35, 28, 30, 0.72);
     padding: 5px 8px 5px 8px;
     margin: 0 10px;
     max-width: 250px;
     box-shadow: inset 1px 1px 4px #FFD5E7;
-    background: #FFEFF6;
+    background-color: #FFEFF6;
     width: 50%;
   }
-  &[type=submit] {
-    background: #f05249;
+  &[type=submit], &[type=button] {
     border: none;
-    padding: 5px 15px 5px 15px;
+    padding: 5px 15px;
     color: white;
-    /*font-weight: bold;*/
+  }
+  &.login, &.submit {
+    background-color: #f05249;
     &:hover {
-      background: #f02e35;
+      background-color: #f02e35;
+    }
+  }
+  &.signup {
+    background-color: #B6C1C9;
+    &:hover {
+      background-color: #7DD0E7;
     }
   }
 }

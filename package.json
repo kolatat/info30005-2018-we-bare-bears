@@ -14,7 +14,7 @@
     "build-task:scss-compile": "node-sass-chokidar --source-map true public/scss/ -o public/css",
     "build-task:autoprefixer": "postcss public/css/*.css --use autoprefixer -d public/css",
     "sass:build": "npm-run-all -p build-task:*",
-    "sass:watch": "chokidar 'public/scss/**/*.scss' -c 'npm run sass:build'",
+    "sass:watch": "chokidar 'public/scss/*.scss' -c 'npm run sass:build'",
     "dev": "npm-run-all -p sass:*"
   },
   "author": "Mei Chin, Dalzy Eula Mendoza, Kolatat Thangkasemvathana",
