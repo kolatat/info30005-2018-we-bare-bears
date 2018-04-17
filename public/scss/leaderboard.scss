@@ -20,3 +20,10 @@ tr:nth-child(10n+2), tr:nth-child(10n+3), tr:nth-child(10n+4), tr:nth-child(10n+
 tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+10), tr:nth-child(10n+1) {
   background-color: #E1E8ED;
 }
+
+.leaderboard {
+  margin: 20% 15%;
+  table {
+    width: 100%;
+  }
+}
