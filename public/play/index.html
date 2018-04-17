@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/section.css">
+    <link rel="stylesheet" href="/css/leaderboard.css">
+</head>
+<body>
+<img src="/assets/images/checkpoints_3.png" class="screen" id="cpimg">
+<script>
+    function setRandomCP() {
+        var num = Math.floor(Math.random() * 10);
+        document.querySelector('#cpimg').src = '/assets/images/checkpoints_' + num + '.png';
+    }
+
+    setInterval(setRandomCP, 500);
+</script>
+</body>
+</html>

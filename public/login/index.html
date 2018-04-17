@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recyclabears | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/coming_soon.css">
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
+</head>
+<body>
+<div id="fb-root"></div>
+<script>(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = 'https://connect.facebook.net/en_AU/sdk.js#xfbml=1&version=v2.12&appId=112127556178906&autoLogAppEvents=1';
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="maincontent">
+    <h2>
+        Please Login
+    </h2>
+    <p>
+        Join us in keeping the world green, one recyclable at a time!
+    </p>
+
+    <form method="post" action="/main_town/">
+        <table>
+            <tr>
+                <td><input type="email" class="input-field" id="email" placeholder="Email"/></td>
+            </tr>
+            <tr>
+                <td><input type="password" class="input-field" id="notify-email" placeholder="Password"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Login" class="login" />
+                    <input type="button" value="Sign Up" class="signup" onclick="window.location='signup/'" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="fb-login-button"
+                         data-max-rows="1"
+                         data-size="medium"
+                         data-button-type="login_with"
+                         data-show-faces="true"
+                         data-auto-logout-link="false"
+                         data-use-continue-as="true"></div>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <p class="credits">
+        by Team We Bare Bears<br>
+        Mei Chin &middot; Kolatat Thangkasemvathana &middot; Dalzy Mendoza
+    </p>
+
+</div>
+
+
+</body>
+</html>

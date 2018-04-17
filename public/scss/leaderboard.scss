@@ -1,0 +1,29 @@
+@import "master";
+
+/** Larger font for table header */
+th {
+  font-size: x-large;
+  background-color: #768591;
+}
+
+/** Create rounded edges around table cells */
+th, td {
+  border: 1px solid black;
+  border-radius: 25px;
+}
+
+/** Alternately colour every five rows */
+tr:nth-child(10n+2), tr:nth-child(10n+3), tr:nth-child(10n+4), tr:nth-child(10n+5), tr:nth-child(10n+6) {
+  background-color: #B6C1C9;
+}
+
+tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+10), tr:nth-child(10n+1) {
+  background-color: #E1E8ED;
+}
+
+.leaderboard {
+  margin: 20% 15%;
+  table {
+    width: 100%;
+  }
+}
