@@ -4,6 +4,10 @@
 $raleway: Raleway, sans-serif;
 $averia-libre: 'Averia Libre', cursive;
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: $raleway;
   text-align: center;

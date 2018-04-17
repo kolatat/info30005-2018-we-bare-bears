@@ -2,14 +2,19 @@
 
 body {
   background: #ffb9c8;
+  margin: 0;
 }
 
 .page {
+  position: absolute;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   grid-template-areas: "map" "section";
-
+  min-height: 100%;
+  .screen {
+    /* max-height: 100%; */
+  }
 }
 
 #sectionFrame {
