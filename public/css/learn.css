@@ -13,9 +13,13 @@
     position: absolute;
     /*background-color: rgba(0, 0, 0, 0.1);*/ }
 
+
+/* Let the image background be full-sized in the right section*/
 body {
     margin: 0; }
 
+
+/* Positions for links to sub-pages */
 #why-link {
     left: 18.5%;
     top: 17%;

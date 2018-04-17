@@ -1,62 +1,12 @@
-/* Copied over from faq.css */
-
 @import url(https://fonts.googleapis.com/css?family=Raleway);
 @import url(https://fonts.googleapis.com/css?family=Averia+Libre);
+
 * {
     box-sizing: border-box; }
 
 body {
     font-family: Raleway, sans-serif;
     text-align: center; }
-
-.maincontent {
-    font-family: Raleway, sans-serif;
-    font-size: medium;
-    text-align: center;
-    padding: 15px; }
-
-h2 {
-    color: #f05249;
-    line-height: 100%;
-    font-family: "Averia Libre", cursive;
-    font-size: 40px; }
-
-.maincontent p {
-    font-size: large;
-    /*margin-bottom: 15px;*/ }
-
-.category {
-    font-size: x-large;
-    display: inline-block;
-    background-color: #ffb9c8;
-    padding: 10px;
-    margin: 0 10px;
-    color: white; }
-.category:hover {
-    background-color: white;
-    color: #ffb9c8;
-    cursor: pointer; }
-.category:active {
-    color: red; }
-
-.icon-content {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    padding: 50px;
-    margin: 5px;
-    background: #fdb72f; }
-.icon-content:hover {
-    background: #FFEFF6; }
-
-.video {
-    width: 100%;
-    height: 10%;
-    display: block; }
-
-#info-details {
-    height: 100%; }
 
 ol {
     padding-right: 0; }
