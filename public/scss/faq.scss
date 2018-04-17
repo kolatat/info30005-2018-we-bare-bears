@@ -1,21 +1,24 @@
+@import "master";
+
 .maincontent {
-  font-family: 'Raleway', sans-serif;
+  font-family: $raleway;
   font-size: medium;
   text-align: center;
   padding: 15px;
 }
 
 h2 {
-  font-size: xx-large;
   color: #f05249;
   line-height: 100%;
-  font-family: 'Averia Libre', cursive;
+  font-family: $averia-libre;
   font-size: 40px;
 }
 
-.maincontent p {
-  font-size: large;
-  /*margin-bottom: 15px;*/
+.maincontent {
+  p {
+    font-size: large;
+    /*margin-bottom: 15px;*/
+  }
 }
 
 .category {
@@ -23,18 +26,16 @@ h2 {
   display: inline-block;
   background-color: #ffb9c8;
   padding: 10px;
-  margin: 0px 10px;
+  margin: 0 10px;
   color: white;
-}
-
-.category:hover {
-  background-color: white;
-  color: #ffb9c8;
-  cursor: pointer;
-}
-
-.category:active {
-  color: red;
+  &:hover {
+    background-color: white;
+    color: #ffb9c8;
+    cursor: pointer;
+  }
+  &:active {
+    color: red;
+  }
 }
 
 .icon-content {
@@ -45,10 +46,9 @@ h2 {
   padding: 50px;
   margin: 5px;
   background: #fdb72f;
-}
-
-.icon-content:hover {
-  background: #FFEFF6;
+  &:hover {
+    background: #FFEFF6;
+  }
 }
 
 .video {
@@ -62,9 +62,9 @@ h2 {
 }
 
 ol {
-  padding-right: 0px;
+  padding-right: 0;
 }
 
 li {
-  padding-left: 0px;
+  padding-left: 0;
 }

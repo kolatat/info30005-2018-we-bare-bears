@@ -1,5 +1,7 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+@import url(https://fonts.googleapis.com/css?family=Averia+Libre);
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: Raleway, sans-serif;
   text-align: center; }
 
 /** Larger font for table header */
@@ -18,4 +20,4 @@ tr:nth-child(10n+2), tr:nth-child(10n+3), tr:nth-child(10n+4), tr:nth-child(10n+
 
 tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+10), tr:nth-child(10n+1) {
   background-color: #E1E8ED; }
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Njc3MvbWFzdGVyLnNjc3MiLCIuLi9zY3NzL2xlYWRlcmJvYXJkLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxtQ0FBa0M7RUFDbEMsbUJBQWtCLEVBQ25COztBQ0RELG1DQUFtQztBQUNuQztFQUNFLG1CQUFrQjtFQUNsQiwwQkFBeUIsRUFDMUI7O0FBRUQsOENBQThDO0FBQzlDO0VBQ0Usd0JBQXVCO0VBQ3ZCLG9CQUFtQixFQUNwQjs7QUFFRCx5Q0FBeUM7QUFDekM7RUFDRSwwQkFBeUIsRUFDMUI7O0FBRUQ7RUFDRSwwQkFBeUIsRUFDMUIiLCJmaWxlIjoibGVhZGVyYm9hcmQuY3NzIn0= */
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Njc3MvbWFzdGVyLnNjc3MiLCIuLi9zY3NzL2xlYWRlcmJvYXJkLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsNkRBQVk7QUFDWixrRUFBWTtBQUtaO0VBQ0UsaUNBSjJCO0VBSzNCLG1CQUFrQixFQUNuQjs7QUNQRCxtQ0FBbUM7QUFDbkM7RUFDRSxtQkFBa0I7RUFDbEIsMEJBQXlCLEVBQzFCOztBQUVELDhDQUE4QztBQUM5QztFQUNFLHdCQUF1QjtFQUN2QixvQkFBbUIsRUFDcEI7O0FBRUQseUNBQXlDO0FBQ3pDO0VBQ0UsMEJBQXlCLEVBQzFCOztBQUVEO0VBQ0UsMEJBQXlCLEVBQzFCIiwiZmlsZSI6ImxlYWRlcmJvYXJkLmNzcyJ9 */

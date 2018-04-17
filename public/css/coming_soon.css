@@ -1,3 +1,9 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+@import url(https://fonts.googleapis.com/css?family=Averia+Libre);
+body {
+  font-family: Raleway, sans-serif;
+  text-align: center; }
+
 body {
   background: url("/assets/images/bg-bears.gif") no-repeat fixed;
   background-size: cover; }
@@ -14,7 +20,7 @@ body {
   margin-right: -50%;
   -webkit-transform: translate(-50%, -20%);
           transform: translate(-50%, -20%);
-  font-family: 'Raleway', sans-serif;
+  font-family: Raleway, sans-serif;
   font-size: medium;
   text-align: center;
   border: 3px dashed #f05249;
@@ -28,38 +34,32 @@ label > span {
   font-weight: bold; }
 
 input {
-  margin-top: 10px; }
-
-input[type=email] {
-  border-radius: 3px;
-  border: 1px solid #f07545;
-  outline: none;
-  color: rgba(35, 28, 30, 0.72);
-  padding: 5px 8px 5px 8px;
-  margin: 0 10px;
-  max-width: 250px;
-  box-shadow: inset 1px 1px 4px #FFD5E7;
+  margin-top: 10px;
   font-size: medium;
-  background: #FFEFF6;
-  width: 50%; }
-
-input[type=submit] {
-  background: #f05249;
-  border: none;
-  padding: 5px 15px 5px 15px;
-  color: white;
-  outline: none;
   border-radius: 3px;
-  /*font-weight: bold;*/
-  font-size: medium; }
-
-input[type=submit]:hover {
-  background: #f02e35; }
+  outline: none; }
+  input[type=email] {
+    border: 1px solid #f07545;
+    color: rgba(35, 28, 30, 0.72);
+    padding: 5px 8px 5px 8px;
+    margin: 0 10px;
+    max-width: 250px;
+    box-shadow: inset 1px 1px 4px #FFD5E7;
+    background: #FFEFF6;
+    width: 50%; }
+  input[type=submit] {
+    background: #f05249;
+    border: none;
+    padding: 5px 15px 5px 15px;
+    color: white;
+    /*font-weight: bold;*/ }
+    input[type=submit]:hover {
+      background: #f02e35; }
 
 h2 {
   color: #f05249;
   line-height: 100%;
-  font-family: 'Averia Libre', cursive;
+  font-family: "Averia Libre", cursive;
   font-size: 40px; }
 
 .project-name {
@@ -67,4 +67,4 @@ h2 {
 
 p.credits {
   font-size: small; }
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Njc3MvY29taW5nX3Nvb24uc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLCtEQUE4RDtFQUM5RCx1QkFBc0IsRUFFdkI7O0FBRUQ7RUFDRSw2REFBNEQ7RUFDNUQsYUFBWTtFQUNaLG1CQUFrQjtFQUNsQixXQUFVO0VBQ1YsaUJBQWdCO0VBQ2hCLFNBQVE7RUFDUixVQUFTO0VBQ1Qsd0JBQXVCO0VBQ3ZCLG1CQUFrQjtFQUNsQix5Q0FBZ0M7VUFBaEMsaUNBQWdDO0VBQ2hDLG1DQUFrQztFQUNsQyxrQkFBaUI7RUFDakIsbUJBQWtCO0VBQ2xCLDJCQUEwQjtFQUMxQixtQkFBa0IsRUFLbkI7RUFwQkQ7SUFpQkksaUJBQWdCO0lBQ2hCLHdCQUF3QixFQUN6Qjs7QUFHSDtFQUNFLGVBQWM7RUFDZCxrQkFBaUIsRUFDbEI7O0FBRUQ7RUFDRSxpQkFBZ0IsRUFDakI7O0FBRUQ7RUFDRSxtQkFBa0I7RUFDbEIsMEJBQXlCO0VBQ3pCLGNBQWE7RUFDYiw4QkFBNkI7RUFDN0IseUJBQXdCO0VBQ3hCLGVBQWM7RUFDZCxpQkFBZ0I7RUFDaEIsc0NBQXFDO0VBQ3JDLGtCQUFpQjtFQUNqQixvQkFBbUI7RUFDbkIsV0FBVSxFQUNYOztBQUVEO0VBQ0Usb0JBQW1CO0VBQ25CLGFBQVk7RUFDWiwyQkFBMEI7RUFDMUIsYUFBWTtFQUNaLGNBQWE7RUFDYixtQkFBa0I7RUFDbEIsc0JBQXNCO0VBQ3RCLGtCQUFpQixFQUNsQjs7QUFFRDtFQUNFLG9CQUFtQixFQUNwQjs7QUFFRDtFQUNFLGVBQWM7RUFDZCxrQkFBaUI7RUFDakIscUNBQW9DO0VBQ3BDLGdCQUFlLEVBQ2hCOztBQUVEO0VBQ0Usa0JBQWlCLEVBRWxCOztBQUVEO0VBQ0UsaUJBQWdCLEVBQ2pCIiwiZmlsZSI6ImNvbWluZ19zb29uLmNzcyJ9 */
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Njc3MvbWFzdGVyLnNjc3MiLCIuLi9zY3NzL2NvbWluZ19zb29uLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsNkRBQVk7QUFDWixrRUFBWTtBQUtaO0VBQ0UsaUNBSjJCO0VBSzNCLG1CQUFrQixFQUNuQjs7QUNQRDtFQUNFLCtEQUE4RDtFQUM5RCx1QkFBc0IsRUFDdkI7O0FBRUQ7RUFDRSw2REFBNEQ7RUFDNUQsYUFBWTtFQUNaLG1CQUFrQjtFQUNsQixXQUFVO0VBQ1YsaUJBQWdCO0VBQ2hCLFNBQVE7RUFDUixVQUFTO0VBQ1Qsd0JBQXVCO0VBQ3ZCLG1CQUFrQjtFQUNsQix5Q0FBZ0M7VUFBaEMsaUNBQWdDO0VBQ2hDLGlDRGYyQjtFQ2dCM0Isa0JBQWlCO0VBQ2pCLG1CQUFrQjtFQUNsQiwyQkFBMEI7RUFDMUIsbUJBQWtCLEVBS25CO0VBcEJEO0lBaUJJLGlCQUFnQjtJQUNoQix3QkFBd0IsRUFDekI7O0FBR0g7RUFFSSxlQUFjO0VBQ2Qsa0JBQWlCLEVBQ2xCOztBQUdIO0VBQ0UsaUJBQWdCO0VBQ2hCLGtCQUFpQjtFQUNqQixtQkFBa0I7RUFDbEIsY0FBYSxFQXFCZDtFQXpCRDtJQU1JLDBCQUF5QjtJQUN6Qiw4QkFBNkI7SUFDN0IseUJBQXdCO0lBQ3hCLGVBQWM7SUFDZCxpQkFBZ0I7SUFDaEIsc0NBQXFDO0lBQ3JDLG9CQUFtQjtJQUNuQixXQUFVLEVBQ1g7RUFkSDtJQWdCSSxvQkFBbUI7SUFDbkIsYUFBWTtJQUNaLDJCQUEwQjtJQUMxQixhQUFZO0lBQ1osc0JBQXNCLEVBSXZCO0lBeEJIO01Bc0JNLG9CQUFtQixFQUNwQjs7QUFJTDtFQUNFLGVBQWM7RUFDZCxrQkFBaUI7RUFDakIscUNEOURvQztFQytEcEMsZ0JBQWUsRUFDaEI7O0FBRUQ7RUFDRSxrQkFBaUIsRUFDbEI7O0FBRUQ7RUFDRSxpQkFBZ0IsRUFDakIiLCJmaWxlIjoiY29taW5nX3Nvb24uY3NzIn0= */

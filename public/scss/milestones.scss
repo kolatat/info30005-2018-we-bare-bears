@@ -4,18 +4,16 @@
 .page {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 4em 4em 12em -webkit-min-content;
   grid-template-rows: 4em 4em 12em min-content;
   grid-template-areas: "header header header" "txt txt txt" "vid quiz act" "milestones milestones milestones";
 
   grid-column-gap: 5px;
   grid-row-gap: 5px;
 
-}
-
-/** Let grid cells have rounded edges */
-.page > * {
-  border-radius: 25px;
+  /** Let grid cells have rounded edges */
+  & > * {
+    border-radius: 25px;
+  }
 }
 
 header {
@@ -36,7 +34,9 @@ txt {
 
 /** Style Links as buttons */
 .button_link {
-  font: bold 11px 'Raleway';
+  font-weight: bold;
+  font-size: 11px;
+  font-family: $raleway;
   text-decoration: none;
   background-color: #EEEEEE;
   color: #333333;
@@ -73,7 +73,6 @@ act {
 
 /** Let contents of these grid containers be center-oriented */
 vid, quiz, act {
-
   justify-content: center;
   align-items: center;
   display: flex;
@@ -96,11 +95,11 @@ milestones {
     padding: 10px 24px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     float: left; /* Float the buttons side by side */
-  }
 
-  /** Add a background color on hover */
-  button:hover {
-    background-color: #3e8e41;
+    /** Add a background color on hover */
+    &:hover {
+      background-color: #3e8e41;
+    }
   }
 }
 
