@@ -12,45 +12,21 @@ body {
 }
 
 /** Larger font for table header */
-
-.board_table{
-  /*width: 100%;*/
-  /*background: red;*/
-  /*border-spacing: 10px 20px;*/
-}
 th {
-  font-size: xx-large;
-  /*background-color: #768591;*/
-  font-family: "Averia Libre", cursive;
-}
-
-
+  font-size: x-large;
+  background-color: #768591; }
 
 /** Create rounded edges around table cells */
 th, td {
-  /*border: 1px solid black;*/
-  /*border-radius: 25px;*/
-  padding: 15px;
-  /*width: 150px;*/
-}
-
-tr{
-  margin: 10px;
-}
+  border: 1px solid black;
+  border-radius: 25px; }
 
 /** Alternately colour every five rows */
-tr:nth-child(even){
-  background-color: #fdb72f;
-}
+tr:nth-child(10n+2), tr:nth-child(10n+3), tr:nth-child(10n+4), tr:nth-child(10n+5), tr:nth-child(10n+6) {
+  background-color: #B6C1C9; }
 
-tr:nth-child(odd){
-  background-color: #f2e49b;
-}
-/*tr:nth-child(10n+2), tr:nth-child(10n+3), tr:nth-child(10n+4), tr:nth-child(10n+5), tr:nth-child(10n+6) {*/
-  /*background-color: #fdb72f; }*/
-
-/*tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+10), tr:nth-child(10n+1) {*/
-  /*background-color: #E1E8ED; }*/
+tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+10), tr:nth-child(10n+1) {
+  background-color: #E1E8ED; }
 
 .leaderboard {
   /*width: min-content;*/
