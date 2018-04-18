@@ -120,3 +120,7 @@ typings/
 
 *.js
 *.js.map
+!/public/js/*.js
+
+package-lock.json
+/public/css/
