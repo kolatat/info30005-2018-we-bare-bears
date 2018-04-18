@@ -10,20 +10,18 @@
   "scripts": {
     "start": "node .",
     "test": "echo \"Warning: no test specified\" && exit 0",
-    "install": "tsc -p .",
+    "install-task:scss": "npm run sass:build",
+    "install-task:typescript": "tsc -p .",
+    "install": "npm-run-all -p install-task:*",
     "build-task:scss-compile": "node-sass-chokidar --source-map true public/scss/ -o public/css",
     "build-task:autoprefixer": "postcss public/css/*.css --use autoprefixer -d public/css",
     "sass:build": "npm-run-all -p build-task:*",
-    "sass:watch": "chokidar 'public/scss/*.scss' -c 'npm run sass:build'",
+    "sass:watch": "chokidar \"public/scss/**/*.scss\" -c \"npm run sass:build\"",
     "dev": "npm-run-all -p sass:*"
   },
   "author": "Mei Chin, Dalzy Eula Mendoza, Kolatat Thangkasemvathana",
   "private": true,
   "license": "ISC",
-  "engines": {
-    "node": "8.x",
-    "yarn": "1.x"
-  },
   "dependencies": {
     "autoprefixer": "^8.3.0",
     "chokidar-cli": "^1.2.0",
