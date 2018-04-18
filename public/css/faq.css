@@ -1,0 +1,64 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+@import url(https://fonts.googleapis.com/css?family=Averia+Libre);
+* {
+  box-sizing: border-box; }
+
+body {
+  font-family: Raleway, sans-serif;
+  text-align: center; }
+
+.maincontent {
+  font-family: Raleway, sans-serif;
+  font-size: medium;
+  text-align: center;
+  padding: 15px; }
+
+h2 {
+  color: #f05249;
+  line-height: 100%;
+  font-family: "Averia Libre", cursive;
+  font-size: 40px; }
+
+.maincontent p {
+  font-size: large;
+  /*margin-bottom: 15px;*/ }
+
+.category {
+  font-size: x-large;
+  display: inline-block;
+  background-color: #ffb9c8;
+  padding: 10px;
+  margin: 0 10px;
+  color: white; }
+  .category:hover {
+    background-color: white;
+    color: #ffb9c8;
+    cursor: pointer; }
+  .category:active {
+    color: red; }
+
+.icon-content {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  padding: 50px;
+  margin: 5px;
+  background: #fdb72f; }
+  .icon-content:hover {
+    background: #FFEFF6; }
+
+.video {
+  width: 100%;
+  height: 10%;
+  display: block; }
+
+#info-details {
+  height: 100%; }
+
+ol {
+  padding-right: 0; }
+
+li {
+  padding-left: 0; }
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Njc3MvbWFzdGVyLnNjc3MiLCIuLi9zY3NzL2ZhcS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLDZEQUFZO0FBQ1osa0VBQVk7QUFLWjtFQUNFLHVCQUFzQixFQUN2Qjs7QUFFRDtFQUNFLGlDQVIyQjtFQVMzQixtQkFBa0IsRUFDbkI7O0FDWEQ7RUFDRSxpQ0RBMkI7RUNDM0Isa0JBQWlCO0VBQ2pCLG1CQUFrQjtFQUNsQixjQUFhLEVBQ2Q7O0FBRUQ7RUFDRSxlQUFjO0VBQ2Qsa0JBQWlCO0VBQ2pCLHFDRFJvQztFQ1NwQyxnQkFBZSxFQUNoQjs7QUFFRDtFQUVJLGlCQUFnQjtFQUNoQix3QkFBd0IsRUFDekI7O0FBR0g7RUFDRSxtQkFBa0I7RUFDbEIsc0JBQXFCO0VBQ3JCLDBCQUF5QjtFQUN6QixjQUFhO0VBQ2IsZUFBYztFQUNkLGFBQVksRUFTYjtFQWZEO0lBUUksd0JBQXVCO0lBQ3ZCLGVBQWM7SUFDZCxnQkFBZSxFQUNoQjtFQVhIO0lBYUksV0FBVSxFQUNYOztBQUdIO0VBQ0Usc0JBQXFCO0VBQ3JCLGFBQVk7RUFDWixjQUFhO0VBQ2IsbUJBQWtCO0VBQ2xCLGNBQWE7RUFDYixZQUFXO0VBQ1gsb0JBQW1CLEVBSXBCO0VBWEQ7SUFTSSxvQkFBbUIsRUFDcEI7O0FBR0g7RUFDRSxZQUFXO0VBQ1gsWUFBVztFQUNYLGVBQWMsRUFDZjs7QUFFRDtFQUNFLGFBQVksRUFDYjs7QUFFRDtFQUNFLGlCQUFnQixFQUNqQjs7QUFFRDtFQUNFLGdCQUFlLEVBQ2hCIiwiZmlsZSI6ImZhcS5jc3MifQ== */
