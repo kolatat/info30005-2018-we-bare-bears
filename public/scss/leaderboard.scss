@@ -1,5 +1,9 @@
 @import "master";
 
+body {
+  font-size: xx-large;
+}
+
 /** Larger font for table header */
 th {
   font-size: x-large;
@@ -22,8 +26,14 @@ tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+
 }
 
 .leaderboard {
-  margin: 20% 15%;
+  /*width: min-content;*/
   table {
-    width: 100%;
+    margin: 20% 0 15% 15%;
   }
+}
+
+img {
+  float: right;
+  height: 100vh;
+  z-index: -1;
 }
