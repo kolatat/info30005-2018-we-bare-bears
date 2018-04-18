@@ -1,8 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway);
 @import url(https://fonts.googleapis.com/css?family=Averia+Libre);
 
-$raleway: Raleway, sans-serif;
-$averia-libre: 'Averia Libre', cursive;
+$raleway: "Raleway", sans-serif;
+$averia-libre: "Averia Libre", cursive;
 
 * {
   box-sizing: border-box;
@@ -11,4 +11,5 @@ $averia-libre: 'Averia Libre', cursive;
 body {
   font-family: $raleway;
   text-align: center;
+  margin: 0;
 }

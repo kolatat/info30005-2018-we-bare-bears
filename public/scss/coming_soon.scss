@@ -16,7 +16,7 @@ body {
   padding: 20px 20px 20px;
   margin-right: -50%;
   transform: translate(-50%, -20%);
-  font-family: $raleway;
+  font-family: Raleway, sans-serif;
   font-size: medium;
   text-align: center;
   border: 3px dashed #f05249;
@@ -55,6 +55,7 @@ input {
     background-color: #FFEFF6;
     width: 50%;
   }
+
   &[type=submit], &[type=button] {
     border: none;
     padding: 5px 15px;
@@ -63,6 +64,7 @@ input {
   &.login, &.submit {
     background-color: #f05249;
     &:hover {
+
       background-color: #f02e35;
     }
   }

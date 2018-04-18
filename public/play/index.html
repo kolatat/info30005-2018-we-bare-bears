@@ -2,11 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/section.css">
-    <link rel="stylesheet" href="/css/leaderboard.css">
+    <!--<link rel="stylesheet" href="/css/section.css">-->
+    <link rel="stylesheet" href="/css/play.css">
+
+    <script type="text/javascript" src="/js/play.js"></script>
 </head>
 <body>
-<img src="/assets/images/checkpoints_3.png" class="screen" id="cpimg">
+<!--<img src="/assets/images/checkpoints_3.png" id="cpimg">-->
+
+
+<img src="/assets/images/checkpoints_0.png"  usemap="#play-map">
+<map name="play-map" id="Map">
+    <area title="" href="#" class="flag" shape="rect" coords="70,408,180,555" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="436,610,542,756" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="836,796,938,943" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="114,1014,222,1162" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="521,1461,400,1309" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="352,1777,468,1949" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="162,2183,276,2341" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="792,2332,914,2495" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+    <area title="" href="#" class="flag" shape="rect" coords="869,2795,1002,2966" style="outline:none;" target="sectionFrame" onclick="onClickCheckpoint()"/>
+</map>
+
 <script>
     function setRandomCP() {
         var num = Math.floor(Math.random() * 10);
@@ -15,5 +32,9 @@
 
     setInterval(setRandomCP, 500);
 </script>
+
+<div id="checkpoint_open">
+    You've clicked a checkpoint!
+</div>
 </body>
 </html>

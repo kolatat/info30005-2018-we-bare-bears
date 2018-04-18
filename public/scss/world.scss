@@ -2,7 +2,6 @@
 
 body {
   background: #ffb9c8;
-  margin: 0;
 }
 
 .page {
@@ -33,18 +32,16 @@ body {
     grid-template-areas: "map section";
     min-height: 100%;
   }
-
   body {
     background: #d1eaff;
   }
-
   #sectionFrame {
     min-height: 100%;
   }
 }
 
 .map {
-  font-family: $raleway;
+  font-family: Raleway, sans-serif;
   font-size: medium;
   text-align: center;
   grid-area: map;

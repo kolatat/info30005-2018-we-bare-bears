@@ -5,6 +5,10 @@
   font-size: medium;
   text-align: center;
   padding: 15px;
+  p {
+    font-size: large;
+    /*margin-bottom: 15px;*/
+  }
 }
 
 h2 {
@@ -12,13 +16,6 @@ h2 {
   line-height: 100%;
   font-family: $averia-libre;
   font-size: 40px;
-}
-
-.maincontent {
-  p {
-    font-size: large;
-    /*margin-bottom: 15px;*/
-  }
 }
 
 .category {
