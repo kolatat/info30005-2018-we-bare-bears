@@ -6,7 +6,10 @@
 body {
   font-family: Raleway, sans-serif;
   font-size: xx-large;
-  text-align: center; }
+  text-align: center;
+  margin: 0;
+
+}
 
 /** Larger font for table header */
 
@@ -55,7 +58,7 @@ tr:nth-child(odd){
 }
   /**/
 .leaderboard table {
-  margin: 20% 0% 0% 20%;
+  margin: 20% 0 15% 15%;
 }
 
 img {
