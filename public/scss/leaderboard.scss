@@ -1,12 +1,7 @@
 @import "master";
 
-body {
-  font-size: xx-large;
-}
-
-/** Larger font for table header */
+/** Background for Table Headers */
 th {
-  font-size: x-large;
   background-color: #768591;
 }
 
@@ -25,15 +20,42 @@ tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+
   background-color: #E1E8ED;
 }
 
-.leaderboard {
-  /*width: min-content;*/
-  table {
-    margin: 20% 0 15% 15%;
+#leaderboard-container {
+  max-height: 68vh;
+  overflow-y: scroll;
+  margin:20% 15% 0 15%;
+}
+
+/* Let the table fill up the container */
+table {
+  width: 100%;
+}
+
+
+/* Place the images underneath elements to act as a background */
+img {
+  z-index: -1;
+}
+
+
+/* Working on responsive design
+
+@media only screen and (max-width: 500px) {
+  #leaderboard-container {
+    max-height: 73vh;
   }
 }
 
-img {
-  float: right;
-  height: 100vh;
-  z-index: -1;
+
+@media only screen and (max-width: 390px) {
+  #leaderboard-container {
+    max-height: 65vh;
+  }
 }
+
+@media only screen and (max-width: 320px) {
+  #leaderboard-container {
+    max-height: 58vh;
+  }
+}
+*/
