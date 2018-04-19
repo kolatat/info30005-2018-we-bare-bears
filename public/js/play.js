@@ -21,7 +21,7 @@ function togglePopUp(oObject) {
     //Set a variable to contain the DOM element of the popup
     var popup = document.getElementById("popup");
     // Toggle visibility of overlay and popup
-    if(overlay.style.display === "none"){
+    if(overlay.style.display === "none" || overlay.style.display === ""){
         overlay.style.display = "block";
         popup.style.display = "block";
         //Edit part of the text in popup based on ID of function caller
