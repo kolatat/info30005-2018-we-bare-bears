@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!--<link rel="stylesheet" href="/css/section.css">-->
     <link rel="stylesheet" href="/css/play.css">
+    <script type="text/javascript" src="/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="/js/jquery.rwdImageMaps.js"></script>
+    <script type="text/javascript" src="/js/play.js"></script>
 
 </head>
 <body>
@@ -23,26 +25,6 @@
 </map>
 
 
-<!-- Kola's Magic Blinking Page -->
-<script>
-    function setRandomCP() {
-        var num = Math.floor(Math.random() * 10);
-        document.querySelector('#cpimg').src = '/assets/images/checkpoints_' + num + '.png';
-    }
-
-    setInterval(setRandomCP, 500);
-</script>
-
-<!-- For responsive design -->
-<script src="/js/jquery-3.3.1.js"></script>
-<script src="/js/jquery.rwdImageMaps.js"></script>
-<script>
-    $(document).ready(function(e) {
-        $('img[usemap]').rwdImageMaps();
-    });
-</script>
-
-
 <!-- Note: Current problems with popup:
      1) On first load, need to click something twice before popup works
 -->
@@ -56,53 +38,6 @@
     <p><a href="video.html" class="button">Watch Video</a></p>
     <button  onclick="overlayPopUp()">Close</button>
 </div>
-
-<!-- Toggle Overlay & Popup upon onClick -->
-<script>
-    function overlayPopUp(oObject) {
-        //Set a variable to contain the DOM element of the overly
-        var overlay = document.getElementById("overlay");
-        //Set a variable to contain the DOM element of the popup
-        var popup = document.getElementById("popup");
-
-
-
-
-        // Toggle visibility of overlay and popup
-        if(overlay.style.display === "none"){
-            overlay.style.display = "block";
-            popup.style.display = "block";
-            //Edit part of the text in popup based on ID of function caller
-            document.getElementById("flag-id").innerHTML = oObject.id;
-        } else {
-            overlay.style.display = "none";
-            popup.style.display = "none";
-        }
-
-
-        /* Code below doesn't work?? */
-        // Toggle visibility of overlay
-        // overlay.style.display === "block" ? overlay.style.display = "block" : overlay.style.display = "none";
-        // Toggle visibility of popup
-        // popup.style.display === "block" ? popup.style.display = "block" : popup.style.display = "none";
-
-    }
-</script>
-
-
-<div id="checkpoint_open">
-    You've clicked a checkpoint!
-</div>
-
-<script>
-    // When the user clicks on div, open the popup
-    function onClickCheckpoint() {
-        var popup = document.getElementById("myPopup");
-        popup.classList.toggle('show');
-    }
-</script>
-
-
 
 
 </body>
