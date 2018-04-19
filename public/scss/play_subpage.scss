@@ -1,4 +1,52 @@
 body{
   font-family: 'Raleway';
   background: #C2E5F4;
+  align: center;
+}
+
+.question{
+  text-align: center;
+}
+
+#overlay {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: #f6f6f6; //Give it a black background
+  opacity:0.3;     //Change the opacity to 50% so that is see through.
+  z-index:99999;   //Change the z-index so it will be above everything else
+}
+
+#answer_feedback{
+  left:50%;            //left and top here position top left page
+  top:50%;
+  position:fixed;
+  width:300px;         //Set the popup to have a specific width/height
+  height:100px;
+  margin-top:-50px;   //To get the popup to center correctly we need
+  margin-left:-150px;
+  display: none;
+  z-index:100000;
+  text-align: center;
+  background: #f4e26b;
+  border-radius: 10px;
+  padding: 20px;
+
+  button{
+    font-family: Raleway;
+    font-size: medium;
+    border-radius: 5px;
+    border: 0;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  button:hover{
+    background: #fdb72f;
+    color: black;
+
+  }
 }
