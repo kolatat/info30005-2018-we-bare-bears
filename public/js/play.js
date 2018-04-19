@@ -15,7 +15,7 @@ setInterval(setRandomCP, 500);
 
 /* Toggle Overlay & Popup upon onClick */
 
-function overlayPopUp(oObject) {
+function togglePopUp(oObject) {
     //Set a variable to contain the DOM element of the overlay
     var overlay = document.getElementById("overlay");
     //Set a variable to contain the DOM element of the popup
@@ -32,12 +32,5 @@ function overlayPopUp(oObject) {
     }
 
 
-}
-
-/* When the user clicks on div, open the popup */
-
-function onClickCheckpoint() {
-    var popup = document.getElementById("myPopup");
-    popup.classList.toggle('show');
 }
 
