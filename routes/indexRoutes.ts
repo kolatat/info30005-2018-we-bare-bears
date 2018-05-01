@@ -25,6 +25,11 @@ router.get('/new/play_video', function(req, res, next){
 });
 
 
+/* GET New Create page. */
+router.get('/new/create/', function(req, res, next) {
+    res.render('create/');
+});
+
 /**************************************************/
 /* Old Stuff Below */
 /* GET World page. */
