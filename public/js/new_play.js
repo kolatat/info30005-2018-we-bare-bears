@@ -14,6 +14,7 @@ function toggleQuizWindow(){
     } else {
         overlay.style.display = "none";
         popup.style.display = "none";
+        document.getElementById("quiz_container").innerHTML = "";
     }
 }
 
@@ -54,7 +55,7 @@ function toggleMessageWindow(obj){
 $(document).ready(function() {
 
     var $quiz_container = $('#quiz_container');
-    var test_mult_param = {options: ["hi", "yo", "la", "pick mee!"], correct_ans: "pick mee!"};
+    var test_mult_param = {options: ["ko", "hi", "laaa", "pick mee!"], correct_ans: "pick mee!"};
     var test_blank_param = {fill_array_objects: [{type: "fill", value: "Rendering this "}, {type: "blank", value: "first answer"}, {type: "fill", value: "Insert stuff here"}, {type: "blank", value:"second answer"}, {type:"fill", value:"yay"}, {type:"blank", value:"this comes after yay"}]};
     var test_vid_param = {url: "https://www.youtube.com/embed/_LXlxSZI_K8"};
 
