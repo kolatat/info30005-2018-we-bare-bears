@@ -7,38 +7,58 @@ router.get('/', function(req, res, next) {
     res.render('coming_soon');
 });
 
+/* GET New Play page. */
+router.get('/new/play/', function(req, res, next) {
+    res.render('play/');
+});
+
+router.get('/new/play_mult', function(req, res, next){
+   res.render('play/mult_choice', req.query);
+});
+
+router.get('/new/play_blanks', function(req, res, next){
+    res.render('play/blanks');
+});
+
+router.get('/new/play_video', function(req, res, next){
+    res.render('play/video');
+});
+
+
+/**************************************************/
+/* Old Stuff Below */
 /* GET World page. */
-router.get('/world/', function(req, res, next) {
+router.get('/old/world/', function(req, res, next) {
     res.render('world');
 });
 
 /* GET FAQ page. */
-router.get('/faq/', function(req, res, next) {
+router.get('/old/faq/', function(req, res, next) {
     res.render('faq');
 });
 
 /* GET Leaderboard page. */
-router.get('/leaderboard/', function(req, res, next) {
+router.get('/old/leaderboard/', function(req, res, next) {
     res.render('leaderboard');
 });
 
 /* GET Milestones page. */
-router.get('/milestones/', function(req, res, next) {
+router.get('/old/milestones/', function(req, res, next) {
     res.render('milestones');
 });
 
 /* GET Video page. */
-router.get('/vid/', function(req, res, next) {
+router.get('/old/vid/', function(req, res, next) {
     res.render('vid');
 });
 
 /* GET Quiz page. */
-router.get('/quiz/', function(req, res, next) {
+router.get('/old/quiz/', function(req, res, next) {
     res.render('quiz');
 });
 
 /* GET Action page. */
-router.get('/act/', function(req, res, next) {
+router.get('/old/act/', function(req, res, next) {
     res.render('act');
 });
 
