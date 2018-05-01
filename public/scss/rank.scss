@@ -1,0 +1,103 @@
+@import "master";
+
+#header {
+  background-color: $color-yellow;
+  font-family: $raleway;
+  color: white;
+  //display: block;
+  //text-align: center;
+  height: 60px;
+}
+
+#site-name {
+  font-family: $averia-libre;
+  display: inline-block;
+  float: left;
+  font-size: 2em;
+  color: $color-brown;
+  margin: 0 0 0 $main-padding-left;
+  height: 100%;
+  //line-height: 40px;
+  img{
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    //display: inline-block;
+    margin: 0 15px;
+  }
+  a {
+    cursor: pointer;
+    line-height: 60px;
+  }
+}
+
+#navigation {
+  display: inline-block;
+  float: right;
+  height: 100%;
+  font-size: 1.3em;
+  color: $color-brown;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin: 0 $main-padding-right 0 0;
+  text-transform: uppercase;
+  a{
+    display: inline-block;
+    height: 100%;
+    margin-right: 10px;
+    cursor: pointer;
+    line-height: 60px;
+    padding: 0 5px;
+    //vertical-align: middle;
+  }
+  a.active{
+    color: $color-orange;
+  }
+  a:hover{
+    background-color: $color-beige;
+  }
+}
+
+.rank{
+  text-align: left;
+  padding: 0 $main-padding-right;
+  margin: 10px 0;
+  cursor: pointer;
+  img{
+    width: 50px;
+    height: 50px;
+    moz-border-radius: 15px;
+    border-radius: 15px;
+    vertical-align: middle;
+  }
+  span {
+    display: inline-block;
+    font-size: 1.3em;
+  }
+  .name{
+    vertical-align: middle;
+    margin-left: 30px;
+    width: 250px;
+  }
+  .score{
+    width: 50px;
+  }
+  button{
+    margin-left: 30px;
+    cursor: pointer;
+    border: 0;
+    box-shadow: none;
+    background: $color-transparent-50;
+    padding: 5px;
+    border-radius: 5px;
+    width: 30px;
+    color: white;
+  }
+  button:hover{
+    background: $color-orange;
+  }
+}
+
+.rank:hover{
+  background: $color-green;
+}

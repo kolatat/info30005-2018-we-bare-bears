@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recylabears | Rank</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
+    <link rel="stylesheet" href="/css/rank.css">
+    <script type="text/javascript" src="/js/rank.js"></script>
+
+</head>
+
+<body>
+<div id="header">
+    <div id="site-name"><a><img src="/assets/images/icon.png">Recyclabears</a></div>
+    <div id="navigation">
+        <a>Play</a>
+        <a>Learn</a>
+        <a class="active">Rank</a>
+        <a>Create</a>
+        <a>Shop</a>
+    </div>
+</div>
+
+<div id="content">
+    <% var i;
+    for(i=0; i<friends.length; i++){ %>
+    <div class="rank">
+        <img src="<%=friends[i].photo%>">
+        <span class="name"><%=friends[i].name%></span>
+        <span class="score"><%=friends[i].score%></span>
+        <button>X</button>
+    </div>
+    <%}
+    %>
+</div>
+</body>
+</html>
