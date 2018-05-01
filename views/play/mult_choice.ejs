@@ -1,9 +1,4 @@
-<script type="text/javascript" src="/js/play_functions.js"></script>
-
 <h1>Multiple Choice Quiz</h1>
-
-
-
 <p>*Insert question here*</p>
 
 
@@ -13,12 +8,20 @@
 
 <p>
 
+    <!-- Edit name of variables when connected to db -->
+    <%for(var i=0; i<options.length; i++){
 
-    <%for(var i=0; i<buttons.length; i++){%>
-
-        <button><%=buttons[i]%></button>
-
+        var option_class;
+        if(options[i] === correct_ans){
+            option_class = "correct";
+        } else {
+            option_class = "wrong";
+        }
+    %>
+        <button class="<%=option_class%>" onclick="toggleMessageWindow(this)"><%=options[i]%></button>
     <%}%>
+
+
 
 
 </p>

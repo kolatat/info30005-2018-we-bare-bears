@@ -17,11 +17,11 @@ router.get('/new/play_mult', function(req, res, next){
 });
 
 router.get('/new/play_blanks', function(req, res, next){
-    res.render('play/blanks');
+    res.render('play/blanks', req.query);
 });
 
 router.get('/new/play_video', function(req, res, next){
-    res.render('play/video');
+    res.render('play/video', req.query);
 });
 
 

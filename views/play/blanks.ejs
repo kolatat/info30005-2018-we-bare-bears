@@ -1,1 +1,31 @@
-<p>Hi</p>
+<h1>Fill in the Blanks</h1>
+
+
+<p>
+
+    <p>
+    <!-- Note: Edit 'fill_array_objects' when connected to db -->
+    <%for(var i=0; i<fill_array_objects.length; i++){%>
+
+        <span id="obj-<%=i%>">
+            <%if(fill_array_objects[i].type == "fill"){%>
+
+                 <%=fill_array_objects[i].value%>
+
+            <%} else {%>
+                ______________________
+            <%}%>
+        </span>
+    <%}%>
+    </p>
+
+    <!-- Edit 'buttons' when connected to db -->
+    <%for(var i=0; i<fill_array_objects.length; i++){
+        if(fill_array_objects[i].type == "blank") {%>
+            <button><%=fill_array_objects[i].value%></button>
+        <%}
+    }%>
+
+
+
+</p>
