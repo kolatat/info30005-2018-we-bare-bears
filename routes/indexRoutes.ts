@@ -1,4 +1,5 @@
-import * as express from 'express';
+import * as express from 'express'
+import * as controller from '../controllers/friendsController';
 
 const router = express.Router();
 
@@ -23,12 +24,15 @@ router.get('/new/play_blanks', function(req, res, next){
 router.get('/new/play_video', function(req, res, next){
     res.render('play/video', req.query);
 });
-
-
 /* GET New Create page. */
 router.get('/new/create/', function(req, res, next) {
     res.render('create/');
 });
+/* GET New Rank page. */
+router.get('/new/rank/', controller.fetchFriendsByScore);
+
+/* GET New Profile page. */
+router.get('/new/profile/:id', controller.fetchFriend);
 
 router.get('/new/create_mult', function(req, res, next){
     res.render('create/mult_choice', req.query);

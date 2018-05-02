@@ -1,0 +1,59 @@
+@import "master";
+
+#header {
+  background-color: $color-yellow;
+  font-family: $raleway;
+  color: white;
+  //display: block;
+  //text-align: center;
+  height: 60px;
+}
+
+#site-name {
+  font-family: $averia-libre;
+  display: inline-block;
+  float: left;
+  font-size: 2em;
+  color: $color-brown;
+  margin: 0 0 0 $main-padding-left;
+  height: 100%;
+  //line-height: 40px;
+  img{
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    //display: inline-block;
+    margin: 0 15px;
+  }
+  a {
+    cursor: pointer;
+    line-height: 60px;
+  }
+}
+
+#navigation {
+  display: inline-block;
+  float: right;
+  height: 100%;
+  font-size: 1.3em;
+  color: $color-brown;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin: 0 $main-padding-right 0 0;
+  text-transform: uppercase;
+  a{
+    display: inline-block;
+    height: 100%;
+    margin-right: 10px;
+    cursor: pointer;
+    line-height: 60px;
+    padding: 0 5px;
+    //vertical-align: middle;
+  }
+  a.active{
+    color: $color-orange;
+  }
+  a:hover{
+    background-color: $color-beige;
+  }
+}
