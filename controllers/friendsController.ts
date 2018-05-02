@@ -1,4 +1,4 @@
-import {friends as friends} from '../models/Friends';
+import {friends as friends, getUser as getUser} from '../models/Friends';
 import * as express from 'express';
 
 export function fetchFriends(req: express.Request, res: express.Response) {
@@ -11,7 +11,7 @@ export function fetchFriendsByScore(req: express.Request, res: express.Response)
 
 export function fetchFriend(req: express.Request, res: express.Response) {
     const userId = req.params.id;
-    res.render('profile', {user: friends[userId - 1], userId: userId});
+    res.render('rank/profile', {user: getUser(userId), userId: userId});
 };
 
 function compareScore(a,b) {

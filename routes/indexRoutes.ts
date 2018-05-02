@@ -29,7 +29,10 @@ router.get('/new/create/', function(req, res, next) {
     res.render('create/');
 });
 /* GET New Rank page. */
-router.get('/new/rank/', controller.fetchFriends);
+router.get('/new/rank/', controller.fetchFriendsByScore);
+
+/* GET New Profile page. */
+router.get('/new/profile/:id', controller.fetchFriend);
 
 /**************************************************/
 /* Old Stuff Below */

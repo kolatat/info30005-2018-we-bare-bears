@@ -1,62 +1,5 @@
 @import "master";
-
-#header {
-  background-color: $color-yellow;
-  font-family: $raleway;
-  color: white;
-  //display: block;
-  //text-align: center;
-  height: 60px;
-}
-
-#site-name {
-  font-family: $averia-libre;
-  display: inline-block;
-  float: left;
-  font-size: 2em;
-  color: $color-brown;
-  margin: 0 0 0 $main-padding-left;
-  height: 100%;
-  //line-height: 40px;
-  img{
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-    //display: inline-block;
-    margin: 0 15px;
-  }
-  a {
-    cursor: pointer;
-    line-height: 60px;
-  }
-}
-
-#navigation {
-  display: inline-block;
-  float: right;
-  height: 100%;
-  font-size: 1.3em;
-  color: $color-brown;
-  font-weight: bold;
-  letter-spacing: 2px;
-  margin: 0 $main-padding-right 0 0;
-  text-transform: uppercase;
-  a{
-    display: inline-block;
-    height: 100%;
-    margin-right: 10px;
-    cursor: pointer;
-    line-height: 60px;
-    padding: 0 5px;
-    //vertical-align: middle;
-  }
-  a.active{
-    color: $color-orange;
-  }
-  a:hover{
-    background-color: $color-beige;
-  }
-}
+@import "header";
 
 .rank{
   text-align: left;
@@ -100,4 +43,36 @@
 
 .rank:hover{
   background: $color-green;
+}
+
+/* Styling the overlay covering the whole screen to prevent users from clicking layer below */
+#overlay {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  z-index:99999;   //Change the z-index so it will be above everything else
+
+}
+
+/* Styling the Popup window that contains the user profile */
+#selected-profile {
+  display:none;
+  position:fixed;
+  left:50%;            //left and top here position top left page
+  top:50%;             //of the element to the center of the
+  width: 50vw;  //Set the popup to have a specific width/height
+  //min-height: 50vh;
+  margin-left:-25vw;  //To get the popup to center correctly we need
+  margin-top:-25vh; //To displace the the top/left margins by half of the width/height
+  background:$color-yellow;  //Background of light blue
+  border:2px solid #000;  //And give it a border
+  border-radius: 25px;  //A rounded border
+  border-style: dotted; //Dotted border
+  border-color: $color-beige; //Change border colour
+  z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
+
 }

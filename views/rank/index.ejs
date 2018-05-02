@@ -5,7 +5,7 @@
     <title>Recylabears | Rank</title>
     <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
     <link rel="stylesheet" href="/css/rank.css">
-    <script type="text/javascript" src="/js/rank.js"></script>
+    <script type="text/javascript" src="/js/new_rank.js"></script>
 
 </head>
 
@@ -24,7 +24,7 @@
 <div id="content">
     <% var i;
     for(i=0; i<friends.length; i++){ %>
-    <div class="rank">
+    <div class="rank" onclick="openProfile('<%=friends[i].id%>')" >
         <img src="<%=friends[i].photo%>">
         <span class="name"><%=friends[i].name%></span>
         <span class="score"><%=friends[i].score%></span>
@@ -33,5 +33,11 @@
     <%}
     %>
 </div>
+
+<div id="overlay"></div>
+<div id="selected-profile">
+aaaa
+</div>
+
 </body>
 </html>
