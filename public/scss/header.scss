@@ -49,17 +49,13 @@
     line-height: 60px;
     padding: 0 5px;
     //vertical-align: middle;
-
+    color: $color-brown;
     text-decoration: none;  // Prevent vistied links from being underlined
   }
-  a.active{
+  a.current{
     color: $color-orange;
   }
   a:hover{
     background-color: $color-beige;
-  }
-  // Let visited links remain the same colour
-  a:visited{
-    color: inherit;
   }
 }

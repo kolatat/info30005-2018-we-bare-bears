@@ -1,0 +1,14 @@
+<head>
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+
+<div id="header">
+    <div id="site-name"><a><img src="/assets/images/icon.png">Recyclabears</a></div>
+    <div id="navigation">
+        <a href="/new/play" <% if (page_name == 'play') { %>class="current" <% } %>>Play</a>
+        <a>Learn</a>
+        <a href="/new/rank" <% if (page_name == 'rank') { %>class="current" <% } %>>Rank</a>
+        <a href="/new/create" <% if (page_name == 'create') { %>class="current" <% } %>>Create</a>
+        <a>Shop</a>
+    </div>
+</div>
