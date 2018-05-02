@@ -54,8 +54,10 @@ function getRandomQuestion() {
 
         question: "Dummy question #1",
         ques_img: "",   // to store question image
-        options: ["hi", "ko", "laaa", "help", "pick mee!"],
-        correct_ans: "pick mee!",
+        answers: {
+            correct: "pick mee!",
+            other: ["hi", "ko", "laaa", "help"]
+        },
         options_img: ""     // to store images for each option
     };
 
@@ -65,7 +67,8 @@ function getRandomQuestion() {
 //
 function getRandomVideoLink() {
     var video = {
-        url: "https://www.youtube.com/embed/_LXlxSZI_K8"
+        question: "Recycling is fun",
+        vid: "_LXlxSZI_K8"
         // To add: Link to related questions. maybe?
     };
 
@@ -87,12 +90,7 @@ $(document).ready(function () {
         }, {type: "blank", value: "this comes after yay"}]
     };
 
-    $('#multiple').click(function () {
-        $.get('play_mult', getRandomQuestion())
-            .done(function (data) {
-                $quiz_container.html(data);
-            });
-    });
+
 
     $('#blanks').click(function () {
         $.get('play_blanks', test_blank_param)
@@ -101,32 +99,106 @@ $(document).ready(function () {
             });
     });
 
-    $('#vid').click(function () {
-        $.get('play_video', getRandomVideoLink())
-            .done(function (data) {
-                $quiz_container.html(data);
-            });
 
-    });
 });
 
 function _testAPI() {
-    var $quiz_container = $('#quiz_container');
     $.get('/api/questions/random', function (data, status, xhr) {
         console.log(data);
         if (data.type == "multiple-choice") {
             // display multichoice page
-            $.get('play_mult', data)
-                .done(function (data2) {
-                    $quiz_container.html(data2);
-                });
+            _testMult(data);
         } else if (data.type == "youtube-video") {
             // display  youtube video
-            var videoURL = "https://www.youtube.com/embed/" + data.vid;
-            $.get('play_video', {url: videoURL})
-                .done(function (data) {
-                    $quiz_container.html(data);
-                });
+            _testVideo(data);
         }
     }, 'json');
+}
+
+function _testMult(ques_details){
+
+    // Get the container element that will contain the quiz
+    var quiz_container = document.getElementById("quiz_container");
+    quiz_container.innerHTML = "";  // Reset the container element for each use
+
+    // Create element containing a generic "MCQ Page" title
+    var mcq_head = document.createElement('h1');
+    mcq_head.innerHTML = "Multiple Choice Quiz!";
+    quiz_container.appendChild(mcq_head);
+
+    // Create element containing the MCQ question
+    var question = document.createElement('p');
+    question.innerHTML = ques_details.question;
+    quiz_container.appendChild(question);
+
+    // Create div element to contain all the MCQ answer choices
+    var options_container = document.createElement('div');
+    options_container.id = "options_container";
+    quiz_container.appendChild(options_container);
+
+    // Prepare the set of answer options and shuffling them (randomize order of options)
+    var correct_ans = ques_details.answers.correct;
+    var options = ques_details.answers.other.concat(correct_ans);
+    shuffle(options);
+
+
+    // Create the elements for all the answer options
+    for(var i=0; i<options.length; i++) {
+
+        var option_class;
+        if (options[i] === correct_ans) {
+            option_class = "correct";
+        } else {
+            option_class = "wrong";
+        }
+
+        // Create a button element for an answer option
+        var new_button = document.createElement('button');
+        new_button.className = option_class;
+        new_button.setAttribute("onClick", "toggleMessageWindow(this);");
+        new_button.innerHTML = options[i];
+        options_container.appendChild(new_button);
+    }
+
+}
+
+function _testVideo(video_details){
+
+    // Construct the full url of the Youtube video
+    var full_url = "https://www.youtube.com/embed/" + video_details.vid;
+
+    // Get the container element that will contain the quiz
+    var quiz_container = document.getElementById("quiz_container");
+    quiz_container.innerHTML = "";  // Reset the container element for each use
+
+    // Create element containing a generic "Video Page" title
+    var vid_head = document.createElement('h1');
+    vid_head.innerHTML = "Let's Watch!";
+    quiz_container.appendChild(vid_head);
+
+    // Create element containing the video question/title
+    var question = document.createElement('p');
+    question.innerHTML = video_details.question;
+    quiz_container.appendChild(question);
+
+    // Create element containing the video
+    var vid_iframe = document.createElement('iframe');
+    vid_iframe.setAttribute("width", "420");
+    vid_iframe.setAttribute("height", "345");
+    vid_iframe.setAttribute("src", full_url);
+    quiz_container.appendChild(vid_iframe);
+
+
+}
+
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
