@@ -30,6 +30,18 @@ router.get('/new/create/', function(req, res, next) {
     res.render('create/');
 });
 
+router.get('/new/create_mult', function(req, res, next){
+    res.render('create/mult_choice', req.query);
+});
+
+router.get('/new/create_blanks', function(req, res, next){
+    res.render('create/blanks', req.query);
+});
+
+router.get('/new/create_video', function(req, res, next){
+    res.render('create/video', req.query);
+});
+
 /**************************************************/
 /* Old Stuff Below */
 /* GET World page. */

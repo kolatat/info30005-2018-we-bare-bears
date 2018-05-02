@@ -1,5 +1,3 @@
-
-
 /* Toggle the PopUp Window that displays the quizzes */
 function toggleQuizWindow(){
     //Set a variable to contain the DOM element of the overlay
@@ -69,6 +67,7 @@ function getRandomQuestion(){
 function getRandomVideoLink(){
     var video = {
         url: "https://www.youtube.com/embed/_LXlxSZI_K8"
+        // To add: Link to related questions. maybe?
     };
 
     return video;
