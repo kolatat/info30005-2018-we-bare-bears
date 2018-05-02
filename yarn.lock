@@ -1887,12 +1887,6 @@ mixin-deep@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
-mongo@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/mongo/-/mongo-0.1.0.tgz#c8af0f8df98d4894b772b37342987c3becf3718c"
-  dependencies:
-    mongodb "*"
-
 mongodb-core@3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.7.tgz#a9941f14883a75768d554cef5fd67756a9cc0f25"
@@ -1900,7 +1894,7 @@ mongodb-core@3.0.7:
     bson "~1.0.4"
     require_optional "^1.0.1"
 
-mongodb@*, mongodb@^3.0.7:
+mongodb@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.7.tgz#cfcbaee992d78dabca67177f8f9db9cf13ac3a44"
   dependencies:

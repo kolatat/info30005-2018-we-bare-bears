@@ -111,6 +111,7 @@ $(document).ready(function () {
 });
 
 function _testAPI() {
+    var $quiz_container = $('#quiz_container');
     $.get('/api/questions/random', function (data, status, xhr) {
         console.log(data);
         if (data.type == "multiple-choice") {
@@ -122,7 +123,7 @@ function _testAPI() {
         } else if (data.type == "youtube-video") {
             // display  youtube video
             var videoURL = "https://www.youtube.com/embed/" + data.vid;
-            $.get('play_video', videoURL)
+            $.get('play_video', {url: videoURL})
                 .done(function (data) {
                     $quiz_container.html(data);
                 });
