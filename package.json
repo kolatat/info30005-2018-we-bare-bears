@@ -29,17 +29,20 @@
     "ejs": "~2.5.8",
     "express": "~4.16.3",
     "faker": "~4.1.0",
-    "mongo": "^0.1.0",
+    "mongodb": "^3.0.7",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
     "postcss-cli": "^5.0.0",
+    "q": "^1.5.1",
     "typescript": "~2.7.2"
   },
   "devDependencies": {
-    "dotenv": "^5.0.1",
     "@types/ejs": "^2.5.0",
     "@types/express": "^4.11.1",
     "@types/faker": "^4.1.2",
-    "@types/node": "^9.6.0"
+    "@types/mongodb": "^3.0.17",
+    "@types/node": "^9.6.0",
+    "@types/q": "^1.5.0",
+    "dotenv": "^5.0.1"
   }
 }

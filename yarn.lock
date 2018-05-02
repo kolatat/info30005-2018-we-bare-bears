@@ -9,6 +9,12 @@
     "@types/express" "*"
     "@types/node" "*"
 
+"@types/bson@*":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@types/bson/-/bson-1.0.8.tgz#6ad272b3f049e9598ec33aed09cf56d8946b75f1"
+  dependencies:
+    "@types/node" "*"
+
 "@types/ejs@^2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-2.5.0.tgz#e8f76bef977666f3d71730208bcb6bbcc172a080"
@@ -40,9 +46,21 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
 
+"@types/mongodb@^3.0.17":
+  version "3.0.17"
+  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.0.17.tgz#942832f31d2451b0f54d9aeb449257abc9b74eb7"
+  dependencies:
+    "@types/bson" "*"
+    "@types/events" "*"
+    "@types/node" "*"
+
 "@types/node@*", "@types/node@^9.6.0":
   version "9.6.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.0.tgz#d3480ee666df9784b1001a1872a2f6ccefb6c2d7"
+
+"@types/q@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.0.tgz#87567ea1206935405e51c03635b6cbf3a01f7bc4"
 
 "@types/serve-static@*":
   version "1.13.1"
@@ -1882,7 +1900,7 @@ mongodb-core@3.0.7:
     bson "~1.0.4"
     require_optional "^1.0.1"
 
-mongodb@*:
+mongodb@*, mongodb@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.7.tgz#cfcbaee992d78dabca67177f8f9db9cf13ac3a44"
   dependencies:
@@ -2356,6 +2374,10 @@ pseudomap@^1.0.2:
 punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
+
+q@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
 qs@6.5.1, qs@~6.5.1:
   version "6.5.1"
