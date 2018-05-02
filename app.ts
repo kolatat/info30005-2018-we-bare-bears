@@ -3,7 +3,28 @@ import * as debug from 'debug';
 import userRouter from './routes/usersRoutes';
 import indexRouter from './routes/indexRoutes';
 
+require('dotenv').config()
+
 const Log = debug('wbb:main');
+
+const MongoClient = require('mongodb').MongoClient
+
+Log('connection string: '+process.env.MONGO_URI)
+MongoClient.connect(process.env.MONGO_HOST, (err,client)=>{
+    if(err){
+        Log(err.message)
+    } else {
+        const db = client.db(process.env.MONGO_DB)
+        var questions = db.collection(process.env.MONGO_PREFIX+'questions')
+        questions.find({}).toArray((err,docs)=>{
+            if(err){
+                Log(err.message)
+            } else {
+                Log(docs)
+            }
+        })
+    }
+})
 
 const app = express();
 const port = process.env.PORT || 3000;
