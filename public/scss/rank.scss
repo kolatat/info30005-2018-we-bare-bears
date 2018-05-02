@@ -1,7 +1,48 @@
 @import "master";
 
+
+.search-container{
+  margin: 20px 0;
+  display: block;
+  overflow: hidden;
+
+  form{
+    display: inline;
+    padding: 0;
+    margin: 0;
+  }
+  img{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  button{
+    border: 0px;
+    background-color: $color-beige;
+    cursor: pointer;
+  }
+}
+
+#search-user{
+  //padding: 0 $main-padding-right;
+  padding-left: 15px;
+
+  //float: left;
+  margin: 0;
+  width: 45%;
+  height: 50px;
+  font-family: $raleway;
+  font-size: 1em;
+}
+
+#content{
+  display: block;
+}
+
 .rank{
   text-align: left;
+  display: block;
   padding: 0 $main-padding-right;
   margin: 10px 0;
   cursor: pointer;

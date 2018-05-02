@@ -13,6 +13,14 @@
 
 <%- include('../partials/header', {page_name: "rank"})%>
 
+<div class="search-container">
+    <form action="/action_page.php">
+        <input name="user" id="search-user" type="text" placeholder="Search recyclabear...">
+        <button type="submit"><img src="/assets/images/search-icon.png"></button>
+    </form>
+</div>
+
+
 <div id="content">
     <% var i;
     for(i=0; i<friends.length; i++){ %>
