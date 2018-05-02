@@ -19,7 +19,7 @@ function addField(input_field_wrapper){
 
 
     if(input_field_wrapper.id === "input_fields_mult"){
-        input_field_html.innerHTML = '<input type="text" name="options" required/><button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
+        input_field_html.innerHTML = '<input type="text" name="options[]" required/><button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
     }
 
     else if(input_field_wrapper.id === "input_fields_blanks"){
@@ -27,7 +27,8 @@ function addField(input_field_wrapper){
             '<option value="fill">Fill</option>\n' +
             '<option value="blank">Blank</option>\n' +
             '</select>\n' +
-            '<input type="text" name="options" onkeyup="previewText(this)" required><button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
+            '<input type="text" name="options-' + current_id + '" ' +
+        'onkeyup="previewText(this)" required><button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
 
 
         // Create new span element and add to the preview_container
@@ -51,10 +52,15 @@ function addField(input_field_wrapper){
 
 function removeField(element, input_field_wrapper){
 
-    // Remove the target preview span
-    var id_to_remove = element.parentNode.id;
-    var span_id_to_remove = id_to_remove + "-preview";
-    document.getElementById(span_id_to_remove).remove();
+
+    // Only for Create Blanks page
+    if(input_field_wrapper.id === "input_fields_blanks"){
+        // Remove the target preview span
+        var id_to_remove = element.parentNode.id;
+        var span_id_to_remove = id_to_remove + "-preview";
+        document.getElementById(span_id_to_remove).remove();
+    }
+
 
     // Remove the target input field
     element.parentNode.remove();
@@ -68,7 +74,7 @@ function removeField(element, input_field_wrapper){
 }
 
 
-
+/* Displaying the current input fill/blanks in one whole sentence --- for Create Blanks page */
 function previewText(input_field){
 
 
@@ -79,13 +85,12 @@ function previewText(input_field){
 
 }
 
-
+/* Modify the preview of input (underline/no underline --- for Create Blanks page */
 function modifyTextDecoration(select_field){
 
     var select_id = select_field.parentNode.id;  // Get the id of parent div of select field
     var span_id = select_id + "-preview";    // Id of target span element
     var span_elem = document.getElementById(span_id);
-
 
     if(select_field.value === "blank"){
         span_elem.style.textDecoration = "underline";
@@ -93,6 +98,40 @@ function modifyTextDecoration(select_field){
         span_elem.style.textDecoration = "none";
     }
 
-
 }
 
+
+function submitQuestion() {
+    var form = document.getElementById('createQuestion');
+
+
+    var answer_options = [];
+    answer_options.push(form["correct_ans"].value);
+
+
+    var input_fields_wrap = document.getElementsByClassName("input_fields_wrap")[0];
+    if(input_fields_wrap.id === "input_fields_mult"){
+
+        alert("Length of input fields wrap children is :" + input_fields_wrap.children.length);
+
+        for(var i=1; i<input_fields_wrap.children.length; i++){
+
+            var option_div = input_fields_wrap.children[i];
+
+            console.log("Hi");
+            var input_field = option_div.getElementsByTagName("input");
+            answer_options.push(input_field.value);
+
+        }
+    }
+
+
+
+    var new_question = {
+        question: form["question"].value,
+        options: answer_options,
+        correct_ans: form["correct_ans"].value
+    }
+
+
+}

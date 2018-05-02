@@ -1,6 +1,6 @@
 <h1>Create your multiple choice question:</h1>
 
-<form method="post">
+<form id="createQuestion" method="post" onsubmit="submitQuestion()">
 
     Enter your question:
     <input type="text" name="question" required>
@@ -20,7 +20,7 @@
     Enter other answer options:
     <div id="input_fields_mult" class="input_fields_wrap">
         <button id="add_field_button" onclick="addField(this.parentNode)">Add More Fields</button>
-        <div><input type="text" name="options" required></div>
+        <div id="0"><input type="text" name="options-0" required></div>
 
     </div>
 
