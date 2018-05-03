@@ -1,27 +1,34 @@
+/* What does this do?
 
 document.getElementById("add_field_button").addEventListener("click", function(event){
     event.preventDefault()
 });
 
+*/
+
+
+/* Let users add more input fields */
 function addField(input_field_wrapper){
 
     var max_input = 10;
-
     var add_button = document.getElementById("add_field_button");
-    var last_elem_id = input_field_wrapper.lastElementChild.id; // Minus 1 to exclude the add button
 
 
     // Create element for use with appendChild method to prevent losing information already inputted on form
     var input_field_html = document.createElement('div');
     // Ensure that new input field will have unique ID and also will always have bigger value than previous input fields' IDs
+    var last_elem_id = input_field_wrapper.lastElementChild.id;
     var current_id = +last_elem_id +1;  // +last_elem_id casts the string to a number
     input_field_html.id = current_id;
 
 
+    // Adding buttons for MCQ page
     if(input_field_wrapper.id === "input_fields_mult"){
-        input_field_html.innerHTML = '<input type="text" name="options[]" required/><button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
+        input_field_html.innerHTML = '<input type="text" name="options-' + current_id + '" '  +
+        'required/><button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
     }
 
+    // Adding buttons for filling in the blanks page
     else if(input_field_wrapper.id === "input_fields_blanks"){
         input_field_html.innerHTML = '<select name="fill_blank_type" onchange="modifyTextDecoration(this)">\n' +
             '<option value="fill">Fill</option>\n' +
@@ -53,9 +60,12 @@ function addField(input_field_wrapper){
 function removeField(element, input_field_wrapper){
 
 
+
+
     // Only for Create Blanks page
-    if(input_field_wrapper.id === "input_fields_blanks"){
+    if(input_field_wrapper.parentNode.id === "input_fields_blanks"){
         // Remove the target preview span
+        alert("preview id to remove: " + input_field_wrapper.id);
         var id_to_remove = element.parentNode.id;
         var span_id_to_remove = id_to_remove + "-preview";
         document.getElementById(span_id_to_remove).remove();
