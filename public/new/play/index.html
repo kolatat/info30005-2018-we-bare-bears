@@ -73,10 +73,10 @@
         <p>
             <button onclick="_testAPI()">Test API</button>
             <button id="multiple" onclick="_testMult(getRandomQuestion())">Test Multiple Choice</button>
-            <button id="blanks">Test Fill in the Blanks</button>
+            <button id="blanks" disabled>Test Fill in the Blanks</button>
             <button id="vid" onclick="_testVideo(getRandomVideoLink())">Test Video</button>
         </p>
-        <button onclick="toggleMessageWindow()">Toggle Message Window</button>
+        <button onclick="toggleMessageWindow(this)">Toggle Message Window</button>
         <button  onclick="toggleQuizWindow()">Close</button>
     </div>
 

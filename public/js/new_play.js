@@ -1,3 +1,4 @@
+
 /* Toggle the PopUp Window that displays the quizzes */
 function toggleQuizWindow() {
     //Set a variable to contain the DOM element of the overlay
@@ -19,34 +20,39 @@ function toggleQuizWindow() {
 
 
 /* Toggle the PopUp Window that displays status about the quizzes */
-function toggleMessageWindow(obj) {
+function toggleMessageWindow() {
     //Set a variable to contain the DOM element of the overlay
     var overlay = document.getElementById("overlay_message");
     //Set a variable to contain the DOM element of the popup
     var popup = document.getElementById("popup_message");
-
-
-    var obj_class = obj.className;
-
 
     // Toggle visibility of overlay and popup
     if (overlay.style.display === "none" || overlay.style.display === "") {
         overlay.style.display = "block";
         popup.style.display = "block";
 
-        // Insert message depending on the class of element (correct/wrong answer)
-        //Edit part of the text in popup based on ID of function caller
-        if (obj_class === "correct") {
-            document.getElementById("msg_insert").innerHTML = "Correct Answer!"
-        } else {
-            document.getElementById("msg_insert").innerHTML = "Wrong Answer!"
-        }
     } else {
         overlay.style.display = "none";
         popup.style.display = "none";
+        document.getElementById("msg_insert").innerHTML = "";
     }
 }
 
+/* Check whether selected option is the correct answer */
+function checkAnswer(obj){
+
+    toggleMessageWindow();
+
+    var correct_ans_string = "Correct Answer!";
+    var wrong_ans_string = "Wrong Answer!";
+    var msg_container = document.getElementById("msg_insert");
+
+    if(obj.className === "correct"){
+        msg_container.innerHTML = correct_ans_string;
+    } else if(obj.className === "wrong"){
+        msg_container.innerHTML = wrong_ans_string;
+    }
+}
 
 //
 function getRandomQuestion() {
@@ -91,7 +97,6 @@ $(document).ready(function () {
     };
 
 
-
     $('#blanks').click(function () {
         $.get('play_blanks', test_blank_param)
             .done(function (data) {
@@ -116,35 +121,24 @@ function _testAPI() {
 }
 
 function _testMult(ques_details){
-
     // Get the container element that will contain the quiz
     var quiz_container = document.getElementById("quiz_container");
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
-    // Create element containing a generic "MCQ Page" title
-    var mcq_head = document.createElement('h1');
-    mcq_head.innerHTML = "Multiple Choice Quiz!";
-    quiz_container.appendChild(mcq_head);
-
-    // Create element containing the MCQ question
-    var question = document.createElement('p');
-    question.innerHTML = ques_details.question;
-    quiz_container.appendChild(question);
-
-    // Create div element to contain all the MCQ answer choices
-    var options_container = document.createElement('div');
-    options_container.id = "options_container";
-    quiz_container.appendChild(options_container);
+    // HTML Strings for MCQ Page
+    var head_HTML = '<h1>Multiple Choice Quiz!</h1>';
+    var ques_HTML = '<p>' + ques_details.question + '</p>';
 
     // Prepare the set of answer options and shuffling them (randomize order of options)
     var correct_ans = ques_details.answers.correct;
     var options = ques_details.answers.other.concat(correct_ans);
     shuffle(options);
 
-
-    // Create the elements for all the answer options
+    // HTML Strings containing answer options
+    var ans_options_HTML = [];
     for(var i=0; i<options.length; i++) {
 
+        // For identifying the correct answer (maybe to be changed to a better way in future?)
         var option_class;
         if (options[i] === correct_ans) {
             option_class = "correct";
@@ -152,15 +146,18 @@ function _testMult(ques_details){
             option_class = "wrong";
         }
 
-        // Create a button element for an answer option
-        var new_button = document.createElement('button');
-        new_button.className = option_class;
-        new_button.setAttribute("onClick", "toggleMessageWindow(this);");
-        new_button.innerHTML = options[i];
-        options_container.appendChild(new_button);
+        // Button elements for each answer option
+        ans_options_HTML.push(
+          '<button class="' + option_class + '" onclick="checkAnswer(this)">' +
+            options[i] + '</button>'
+        );
     }
+    var ans_container_HTML = '<div id="options_container">' + ans_options_HTML.join(" ") + '</div>';
 
+    // Final display of quiz container
+    quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
 }
+
 
 function _testVideo(video_details){
 
@@ -171,27 +168,19 @@ function _testVideo(video_details){
     var quiz_container = document.getElementById("quiz_container");
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
-    // Create element containing a generic "Video Page" title
-    var vid_head = document.createElement('h1');
-    vid_head.innerHTML = "Let's Watch!";
-    quiz_container.appendChild(vid_head);
+    // HTML Strings for Video Page
+    var head_HTML = "<h1>Let's Watch!</h1>";
+    var ques_HTML = '<p>' + video_details.question + '</p>';
 
-    // Create element containing the video question/title
-    var question = document.createElement('p');
-    question.innerHTML = video_details.question;
-    quiz_container.appendChild(question);
+    // HTML String for Iframe Element containing the video
+    var iframe_HTML = '<iframe width="420" height="345" src=' + full_url +'></iframe>';
 
-    // Create element containing the video
-    var vid_iframe = document.createElement('iframe');
-    vid_iframe.setAttribute("width", "420");
-    vid_iframe.setAttribute("height", "345");
-    vid_iframe.setAttribute("src", full_url);
-    quiz_container.appendChild(vid_iframe);
-
-
+    // Final display of quiz container
+    quiz_container.innerHTML = head_HTML + ques_HTML + iframe_HTML;
 }
 
 
+/* Shuffle items in the array */
 function shuffle(a) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
