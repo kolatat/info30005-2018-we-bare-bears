@@ -28,6 +28,16 @@ router.get('/new/play_video', function(req, res, next){
 router.get('/new/create/', function(req, res, next) {
     res.render('create/');
 });
+
+/* POST New Create page. */
+router.post('/new/create/', function(req, res, next) {
+    res.render('create/');
+    var new_ques = req.body;
+    console.log(new_ques);
+});
+
+
+
 /* GET New Rank page. */
 router.get('/new/rank/', controller.fetchFriendsByScore);
 

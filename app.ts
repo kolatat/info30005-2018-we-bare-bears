@@ -16,6 +16,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 const apiRouter = express.Router();
 
+
+//Testing -- To be Checked
+// these statements config express to use these modules, and only need to be run once
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+//Testing -- To be Checked
+
+
+
 Log("preparing web server...");
 routerLog("setting up routes...");
 app.use(express.static('public'));

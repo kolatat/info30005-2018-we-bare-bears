@@ -144,6 +144,7 @@ function _startQuiz(num_ques){
     var mcq = 0;
     var video = 0;
 
+
     // Is SYNCHRONOUS request ok ??
     for(var i=0;i<num_ques; i++){
         $.ajax({
@@ -163,6 +164,7 @@ function _startQuiz(num_ques){
                 }
             }
         });
+
 
 
       // Problem with Asynchronous request: make one request to get all data at once?

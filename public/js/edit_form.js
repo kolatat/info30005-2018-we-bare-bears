@@ -13,13 +13,13 @@ function addField(input_field_wrapper){
     var max_input = 10;
     var add_button = document.getElementById("add_field_button");
 
-
-    // Create element for use with appendChild method to prevent losing information already inputted on form
-    var input_field_html = document.createElement('div');
     // Ensure that new input field will have unique ID and also will always have bigger value than previous input fields' IDs
     var last_elem_id = input_field_wrapper.lastElementChild.id;
     var current_id = +last_elem_id +1;  // +last_elem_id casts the string to a number
-    input_field_html.id = current_id;
+
+    // Create element for use with appendChild method to prevent losing information already inputted on form
+    var input_field_html = document.createElement('div');
+      input_field_html.id = current_id;
 
 
     // Adding buttons for MCQ page
@@ -30,20 +30,19 @@ function addField(input_field_wrapper){
 
     // Adding buttons for filling in the blanks page
     else if(input_field_wrapper.id === "input_fields_blanks"){
-        input_field_html.innerHTML = '<select name="fill_blank_type" onchange="modifyTextDecoration(this)">\n' +
-            '<option value="fill">Fill</option>\n' +
-            '<option value="blank">Blank</option>\n' +
-            '</select>\n' +
-            '<input type="text" name="options-' + current_id + '" ' +
-        'onkeyup="previewText(this)" required><button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
+        input_field_html.innerHTML =
+            '<select name="fill_blank_type" onchange="modifyTextDecoration(this)">' +
+                 '<option value="fill">Fill</option>' +
+                 '<option value="blank">Blank</option>' +
+            '</select>' +
+            '<input type="text" name="options-' + current_id + '" onkeyup="previewText(this)" required>' +
+            '<button class="remove_field" onclick="removeField(this, this.parentNode)">x</button>';
 
 
         // Create new span element and add to the preview_container
         var preview_container = document.getElementById('preview_container');
-        var new_span = document.createElement('pre');
-        new_span.className = "preview";
-        new_span.id = current_id + "-preview";
-        preview_container.appendChild(new_span);
+        var new_preview_HTML = '<pre class="preview" id="' + current_id +'-preview"></pre>';
+        preview_container.innerHTML += new_preview_HTML;
 
     }
 
@@ -55,6 +54,10 @@ function addField(input_field_wrapper){
         add_button.disabled = true;
     }
 
+}
+
+function _testPrompt(){
+    prompt("Hello!");
 }
 
 function removeField(element, input_field_wrapper){
@@ -111,37 +114,75 @@ function modifyTextDecoration(select_field){
 }
 
 
-function submitQuestion() {
+
+function submitQuestion(event) {
+   // event.preventDefault();
+    // Super basic validation - increase errorCount variable if any fields are blank
+    var errorCount = 0;
+    $('#createQuestion input').each(function(index, val) {
+        if($(this).val() === '') { errorCount++; }
+    });
+
+
     var form = document.getElementById('createQuestion');
-
-
     var answer_options = [];
-    answer_options.push(form["correct_ans"].value);
-
-
     var input_fields_wrap = document.getElementsByClassName("input_fields_wrap")[0];
     if(input_fields_wrap.id === "input_fields_mult"){
-
-        alert("Length of input fields wrap children is :" + input_fields_wrap.children.length);
-
         for(var i=1; i<input_fields_wrap.children.length; i++){
-
             var option_div = input_fields_wrap.children[i];
-
-            console.log("Hi");
-            var input_field = option_div.getElementsByTagName("input");
-            answer_options.push(input_field.value);
-
+            var option_value = form["options-" + option_div.id].value;
+            answer_options.push(option_value);
         }
     }
 
 
-
     var new_question = {
         question: form["question"].value,
-        options: answer_options,
-        correct_ans: form["correct_ans"].value
+        type: form.className,
+        answers: {
+            correct: form["correct_ans"].value,
+            other: answer_options
+        }
     }
 
+    //console.log(new_question);
+
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: JSON.stringify(new_question),
+        contentType: "application/json",
+        success: function(data){
+            console.log('success --> data :', data);
+        },
+        error: function(xhr, text, err) {
+            console.log('error: ',err);
+            console.log('text: ', text);
+            console.log('xhr: ',xhr);
+            console.log("there is a problem with your request, please check ajax request");
+        }
+
+    });
+
+
+   /*     .done(function(response){
+        alert("Passing through!");
+        // Check for successful (blank) response
+        if (response.msg === '') {
+
+            // Clear the form inputs
+            $('#createQuestion fieldset input').val('');
+
+            // Update the table
+           // populateTable();
+
+        }
+        else {
+
+            // If something goes wrong, alert the error message that our service returned
+            alert('Error: ' + response.msg);
+
+        }
+    });         */
 
 }

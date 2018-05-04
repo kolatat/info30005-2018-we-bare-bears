@@ -44,6 +44,7 @@ $(document).ready(function() {
 function _createMult(){
     toggleCreateWindow();
 
+
     // Get the container element that will contain the quiz
     var create_container = document.getElementById("create_container");
     create_container.innerHTML = "";  // Reset the container element for each use
@@ -53,7 +54,7 @@ function _createMult(){
 
     // HTML String for form element to input question details
     var form_HTML = [];
-    form_HTML.push('<form id="createQuestion" method="post" onsubmit="submitQuestion()">');
+    form_HTML.push('<form id="createQuestion" class="multiple-choice" onsubmit="submitQuestion()">');
     form_HTML.push('<p class="container_text">Enter your question: </p>');
     form_HTML.push('<input type="text" name="question" required>');
     form_HTML.push('<p class="container_text">Enter the correct answer: </p>');
@@ -69,6 +70,7 @@ function _createMult(){
 
     // Complete the form element HTML string
     form_HTML.push(input_container_HTML.join(" "));
+    form_HTML.push('<button type="submit">Submit!</button>');
     form_HTML.push('</form>');
 
     // Final display of create container
