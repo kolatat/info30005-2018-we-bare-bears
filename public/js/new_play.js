@@ -107,6 +107,7 @@ $(document).ready(function () {
 
 });
 
+
 function _testAPI() {
     $.get('/api/questions/random', function (data, status, xhr) {
         console.log(data);
