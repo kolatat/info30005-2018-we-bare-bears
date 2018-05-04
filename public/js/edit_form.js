@@ -47,23 +47,27 @@ function addField(input_field_wrapper){
     }
 
 
+    // If there are less than the max amount of inputs allowed, then add the input field
     if(input_field_wrapper.childElementCount <= max_input){
         input_field_wrapper.appendChild(input_field_html);
-    } else {
+    }
+    // otherwise disable the add input field button
+    else {
 
         add_button.disabled = true;
     }
 
 }
 
+
+
 function _testPrompt(){
     prompt("Hello!");
 }
 
+
+/* Let users remove an input field */
 function removeField(element, input_field_wrapper){
-
-
-
 
     // Only for Create Blanks page
     if(input_field_wrapper.parentNode.id === "input_fields_blanks"){
@@ -90,7 +94,6 @@ function removeField(element, input_field_wrapper){
 /* Displaying the current input fill/blanks in one whole sentence --- for Create Blanks page */
 function previewText(input_field){
 
-
     var input_id = input_field.parentNode.id;   // Get the id of parent div of input field
     var span_id = input_id + "-preview";    // Id of target span element
     var span_elem = document.getElementById(span_id);
@@ -116,73 +119,135 @@ function modifyTextDecoration(select_field){
 
 
 function submitQuestion(event) {
-   // event.preventDefault();
-    // Super basic validation - increase errorCount variable if any fields are blank
+    // Prevent the page from refreshing
+    event.preventDefault();
+
+    // Error validation
     var errorCount = 0;
     $('#createQuestion input').each(function(index, val) {
-        if($(this).val() === '') { errorCount++; }
+        var msg_container = document.getElementById("msg_insert");
+
+        // Display error message for any empty inputs
+        if($(this).val() === '') {
+            errorCount++;
+            toggleMessageWindow();
+            msg_container.innerHTML = "Error! Please ensure all information has been entered!";
+            return false;
+        }
+
+        // Display error message for unsuitable number inputs
+        if($(this).attr("type") === "number"){
+            var num = Number($(this).val());
+
+            if(Math.floor(num) != num || num < 1 || num > 10){
+                errorCount++;
+                toggleMessageWindow();
+                msg_container.innerHTML = "(" + $(this).attr("name") + "): Please enter a valid integer between 1 and 10!";
+                return false;
+            }
+        }
     });
 
 
-    var form = document.getElementById('createQuestion');
-    var answer_options = [];
-    var input_fields_wrap = document.getElementsByClassName("input_fields_wrap")[0];
-    if(input_fields_wrap.id === "input_fields_mult"){
-        for(var i=1; i<input_fields_wrap.children.length; i++){
-            var option_div = input_fields_wrap.children[i];
-            var option_value = form["options-" + option_div.id].value;
-            answer_options.push(option_value);
+    // If there are no errors, process the data
+    if(errorCount == 0) {
+        var form = document.getElementById('createQuestion');
+
+        var answer_options = [];
+        var input_fields_wrap = document.getElementsByClassName("input_fields_wrap")[0];
+        if(input_fields_wrap.id === "input_fields_mult"){
+            for(var i=1; i<input_fields_wrap.children.length; i++){
+                var option_div = input_fields_wrap.children[i];
+                var option_value = form["options-" + option_div.id].value;
+                answer_options.push(option_value);
+            }
         }
+
+        // Create the question object
+        var new_question = {
+            question: form["question"].value,
+            type: form.className,
+            answers: {
+                correct: form["correct_ans"].value,
+                other: answer_options
+            },
+            created: new Date(),
+            createdBy: form["createdBy"].value,
+            difficulty: Number(form["difficulty"].value),
+            points: Number(form["points"].value)
+        }
+
+        //console.log(new_question);
+
+        // Preview the question to user before POST-ing to database
+        toggleMessageWindow();
+        var msg_container = document.getElementById("msg_insert");
+        msg_container.innerHTML = previewMultQues(new_question);
+
+        // POST the data to the database
+        document.getElementById("submitDataButton").addEventListener("click", function(){
+            toggleMessageWindow();
+            $.ajax({
+                url: '/api/questions/',
+                type: 'post',
+                data: JSON.stringify(new_question),
+                contentType: "application/json",
+                success: function(data){
+                    console.log('success --> data :', data);
+
+                    // Show success message to user
+                    toggleMessageWindow();
+                    var msg_container = document.getElementById("msg_insert");
+                    msg_container.innerHTML = "Question successfully entered into database!";
+                    document.getElementById("close_msg_window").addEventListener("click", toggleCreateWindow);
+                },
+                error: function(xhr, text, err) {
+                    console.log('error: ',err);
+                    console.log('text: ', text);
+                    console.log('xhr: ',xhr);
+                    console.log("there is a problem with your request, please check ajax request");
+                }
+            });
+        });
+
+
     }
+}
 
 
-    var new_question = {
-        question: form["question"].value,
-        type: form.className,
-        answers: {
-            correct: form["correct_ans"].value,
-            other: answer_options
-        }
+/* Create the HTML for previewing the created Multiple Choice question */
+function previewMultQues(ques_details){
+
+    // Preview Header
+    var preview_HTML = '<h1>Preview Question</h1>';
+
+    // Question text
+    var ques_HTML = '<p>' + ques_details.question + '</p>';
+
+    // Buttons of answer options
+    var options = ques_details.answers.other.concat(ques_details.answers.correct);
+    var options_HTML = '<div>';
+    for(var i=0; i<options.length; i++){
+        options_HTML += '<button disabled>' + options[i] + '</button>';
     }
+    options_HTML += '</div>';
 
-    //console.log(new_question);
+    // Correct answer text
+    var correct_HTML = '<p>Correct answer: ' + ques_details.answers.correct + '</p>';
 
-    $.ajax({
-        url: '',
-        type: 'post',
-        data: JSON.stringify(new_question),
-        contentType: "application/json",
-        success: function(data){
-            console.log('success --> data :', data);
-        },
-        error: function(xhr, text, err) {
-            console.log('error: ',err);
-            console.log('text: ', text);
-            console.log('xhr: ',xhr);
-            console.log("there is a problem with your request, please check ajax request");
-        }
+    // Difficulty level text
+    var dif_HTML = '<p>Difficulty level: ' + ques_details.difficulty + '</p>'
 
-    });
+    // Score points text
+    var points_HTML = '<p>Score points: ' + ques_details.points + '</p>';
 
+    // Author of question text
+    var creator_HTML = '<p>Created by: ' + ques_details.createdBy + '</p>';
 
-   /*     .done(function(response){
-        alert("Passing through!");
-        // Check for successful (blank) response
-        if (response.msg === '') {
+    // Submit button to submit this question to database
+    var submit_button_HTML = '<button id="submitDataButton">Submit!</button>'
 
-            // Clear the form inputs
-            $('#createQuestion fieldset input').val('');
-
-            // Update the table
-           // populateTable();
-
-        }
-        else {
-
-            // If something goes wrong, alert the error message that our service returned
-            alert('Error: ' + response.msg);
-
-        }
-    });         */
+    return preview_HTML + ques_HTML + options_HTML + correct_HTML + dif_HTML +
+        points_HTML + creator_HTML + submit_button_HTML;
 
 }

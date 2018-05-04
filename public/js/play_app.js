@@ -103,7 +103,7 @@ function showProgress() {
 function showScores() {
 
     var gameOverHTML = "<h1>Result</h1>";
-    gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " questions correctly!</h2>";
+    gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " out of " + quiz.mcq + " questions correctly!</h2>";
     gameOverHTML += "<h2 id='vid'> You watched " + quiz.videos + " videos!</h2>";
     toggleMessageWindow();
 

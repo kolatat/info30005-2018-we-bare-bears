@@ -8,8 +8,6 @@ function toggleCreateWindow(){
     if(overlay.style.display === "none" || overlay.style.display === ""){
         overlay.style.display = "block";
         popup.style.display = "block";
-        //Edit part of the text in popup based on ID of function caller
-//        document.getElementById("flag-id").innerHTML = oObject.id;
     } else {
         overlay.style.display = "none";
         popup.style.display = "none";
@@ -17,7 +15,26 @@ function toggleCreateWindow(){
     }
 }
 
+/* Toggle the PopUp Window that displays status about the quizzes */
+function toggleMessageWindow() {
+    //Set a variable to contain the DOM element of the overlay
+    var overlay = document.getElementById("overlay_message");
+    //Set a variable to contain the DOM element of the popup
+    var popup = document.getElementById("popup_message");
 
+    // Toggle visibility of overlay and popup
+    if (overlay.style.display === "none" || overlay.style.display === "") {
+        overlay.style.display = "block";
+        popup.style.display = "block";
+
+    } else {
+        overlay.style.display = "none";
+        popup.style.display = "none";
+        // Reset popup container to default conditions
+        document.getElementById("msg_insert").innerHTML = "";
+        document.getElementById("close_msg_window").innerHTML = "Close Message Window";
+    }
+}
 
 
 
@@ -54,7 +71,7 @@ function _createMult(){
 
     // HTML String for form element to input question details
     var form_HTML = [];
-    form_HTML.push('<form id="createQuestion" class="multiple-choice" onsubmit="submitQuestion()">');
+    form_HTML.push('<form id="createQuestion" class="multiple-choice" onsubmit="submitQuestion(event)">');
     form_HTML.push('<p class="container_text">Enter your question: </p>');
     form_HTML.push('<input type="text" name="question" required>');
     form_HTML.push('<p class="container_text">Enter the correct answer: </p>');
@@ -67,9 +84,18 @@ function _createMult(){
     input_container_HTML.push('<button id="add_field_button" onclick="addField(this.parentNode);">Add More Fields</button>');
     input_container_HTML.push('<div id="0"><input type="text" name="options-0" required></div>');
     input_container_HTML.push('</div>');
+    form_HTML.push(input_container_HTML.join(" "));
+
+    //HTML String for input of some extra information
+    form_HTML.push('<p class="container-text">Difficulty Level: </p>');
+    form_HTML.push('<input type="number" name="difficulty" required>');
+    form_HTML.push('<p class="container-text">Score points: </p>');
+    form_HTML.push('<input type="number" name="points" required>');
+    form_HTML.push('<p class="container-text">Created By: </p>');
+    form_HTML.push('<input type="text" name="createdBy" required>');
+
 
     // Complete the form element HTML string
-    form_HTML.push(input_container_HTML.join(" "));
     form_HTML.push('<button type="submit">Submit!</button>');
     form_HTML.push('</form>');
 
@@ -109,7 +135,7 @@ function _createBlanks(){
     input_container_HTML.push('<option value="fill">Fill</option>');
     input_container_HTML.push('<option value="blank">Blank</option>');
     input_container_HTML.push('</select>');
-    input_container_HTML.push('<input type="text" name="options" onkeyup="previewText(this)" required>');
+    input_container_HTML.push('<input type="text" name="options-0" onkeyup="previewText(this)" required>');
     input_container_HTML.push('</div>');
     input_container_HTML.push('</div>');
 

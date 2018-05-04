@@ -33,7 +33,9 @@ router.get('/new/create/', function(req, res, next) {
 router.post('/new/create/', function(req, res, next) {
     res.render('create/');
     var new_ques = req.body;
+    console.log("Ori: ");
     console.log(new_ques);
+
 });
 
 
