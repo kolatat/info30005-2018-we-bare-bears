@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1", maximum-scale=1.0>
+    <link rel="stylesheet" type="text/css" href="/css/new_shop.css">
+    <script type="text/javascript" src="/js/new_shop.js"></script>
+
+    <style>
+        .tab_buttons{
+            width: 100%;
+        }
+
+        .tab_buttons button{
+            background-color: inherit;
+            display: inline-block;
+            align-items: center;
+            border-bottom: none;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="header">
+    <div id="site-name"><a><img src="/assets/images/icon.png">Recyclabears</a></div>
+    <div id="navigation">
+        <a href="/new/play">Play</a>
+        <a>Learn</a>
+        <a href="/new/rank">Rank</a>
+        <a href="/new/create">Create</a>
+        <a class="active">Shop</a>
+    </div>
+</div>
+
+<div class="page-text-container">
+    <h1>World Shop</h1>
+    <p>Click on an item to learn more!</p>
+    <button onclick="toggleShopWindow()">X</button>
+</div>
+
+
+<div class="tab_buttons">
+    <button id="tab_all" class="tabs" onclick="populateShopMenu(this)">All</button>
+    <button id="tab_plants" class="tabs" onclick="populateShopMenu(this)">Plants</button>
+    <button id="tab_animals" class="tabs" onclick="populateShopMenu(this)">Animals</button>
+    <button id="tab_bins" class="tabs" onclick="populateShopMenu(this)">Bins</button>
+</div>
+
+<div id="items_container" class="wrapper">
+
+    <div>
+        <div class="item_desc">
+            <p>One</p>
+            <p>Two</p>
+        </div>
+    </div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+    <div>Five</div>
+
+    <div>One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+    <div>Five</div>
+
+    <div>One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+    <div>Five</div>
+
+    <div>One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+    <div>Five</div>
+
+    <div>One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+    <div>Five</div>
+</div>
+
+<!-- PopUp Window to display the quizzes;
+     Overlay prevents users from clicking the layers below -->
+<div class="overlay" id="overlay_base">
+</div>
+<div class="popup" id="popup_base">
+    <h2>Item Description</h2>
+    <p id="item_name"></p>
+    <p id="item_price"></p>
+    <p id="item_description"></p>
+
+    <button>Buy Item</button>
+    <button onclick="toggleShopWindow()">Close</button>
+
+</div>
+
+
+
+
+</body>
+</html>

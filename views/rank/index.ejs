@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recylabears | Rank</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
+    <link rel="stylesheet" href="/css/rank.css">
+    <script type="text/javascript" src="/js/new_rank.js"></script>
+
+</head>
+
+<body>
+<div id="header">
+    <div id="site-name"><a><img src="/assets/images/icon.png">Recyclabears</a></div>
+    <div id="navigation">
+        <a href="/new/play">Play</a>
+        <a>Learn</a>
+        <a class="active">Rank</a>
+        <a href="/new/create">Create</a>
+        <a>Shop</a>
+    </div>
+</div>
+
+<div id="content">
+    <% var i;
+    for(i=0; i<friends.length; i++){ %>
+    <div class="rank" onclick="openProfile('<%=friends[i].id%>')" >
+        <img src="<%=friends[i].photo%>">
+        <span class="name"><%=friends[i].name%></span>
+        <span class="score"><%=friends[i].score%></span>
+        <button>X</button>
+    </div>
+    <%}
+    %>
+</div>
+
+<div id="overlay"></div>
+<div id="selected-profile">
+aaaa
+</div>
+
+</body>
+</html>
