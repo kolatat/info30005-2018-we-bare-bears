@@ -188,7 +188,8 @@ function submitQuestion(event) {
         document.getElementById("submitDataButton").addEventListener("click", function(){
             toggleMessageWindow();
             $.ajax({
-                url: '/api/questions/',
+               // url: '/api/questions/',
+                url: '',
                 type: 'post',
                 data: JSON.stringify(new_question),
                 contentType: "application/json",

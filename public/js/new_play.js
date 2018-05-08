@@ -9,8 +9,6 @@ function toggleQuizWindow() {
     if (overlay.style.display === "none" || overlay.style.display === "") {
         overlay.style.display = "block";
         popup.style.display = "block";
-        //Edit part of the text in popup based on ID of function caller
-//        document.getElementById("flag-id").innerHTML = oObject.id;
     } else {
         overlay.style.display = "none";
         popup.style.display = "none";
@@ -178,6 +176,10 @@ function _testVideo(video_details){
 
     // Final display of quiz container
     quiz_container.innerHTML = head_HTML + ques_HTML + iframe_HTML;
+}
+
+function _testBlanks(ques_details){
+
 }
 
 

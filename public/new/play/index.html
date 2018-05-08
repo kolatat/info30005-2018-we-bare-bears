@@ -75,7 +75,7 @@
             <button onclick="_testAPI()">Test API</button>
             <button onclick="_generateQuizQuestions()">Test Get Multiple Questions</button>
             <button id="multiple" onclick="_testMult(getRandomQuestion())">Test Multiple Choice</button>
-            <button id="blanks" disabled>Test Fill in the Blanks</button>
+            <button id="blanks" onclick="_testBlanks(getRandomBlanks())" disabled>Test Fill in the Blanks</button>
             <button id="vid" onclick="_testVideo(getRandomVideoLink())">Test Video</button>
         </p>
         <button onclick="toggleMessageWindow(this)">Toggle Message Window</button>

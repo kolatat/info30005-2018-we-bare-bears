@@ -1,0 +1,134 @@
+@import "master";
+@import "header";
+
+body{
+  background: linear-gradient(to bottom, $color-yellow 0%, $color-green 100%);
+  background-repeat: no-repeat;
+  height: 100%;
+  background-attachment: fixed;
+}
+
+.page-text-container {
+  min-height: 100%;
+}
+
+.page-text-container > h1 {
+  margin: 1vh;
+}
+.page-text-container > p {
+  display: inline;
+}
+.page-text-container > button {
+  display: inline;
+}
+
+.wrapper {
+  display: grid;
+  //grid-template-rows: repeat(2, 250px);
+ // grid-auto-columns: 250px;
+  grid-auto-rows: 250px;
+  grid-template-rows: repeat(2, 250px);
+  grid-auto-flow: row;
+  grid-gap: 10px;
+  min-width: 0;
+  min-height: 0;
+  width: 96vw;
+  height: auto;
+  overflow: auto;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-top: 2vh;
+  padding-bottom: 10px;  /* Add some space between the bottom row grids and the container */
+}
+
+.wrapper > div {
+  border: 1px dashed black;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* General screens that are long enough to fit 3 rows */
+@media only screen and (min-height: 800px) {
+  .wrapper{
+    grid-template-rows: repeat(3, 250px);
+    grid-auto-columns: 250px;
+  }
+  // dont show footer art
+}
+
+/* General phones */
+@media only screen and (max-width: 500px) and (min-height: 500px) {
+  .wrapper{
+    grid-template-rows: repeat(2, 180px);
+    grid-auto-columns: 180px;
+  }
+}
+
+/* Phones with longer screens */
+@media only screen and (max-width: 500px) and (min-height: 800px) {
+  .wrapper{
+    grid-template-rows: repeat(3, 180px);
+    grid-auto-columns: 180px;
+  }
+}
+
+
+/* Most likely (larger) phones in landscape orientation */
+@media only screen and (max-height: 500px) {
+  .wrapper{
+    grid-template-rows: repeat(1, 250px);
+    grid-auto-columns: 250px;
+  }
+}
+
+/* Most likely phones in landscape orientation */
+@media only screen and (max-height: 350px) {
+  .wrapper{
+    grid-template-rows: repeat(1, 180px);
+    grid-auto-columns: 180px;
+  }
+}
+
+/* Styling the overlay covering the whole screen to prevent users from clicking layer below */
+.overlay {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  z-index:99999;   //Change the z-index so it will be above everything else
+
+}
+
+/* Styling the Popup window that contains the quiz question */
+.popup {
+  display:none;
+  position:fixed;
+  left:50%;            //left and top here position top left page
+  top:50%;             //of the element to the center of the
+  width: 80vw;  //Set the popup to have a specific width/height
+  height: 90vh;
+  margin-left:-40vw;  //To get the popup to center correctly we need
+  margin-top:-45vh; //To displace the the top/left margins by half of the width/height
+  background:$color-yellow;  //Background of light blue
+  border:2px solid #000;  //And give it a border
+  border-radius: 25px;  //A rounded border
+  border-style: dotted; //Dotted border
+  border-color: $color-beige; //Change border colour
+  z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
+
+}
+
+@media only screen and (min-width: 600px) and (min-height: 600px){
+  .popup {
+    width: 100vw;
+    height: 30vh;
+    margin-left: -50vw;
+    margin-top: 20vh;
+  }
+}
