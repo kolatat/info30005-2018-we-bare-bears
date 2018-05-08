@@ -61,7 +61,7 @@ function _displayBlanks(ques_details) {
     // HTML Strings for Fill in the Blanks Page
     var head_HTML = '<h1>Fill in the Blanks!</h1>';
     var statement_HTML = '<div>';
-    var choices_HTML = '<div class="fill_buttons">';
+    var choices_HTML = '<div id="fill_buttons">';
     var blanks_index = 0;
 
     // HTML Strings for the statement and button options
@@ -77,6 +77,8 @@ function _displayBlanks(ques_details) {
     }
     statement_HTML += '</div>';
     choices_HTML += '</div>';
+
+    var submit_HTML = '<button onclick="checkBlanks()">Submit</button>'
 
     // Final display of quiz container
     quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML;

@@ -212,8 +212,43 @@ function assignIndex(button) {
     preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML +" ";
 }
 
-function checkSubmit() {
-    
+function checkBlanks() {
+    var choices_container = document.getElementById("fill_buttons");
+    var choice_buttons = choices_container.children;
+    var answers = [];
+
+    for(var i=0; i<choice_buttons.length; i++){
+
+        // Get the value of this option
+        var value = choice_buttons.getElementsByClassName("value")[0].innerHTML;
+
+        // Get the position of answer assigned to this value
+        var position_string = choice_buttons[i].getElementsByClassName("assigned_order")[0].innerHTML;
+
+        if(position_string === ""){
+            showError();
+            return;
+        }
+
+        var assigned_position = Number(position_string) -1;
+        answers.splice(assigned_position, 0, value);
+    }
+
+    var ans_obj = quiz.guessAnswer(answers);
+    showAnswer(ans_obj);
+}
+
+function showError(){
+    var errorHTML = "<h1>Error!</h1>";
+    errorHTML += "Please ensure all blanks have been filled!";
+
+    // Add a button to allow the user to progress to next part of quiz
+    errorHTML += "<button onclick='toggleMessageWindow();'>Close</button>";
+
+    // Display the error message
+    toggleMessageWindow();
+    var msg_container = document.getElementById("msg_insert");
+    msg_container.innerHTML = errorHTML;
 }
 
 function _testAPI() {

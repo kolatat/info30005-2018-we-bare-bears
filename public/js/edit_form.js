@@ -31,7 +31,7 @@ function addField(input_field_wrapper){
     // Adding buttons for filling in the blanks page
     else if(input_field_wrapper.id === "input_fields_blanks"){
         input_field_html.innerHTML =
-            '<select name="fill_blank_type" onchange="modifyTextDecoration(this)">' +
+            '<select name="type-' + current_id + '" onchange="modifyTextDecoration(this)">' +
                  '<option value="fill">Fill</option>' +
                  '<option value="blank">Blank</option>' +
             '</select>' +
@@ -97,7 +97,7 @@ function previewText(input_field){
     var input_id = input_field.parentNode.id;   // Get the id of parent div of input field
     var span_id = input_id + "-preview";    // Id of target span element
     var span_elem = document.getElementById(span_id);
-    span_elem.innerHTML = input_field.value;    // Modify the content of the target span element
+    span_elem.innerHTML = input_field.value + " ";    // Modify the content of the target span element
 
 }
 
@@ -153,36 +153,81 @@ function submitQuestion(event) {
     if(errorCount == 0) {
         var form = document.getElementById('createQuestion');
 
-        var answer_options = [];
+        var new_question;
+
         var input_fields_wrap = document.getElementsByClassName("input_fields_wrap")[0];
         if(input_fields_wrap.id === "input_fields_mult"){
+
+            var answer_options = [];
+
+            // Starting index from 1 to ignore the "Add fields" button
             for(var i=1; i<input_fields_wrap.children.length; i++){
                 var option_div = input_fields_wrap.children[i];
                 var option_value = form["options-" + option_div.id].value;
                 answer_options.push(option_value);
             }
+
+            // Create the question object
+            new_question = {
+                question: form["question"].value,
+                type: form.className,
+                answers: {
+                    correct: form["correct_ans"].value,
+                    other: answer_options
+                },
+                created: new Date(),
+                createdBy: form["createdBy"].value,
+                difficulty: Number(form["difficulty"].value),
+                points: Number(form["points"].value)
+            };
+
+            //console.log(new_question);
+
+            // Preview the question to user before POST-ing to database
+            toggleMessageWindow();
+            var msg_container = document.getElementById("msg_insert");
+            msg_container.innerHTML = previewMultQues(new_question);
+
+        } else if(input_fields_wrap.id === "input_fields_blanks"){
+
+            var fill_blanks = [];
+            var answers = [];
+
+            for(var i=1; i<input_fields_wrap.children.length; i++){
+                var value_div = input_fields_wrap.children[i];
+                var value_type = form["type-" + value_div.id].value;
+                var value = form["options-" + value_div.id].value;
+
+                var fill_blank_obj = {
+                    type: value_type,
+                    value: value
+                };
+
+                fill_blanks.push(fill_blank_obj);
+                if(value_type === "blank"){
+                    answers.push(value);
+                }
+            }
+
+            new_question = {
+                fill_blanks: fill_blanks,
+                answers: answers,
+                type: form.className,
+                created: new Date(),
+                createdBy: form["createdBy"].value,
+                difficulty: Number(form["difficulty"].value),
+                points: Number(form["points"].value)
+            };
+
+            // Preview the question to user before POST-ing to database
+            toggleMessageWindow();
+            var msg_container = document.getElementById("msg_insert");
+            var preview_text = document.getElementById("preview_container").innerHTML;
+            msg_container.innerHTML = previewBlanks(new_question, preview_text);
         }
 
-        // Create the question object
-        var new_question = {
-            question: form["question"].value,
-            type: form.className,
-            answers: {
-                correct: form["correct_ans"].value,
-                other: answer_options
-            },
-            created: new Date(),
-            createdBy: form["createdBy"].value,
-            difficulty: Number(form["difficulty"].value),
-            points: Number(form["points"].value)
-        }
+        console.log(new_question);
 
-        //console.log(new_question);
-
-        // Preview the question to user before POST-ing to database
-        toggleMessageWindow();
-        var msg_container = document.getElementById("msg_insert");
-        msg_container.innerHTML = previewMultQues(new_question);
 
         // POST the data to the database
         document.getElementById("submitDataButton").addEventListener("click", function(){
@@ -237,7 +282,7 @@ function previewMultQues(ques_details){
     var correct_HTML = '<p>Correct answer: ' + ques_details.answers.correct + '</p>';
 
     // Difficulty level text
-    var dif_HTML = '<p>Difficulty level: ' + ques_details.difficulty + '</p>'
+    var dif_HTML = '<p>Difficulty level: ' + ques_details.difficulty + '</p>';
 
     // Score points text
     var points_HTML = '<p>Score points: ' + ques_details.points + '</p>';
@@ -246,9 +291,25 @@ function previewMultQues(ques_details){
     var creator_HTML = '<p>Created by: ' + ques_details.createdBy + '</p>';
 
     // Submit button to submit this question to database
-    var submit_button_HTML = '<button id="submitDataButton">Submit!</button>'
+    var submit_button_HTML = '<button id="submitDataButton">Submit!</button>';
 
     return preview_HTML + ques_HTML + options_HTML + correct_HTML + dif_HTML +
         points_HTML + creator_HTML + submit_button_HTML;
+
+}
+
+
+function previewBlanks(ques_details, preview){
+    // Preview Header
+    var preview_HTML = '<h1>Preview Question</h1>';
+
+    // Preview Content
+    var content_HTML = preview + '<br>';
+
+    // Submit button to submit this question to database
+    var submit_button_HTML = '<button id="submitDataButton">Submit!</button>';
+
+    return preview_HTML + content_HTML + submit_button_HTML;
+
 
 }
