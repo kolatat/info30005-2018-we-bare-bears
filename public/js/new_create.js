@@ -61,7 +61,6 @@ $(document).ready(function() {
 function _createMult(){
     toggleCreateWindow();
 
-
     // Get the container element that will contain the quiz
     var create_container = document.getElementById("create_container");
     create_container.innerHTML = "";  // Reset the container element for each use
@@ -124,7 +123,7 @@ function _createBlanks(){
 
     // HTML String for form element to input details
     var form_HTML = [];
-    form_HTML.push('<form id="createQuestion" method="post" onsubmit="submitQuestion()">');
+    form_HTML.push('<form id="createQuestion" class="fill-in-the-blanks" method="post" onsubmit="submitQuestion()">');
 
     // HTML String for elements to input details about the Fill/Blank statement
     var input_container_HTML = [];

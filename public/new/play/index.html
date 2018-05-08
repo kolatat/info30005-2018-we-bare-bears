@@ -27,36 +27,39 @@
 
 <!-- 9x9 Flags -->
 <div class="page">
-    <quiz-1>
-        <table>
-            <tr>
-                <td>
-                    <button onclick="toggleQuizWindow(this)">
-                        <img class="flag-img" src="/assets/images/png/flag-green.png">
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img class="flag-img" src="/assets/images/png/flag-green.png">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img class="flag-img" src="/assets/images/png/flag-green.png">
-                </td>
-            </tr>
-        </table>
 
-    </quiz-1>
+    <button onclick="toggleQuizWindow(this)">
+        <img class="flag-img" src="/assets/images/png/flag-green.png">
+    </button>
 
-    <quiz-2>
+    <div>
+        <img class="flag-img" src="/assets/images/png/flag-green.png">
+    </div>
+
+    <div>
+        <img class="flag-img" src="/assets/images/png/flag-green.png">
+    </div>
+
+
+
+    <div>
         <img class="flag-img" src="/assets/images/png/flag-red.png">
-    </quiz-2>
+    </div>
 
-    <quiz-3>
+    <div>
         <img class="flag-img" src="/assets/images/png/flag-red.png">
-    </quiz-3>
+    </div>
+
+    <div>
+        <img class="flag-img" src="/assets/images/png/flag-red.png">
+    </div>
+
+
+
+    <div>
+        <img class="flag-img" src="/assets/images/png/flag-red.png">
+    </div>
+
 </div>
 
 
@@ -75,8 +78,10 @@
             <button onclick="_testAPI()">Test API</button>
             <button onclick="_generateQuizQuestions()">Test Get Multiple Questions</button>
             <button id="multiple" onclick="_testMult(getRandomQuestion())">Test Multiple Choice</button>
-            <button id="blanks" onclick="_testBlanks(getRandomBlanks())" disabled>Test Fill in the Blanks</button>
+            <button id="blanks" onclick="_testBlanks(getRandomBlanks())">Test Fill in the Blanks</button>
             <button id="vid" onclick="_testVideo(getRandomVideoLink())">Test Video</button>
+            <button id="index" onclick="testIndex()">Test Index</button>
+            <button onclick="removeIndex(1)">Remove Index</button>
         </p>
         <button  onclick="toggleQuizWindow()">Close</button>
     </div>

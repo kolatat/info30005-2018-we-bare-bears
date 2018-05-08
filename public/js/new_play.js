@@ -50,6 +50,11 @@ function checkAnswer(obj){
     } else if(obj.className === "wrong"){
         msg_container.innerHTML = wrong_ans_string;
     }
+
+    // Button to close this popup
+    var button_HTML = '<br><button onclick="toggleMessageWindow()">Close</button>';
+    msg_container.innerHTML += button_HTML;
+
 }
 
 //
@@ -79,32 +84,125 @@ function getRandomVideoLink() {
     return video;
 }
 
-
-// Testing
-$(document).ready(function () {
-
-    var $quiz_container = $('#quiz_container');
+function getRandomBlanks() {
     var test_blank_param = {
-        fill_array_objects: [{type: "fill", value: "Rendering this "}, {
-            type: "blank",
-            value: "first answer"
-        }, {type: "fill", value: "Insert stuff here"}, {type: "blank", value: "second answer"}, {
-            type: "fill",
-            value: "yay"
-        }, {type: "blank", value: "this comes after yay"}]
+        fill_blanks: [
+            {type: "fill", value: "Rendering this "},
+            {type: "blank", value: "first answer"},
+            {type: "fill", value: "Insert stuff here"},
+            {type: "blank", value: "second answer"},
+            {type: "fill", value: "yay"},
+            {type: "blank", value: "this comes after yay"}],
+        answers: ["first answer", "second answer", "this comes after yay"]
     };
 
+    return test_blank_param;
 
-    $('#blanks').click(function () {
-        $.get('play_blanks', test_blank_param)
-            .done(function (data) {
-                $quiz_container.html(data);
-            });
-    });
+}
 
 
-});
 
+function _testBlanks(ques_details){
+
+    // Get the container element that will contain the quiz
+    var quiz_container = document.getElementById("quiz_container");
+    quiz_container.innerHTML = "";  // Reset the container element for each use
+
+    // HTML Strings for Fill in the Blanks Page
+    var head_HTML = '<h1>Fill in the Blanks!</h1>';
+    var statement_HTML = '<div>';
+    var choices_HTML = '<div class="fill_buttons">';
+
+    for(var i = 0; i<ques_details.fill_blanks.length; i++){
+        if(ques_details.fill_blanks[i].type === "fill"){
+            statement_HTML += '<pre class="fill-blanks">' + ques_details.fill_blanks[i].value + '</pre>';
+        } else {
+            statement_HTML += '<pre class="fill-blanks"> ________________ </pre>';
+            choices_HTML += '<button onclick="assignIndex(this)">' + ques_details.fill_blanks[i].value + '</button>';
+        }
+    }
+    statement_HTML += '</div>';
+    choices_HTML += '</div>';
+
+    // Final display of quiz container
+    quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML;
+}
+
+var blanks_indices = [];
+
+function testIndex() {
+    var cur_index = getNextIndex();
+    console.log(blanks_indices);
+    console.log("Current index: " +  cur_index);
+}
+
+function getNextIndex(){
+
+    if(blanks_indices.length === 0){
+        blanks_indices.push(0);
+        return 0;
+    } else if(blanks_indices.length === 1){
+        if(blanks_indices[0] === 0){
+            blanks_indices.push(1);
+            return 1;
+        } else {
+            blanks_indices.splice(0, 0, 0);
+            return 0;
+        }
+    }
+
+    // For arrays with 2 or more items
+    for(var i = 0; i<blanks_indices.length -1; i++){
+        
+        if(i === blanks_indices[i]){
+            if(i+1 === blanks_indices[i+1]){
+                continue;
+            } else {
+                blanks_indices.splice(i+1, 0, i+1);
+                return i+1;
+            }
+        } else {
+
+            blanks_indices.splice(i, 0, i);
+            return i;
+        }
+    }
+
+    blanks_indices.push(i+1);
+    return i+1;
+
+}
+
+function removeIndex(button) {
+
+
+    var remove_assigned = button.getElementsByClassName("assigned_order")[0];
+    var remove_value = Number(remove_assigned.innerHTML) - 1;
+
+    console.log("Removing: " + remove_value);
+    var index = blanks_indices.indexOf(remove_value);
+    if(index > -1){
+        blanks_indices.splice(index, 1);
+    }
+
+    var remove_container = button.getElementsByClassName("assigned_container")[0];
+    remove_container.remove();
+    console.log(blanks_indices);
+
+    button.setAttribute("onclick", "assignIndex(this)");
+}
+
+function assignIndex(button) {
+
+    var cur_index = getNextIndex() +1;
+    console.log("Assigning: " + cur_index);
+    button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + cur_index + '</span>)</p>';
+    button.setAttribute("onclick", "removeIndex(this)");
+}
+
+function submitOrder() {
+    
+}
 
 function _testAPI() {
     $.get('/api/questions/random', function (data, status, xhr) {
@@ -147,15 +245,18 @@ function _testMult(ques_details){
 
         // Button elements for each answer option
         ans_options_HTML.push(
-          '<button class="' + option_class + '" onclick="checkAnswer(this)">' +
+            '<button class="' + option_class + '" onclick="checkAnswer(this)">' +
             options[i] + '</button>'
         );
     }
     var ans_container_HTML = '<div id="options_container">' + ans_options_HTML.join(" ") + '</div>';
 
+
     // Final display of quiz container
     quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
 }
+
+
 
 
 function _testVideo(video_details){
@@ -178,9 +279,6 @@ function _testVideo(video_details){
     quiz_container.innerHTML = head_HTML + ques_HTML + iframe_HTML;
 }
 
-function _testBlanks(ques_details){
-
-}
 
 
 /* Shuffle items in the array */

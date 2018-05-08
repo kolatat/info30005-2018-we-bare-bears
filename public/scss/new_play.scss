@@ -16,30 +16,21 @@ h1{
 .page {
   margin: 5px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, min-content);
-  grid-template-areas: "quiz-1 quiz-2 quiz-3" "quiz-1 quiz-2 quiz-3" "quiz-1 quiz-2 quiz-3";
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
-}
-quiz-1{
-  grid-area: quiz-1;
-}
-quiz-2{
-  grid-area: quiz-2;
-}
-quiz-3{
-  grid-area: quiz-3;
+  grid-gap: 10px;
+  grid-auto-flow: column;
 }
 
-
-table{
-  width: 100%;
-}
-td{
-  text-align: center;
+.page > button {
+  justify-content: center;
 }
 
+/* Making pre elements stay on one line -- Mainly for "fill in the blanks" page */
+pre.fill-blanks{
+  display: inline;
+
+}
 
 .flag-img{
   //float: left;
@@ -118,6 +109,7 @@ td{
   }
 
 }
+
 
 
 
