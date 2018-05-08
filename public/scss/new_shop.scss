@@ -22,21 +22,21 @@ body{
   display: inline;
 }
 
+
 .wrapper {
   display: grid;
+  justify-content: center;
+  grid-gap: 10px;
   //grid-template-rows: repeat(2, 250px);
  // grid-auto-columns: 250px;
   grid-auto-rows: 250px;
-  grid-template-rows: repeat(2, 250px);
+  grid-template-columns: repeat(2, 250px);  // between 500 ~ 800 px
   grid-auto-flow: row;
-  grid-gap: 10px;
   min-width: 0;
   min-height: 0;
-  width: 96vw;
+  width: auto;
   height: auto;
   overflow: auto;
-  margin-left: 2vw;
-  margin-right: 2vw;
   margin-top: 2vh;
   padding-bottom: 10px;  /* Add some space between the bottom row grids and the container */
 }
@@ -50,47 +50,62 @@ body{
 }
 
 
-/* General screens that are long enough to fit 3 rows */
-@media only screen and (min-height: 800px) {
+@media only screen and (min-width: 800px) {
   .wrapper{
-    grid-template-rows: repeat(3, 250px);
-    grid-auto-columns: 250px;
-  }
-  // dont show footer art
-}
+    grid-template-columns: repeat(3, 250px);
 
-/* General phones */
-@media only screen and (max-width: 500px) and (min-height: 500px) {
-  .wrapper{
-    grid-template-rows: repeat(2, 180px);
-    grid-auto-columns: 180px;
+
   }
 }
 
-/* Phones with longer screens */
-@media only screen and (max-width: 500px) and (min-height: 800px) {
+@media only screen and (min-width: 1100px) {
   .wrapper{
-    grid-template-rows: repeat(3, 180px);
-    grid-auto-columns: 180px;
+    grid-template-columns: repeat(4, 250px);
+  }
+}
+
+@media only screen and (min-width: 1350px) {
+  .wrapper{
+    grid-template-columns: repeat(5, 250px);
+  }
+}
+
+
+/* Phones with wider screens */
+@media only screen and (max-width: 500px){
+  .wrapper{
+
+    grid-template-columns: repeat(2, 175px);
+    grid-auto-rows: 175px;
+  }
+}
+
+/* Phones with narrower screens */
+@media only screen and (max-width: 400px){
+  .wrapper{
+
+    grid-template-columns: repeat(2, 150px);
+    grid-auto-rows: 150px;
   }
 }
 
 
 /* Most likely (larger) phones in landscape orientation */
-@media only screen and (max-height: 500px) {
+@media only screen and (max-height: 500px){
   .wrapper{
-    grid-template-rows: repeat(1, 250px);
-    grid-auto-columns: 250px;
+    grid-template-columns: repeat(3, 150px);
+    grid-auto-rows: 150px;
   }
 }
 
-/* Most likely phones in landscape orientation */
-@media only screen and (max-height: 350px) {
+/* Most likely (larger) phones in landscape orientation */
+@media only screen and (max-height: 500px) and (min-width: 650px){
   .wrapper{
-    grid-template-rows: repeat(1, 180px);
-    grid-auto-columns: 180px;
+    grid-template-columns: repeat(4, 150px);
+    grid-auto-rows: 150px;
   }
 }
+
 
 /* Styling the overlay covering the whole screen to prevent users from clicking layer below */
 .overlay {

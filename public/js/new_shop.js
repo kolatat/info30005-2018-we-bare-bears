@@ -1,7 +1,7 @@
 /* Toggle the PopUp Window that displays the quizzes */
 function toggleShopWindow() {
     //Set a variable to contain the DOM element of the overlay
-   // var overlay = document.getElementById("overlay_base");
+    // var overlay = document.getElementById("overlay_base");
     //Set a variable to contain the DOM element of the popup
     var popup = document.getElementById("popup_base");
     // Toggle visibility of overlay and popup
@@ -116,6 +116,8 @@ function populateShopMenu(button){
     var items_container = document.getElementById("items_container");
     items_container.innerHTML = "";
 
+
+
     // Get the type of items to be shown
     var show_type = button.id;
     var add_item = 0;
@@ -164,9 +166,12 @@ function populateShopMenu(button){
 
 function showDescription(item_button) {
 
-    var popup_status = document.getElementById("");
+    var popup_status = document.getElementById("popup_base").style.display;
+    //Set a variable to contain the DOM element of the popup
+    if(popup_status === "none" || popup_status === ""){
+        toggleShopWindow();
+    }
 
-    toggleShopWindow();
     var name = item_button.getElementsByClassName("name")[0].innerHTML;
     var price = item_button.getElementsByClassName("price")[0].innerHTML;
 //    var description = item_button.getElementsByClassName("description")[0].innerHTML;
