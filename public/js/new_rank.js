@@ -38,7 +38,7 @@ function getFriend(id) {
 function loadRank(){
     var friends = generateFriends();
     var rankListDiv = document.getElementById("rank-list");
-    console.log("loadrank called!")
+    console.log("loadrank called!");
 
     for(var i=0; i<friends.length; i++){
         var rankDiv = document.createElement("div");
@@ -48,7 +48,7 @@ function loadRank(){
         rankDiv.innerHTML = "<img src=\"" + friends[i].photo + "\">";
         rankDiv.innerHTML += "<span class=\"name\">" + friends[i].name + "</span>";
         rankDiv.innerHTML += "<span class=\"score\">" + friends[i].score + "</span>";
-        rankDiv.innerHTML += "<button>X</button>"
+        rankDiv.innerHTML += "<button>X</button>";
 
         rankListDiv.appendChild(rankDiv);
     }
@@ -119,8 +119,10 @@ function unfriend(friend){
     var profileHTML = "<div id='profile' class='grid-container'>";
     profileHTML += "<img id='profile-photo' src='" + friend.photo + "'>";
     profileHTML += "<span class='name'>Are you sure you would like to delete " + friend.name + "?</span>";
-    profileHTML += "<button class='left-green-button' onclick=''>Yes</button>";
-    profileHTML += "<button class='right-orange-button' onclick=''>No</button>";
+    var functionName = "sendUnfriend(" + friend.id + ")"
+    profileHTML += "<button class='left-green-button' onclick=" + functionName + ">Yes</button>";
+    functionName = "openProfile(" + friend.id + ")"
+    profileHTML += "<button class='right-orange-button' onclick=" + functionName + ">No</button>";
     profileHTML += "</div>";
 
     popup.innerHTML = profileHTML;
