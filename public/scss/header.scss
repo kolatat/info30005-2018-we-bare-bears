@@ -52,14 +52,16 @@
 
     text-decoration: none;  // Prevent vistied links from being underlined
   }
-  a.active{
-    color: $color-orange;
-  }
-  a:hover{
-    background-color: $color-beige;
-  }
   // Let visited links remain the same colour
   a:visited{
     color: inherit;
   }
+  a:hover{
+    background-color: $color-beige;
+  }
+  a.active{
+    color: $color-orange;
+  }
+
+
 }

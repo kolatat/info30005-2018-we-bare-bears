@@ -1,4 +1,4 @@
-import {friends as friends, getUser as getUser} from '../models/Friends';
+import {friends as friends, getUser as getUser} from '../model/friends';
 import * as express from 'express';
 
 export function fetchFriends(req: express.Request, res: express.Response) {

@@ -1,5 +1,59 @@
 
 
+function generateFriends(){
+    var friends = [];
+    var name;
+    var score;
+    var photo;
+    var id;
+
+    for (var i = 0; i < 10; i++) {
+        name = "User " + i;
+        score = 1000 - i * 100;
+        photo = "/assets/images/rank/user.png";
+        id = i;
+
+        friends[i] = {
+            name: name,
+            score: score,
+            photo: photo,
+            id: id
+        };
+    }
+
+    return friends;
+}
+
+function getFriend(id) {
+    var friends = generateFriends();
+    for (var i = 0; i < 10; i++) {
+        if (friends[i].id == id){
+            return friends[i];
+        }
+    }
+    return null;
+}
+
+function loadRank(){
+    var friends = generateFriends();
+    var rankListDiv = document.getElementById("rank-list");
+    console.log("loadrank called!")
+
+    for(var i=0; i<friends.length; i++){
+        var rankDiv = document.createElement("div");
+        rankDiv.setAttribute("class", "rank");
+        rankDiv.setAttribute("onclick", "openProfile(" + friends[i].id + ")");
+
+        rankDiv.innerHTML = "<img src=\"" + friends[i].photo + "\">";
+        rankDiv.innerHTML += "<span class=\"name\">" + friends[i].name + "</span>";
+        rankDiv.innerHTML += "<span class=\"score\">" + friends[i].score + "</span>";
+        rankDiv.innerHTML += "<button>X</button>"
+
+        rankListDiv.appendChild(rankDiv);
+    }
+
+}
+
 function openProfile(obj){
     //Set a variable to contain the DOM element of the overlay
     var overlay = document.getElementById("overlay");
@@ -39,12 +93,3 @@ function httpGet(theUrl)
     xmlHttp.send( null );
     return xmlHttp.responseText;
 }
-
-
-
-// $(document).ready(function() {
-//     $.get('/new/play/', {'id': obj})
-//         .done(function (data) {
-//             popup.html(data);
-//         });
-// }
