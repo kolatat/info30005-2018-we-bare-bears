@@ -39,22 +39,36 @@ body{
   overflow: auto;
   margin-top: 2vh;
   padding-bottom: 10px;  /* Add some space between the bottom row grids and the container */
+
+  div {
+    border: 1px dashed black;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    button {
+      width: 100%;
+      height: 100%;
+      border-radius: 25px;
+    }
+
+  }
+
 }
 
-.wrapper > div {
-  border: 1px dashed black;
-  border-radius: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Style the images in shop menu */
+img.shop_item {
+  max-width: 180px;
+  max-height: 180px;
 }
 
 
 @media only screen and (min-width: 800px) {
   .wrapper{
     grid-template-columns: repeat(3, 250px);
-
-
   }
 }
 
@@ -78,6 +92,11 @@ body{
     grid-template-columns: repeat(2, 175px);
     grid-auto-rows: 175px;
   }
+
+  img.shop_item {
+    max-width: 105px;
+    max-height: 105px;
+  }
 }
 
 /* Phones with narrower screens */
@@ -86,6 +105,11 @@ body{
 
     grid-template-columns: repeat(2, 150px);
     grid-auto-rows: 150px;
+  }
+
+  img.shop_item {
+    max-width: 80px;
+    max-height: 80px;
   }
 }
 
@@ -96,6 +120,11 @@ body{
     grid-template-columns: repeat(3, 150px);
     grid-auto-rows: 150px;
   }
+
+  img.shop_item {
+    max-width: 80px;
+    max-height: 80px;
+  }
 }
 
 /* Most likely (larger) phones in landscape orientation */
@@ -104,7 +133,17 @@ body{
     grid-template-columns: repeat(4, 150px);
     grid-auto-rows: 150px;
   }
+  img.shop_item {
+    max-width: 80px;
+    max-height: 80px;
+  }
 }
+
+.popup_description_grid{
+  display: grid;
+  grid-template-areas: "item_pic" "attributes";
+}
+
 
 
 /* Styling the overlay covering the whole screen to prevent users from clicking layer below */
@@ -146,4 +185,9 @@ body{
     margin-left: -50vw;
     margin-top: 20vh;
   }
+
+  .popup_description_grid{
+    grid-template-areas: "item_pic attributes";
+  }
+
 }
