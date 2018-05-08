@@ -8,11 +8,22 @@ function Mult_Question(ques_obj){
 //    this.difficulty = ques_obj.difficulty;
 }
 
-/* Check if the answer chosen by user is correct */
+/* *Unused function* Check if the answer chosen by user is correct */
 Mult_Question.prototype.isCorrectAnswer = function(choice) {
     return this.answer === choice;
 }
 
+
+/* Check if the answer chosen by user is correct and get the correct answer */
+Mult_Question.prototype.getCorrectAnswer = function (choice) {
+    var ans_obj = {
+        question: this.question,
+        answer: this.answer,
+        correct: this.answer === choice
+    }
+
+    return ans_obj;
+}
 
 function Video(ques_obj){
     this.question = ques_obj.question;

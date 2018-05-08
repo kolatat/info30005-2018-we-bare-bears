@@ -40,7 +40,7 @@ function _displayMult(ques_details){
     for(var i=0; i<options.length; i++) {
         // Button elements for each answer option
         ans_options_HTML.push(
-            '<button id="btn-' + i + '" onclick="guess(this)">' +
+            '<button id="btn-' + i + '" onclick="guessAnswer(this)">' +
             options[i] + '</button>'
         );
     }
@@ -83,6 +83,37 @@ function guess(button) {
     populate();
 };
 
+/* Function to be attached to the answer buttons for guessing that option */
+function guessAnswer(button) {
+
+    var button = document.getElementById(button.id);
+    var guess = button.innerHTML;
+    var ans_obj = quiz.guessAnswer(guess);
+
+    showAnswer(ans_obj);
+}
+
+/* Show the user the correct answer */
+function showAnswer(answer_object) {
+
+
+    var quesResultHTML = "";
+
+    if(answer_object.correct == true){
+        quesResultHTML += "<h1>Correct Answer!</h1>";
+    } else {
+        quesResultHTML += "<h1>Wrong Answer!</h1>";
+    }
+    quesResultHTML += "<p>Question: <em>" + answer_object.question + "</em></p>";
+    quesResultHTML += "<p>Correct answer:  <em>" + answer_object.answer + "</em></p>";
+    quesResultHTML += "<button onclick='toggleMessageWindow();populate();'>Next</button>";
+
+    // Display the result of this question
+    toggleMessageWindow();
+    var msg_container = document.getElementById("msg_insert");
+    msg_container.innerHTML = quesResultHTML;
+
+}
 
 /* Function to be attached to button on Video page, just skips to next question --- TO BE MODIFIED */
 function proceedVideo() {
@@ -99,15 +130,19 @@ function showProgress() {
 };
 
 
+
+
 /* When quiz has ended, display the tally of scores */
 function showScores() {
 
     var gameOverHTML = "<h1>Result</h1>";
-    gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " out of " + quiz.mcq + " questions correctly!</h2>";
-    gameOverHTML += "<h2 id='vid'> You watched " + quiz.videos + " videos!</h2>";
-    toggleMessageWindow();
+    gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " out of " + quiz.mcq + " question(s) correctly!</h2>";
+    gameOverHTML += "<h2 id='vid'> You watched " + quiz.videos + " video(s)!</h2>";
+    gameOverHTML += "<button id='close_msg_window' onclick='toggleMessageWindow()'>Close Message Window</button>";
+
 
     // Display the result of quiz
+    toggleMessageWindow();
     var msg_container = document.getElementById("msg_insert");
     msg_container.innerHTML = gameOverHTML;
 
