@@ -1,14 +1,10 @@
 <head>
-    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/new_profile.css">
+    <script type="text/javascript" src="/js/new_profile.js"></script>
 </head>
-<body>
-    <div class="grid-container">
-        <img id="profile-photo" src="<%=user.photo%>">
-        <span class="name"><%=user.name%></span>
-        <span class="score"><%=user.score%></span>
-        <button id="visit-world" onclick=''>Visit World</button>
-        <button id="friend-action" onclick=''>Unfriend</button>
-        <button onclick='closeProfile()'>X</button>
+<body onload="loadProfile()">
+    <div id="profile-content" class="grid-container">
+
     </div>
 </body>
 

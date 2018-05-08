@@ -1,23 +1,24 @@
-
-
 function generateFriends(){
     var friends = [];
     var name;
     var score;
     var photo;
     var id;
+    var isFriend;
 
     for (var i = 0; i < 10; i++) {
         name = "User " + i;
         score = 1000 - i * 100;
         photo = "/assets/images/rank/user.png";
         id = i;
+        isFriend = i%3; // 0 - friend, 1 - not friend, 2 - request sent
 
         friends[i] = {
             name: name,
             score: score,
             photo: photo,
-            id: id
+            id: id,
+            isFriend: isFriend
         };
     }
 
@@ -54,42 +55,78 @@ function loadRank(){
 
 }
 
-function openProfile(obj){
-    //Set a variable to contain the DOM element of the overlay
+function openProfile(id){
     var overlay = document.getElementById("overlay");
-    //Set a variable to contain the DOM element of the popup
-    var popup = document.getElementById("selected-profile");
-    // Toggle visibility of overlay and popup
-    if(overlay.style.display === "none" || overlay.style.display === "") {
-        // popup.innerHTML = createProfile(obj);
-        overlay.style.display = "block";
-        popup.style.display = "block";
+    var popup = document.getElementById("pop-up");
+    overlay.style.display = "block";
+    popup.style.display = "block";
+    popup.innerHTML = "";
 
-        // client.get('/new/profile/?id='+obj, function(response) {
-        //     popup.html = response;
-        // });
-        popup.innerHTML = httpGet('/new/profile/'+obj);
+    var friend = getFriend(id);
+    var profileDiv = document.createElement("div")
+    profileDiv.setAttribute("class", "grid-container");
+    profileDiv.id = 'profile';
 
+    var friendActionButton = document.createElement("button");
+    friendActionButton.setAttribute("id", "friend-action");
+    friendActionButton.setAttribute("class", "right-orange-button");
+    if (friend.isFriend == 0){
+        friendActionButton.setAttribute("onclick", "unfriend(" + JSON.stringify(friend) + ")");
+        friendActionButton.innerHTML = 'Unfriend';
     }
+    else if(friend.isFriend == 1){
+        friendActionButton.setAttribute("onclick", "addFriend(" + id + ")");
+        friendActionButton.innerHTML = 'Add Friend';
+    }
+    else{
+        friendActionButton.setAttribute("onclick", "cancelRequest(" + id + ")");
+        friendActionButton.innerHTML = 'Cancel Request';
+    }
+    profileDiv.appendChild(friendActionButton);
+
+    var profileHTML = "<img id='profile-photo' src='" + friend.photo + "'>";
+    profileHTML += "<span class='name'>" + friend.name + "</span>";
+    profileHTML += "<span class='score'>" + friend.score + "</span>";
+    profileHTML += "<button id='visit-world' class='left-green-button' onclick=''>Visit World</button>";
+    profileHTML += "<button id='close' onclick='closeProfile()'>Close</button>";
+
+    profileDiv.innerHTML += profileHTML;
+    popup.appendChild(profileDiv);
+
 }
 
 function closeProfile(){
     var overlay = document.getElementById("overlay");
-    var popup = document.getElementById("selected-profile");
+    var popup = document.getElementById("pop-up");
     overlay.style.display = "none";
     popup.style.display = "none";
 }
 
-function createProfile(obj){
-    var string = "<p>" + obj + "</p>";
-    string += "<button onclick='closeProfile()'>X</button>";
-    return string;
+function addFriend(id){
+    var friendButton = document.getElementById('friend-action');
+    friendButton.setAttribute('onclick', 'cancelRequest('+id+')');
+    friendButton.innerHTML = "Cancel Request";
 }
 
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
+function cancelRequest(id){
+    var friendButton = document.getElementById('friend-action');
+    friendButton.setAttribute('onclick', 'addFriend('+id+')');
+    friendButton.innerHTML = "Add Friend";
+}
+
+function unfriend(friend){
+    var popup = document.getElementById("pop-up");
+    var profileHTML = "<div id='profile' class='grid-container'>";
+    profileHTML += "<img id='profile-photo' src='" + friend.photo + "'>";
+    profileHTML += "<span class='name'>Are you sure you would like to delete " + friend.name + "?</span>";
+    profileHTML += "<button class='left-green-button' onclick=''>Yes</button>";
+    profileHTML += "<button class='right-orange-button' onclick=''>No</button>";
+    profileHTML += "</div>";
+
+    popup.innerHTML = profileHTML;
+}
+
+function sendUnfriend(id){
+    // call db to unfriend
+    openProfile(id);
 }

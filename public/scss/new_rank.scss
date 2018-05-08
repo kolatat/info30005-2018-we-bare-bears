@@ -1,5 +1,6 @@
 @import "master";
 @import "header";
+@import "new_profile";
 
 .rank{
   text-align: left;
@@ -59,7 +60,7 @@
 }
 
 /* Styling the Popup window that contains the user profile */
-#selected-profile {
+#pop-up {
   display:none;
   position:fixed;
   left:50%;            //left and top here position top left page
