@@ -2,61 +2,61 @@ import * as express from 'express'
 import * as controller from '../controllers/friendsController';
 
 const router = express.Router();
+//
+// /* GET Home page. */
+// router.get('/', function(req, res, next) {
+//     res.render('coming_soon');
+// });
+//
+// /* GET New Play page. */
+// router.get('/new/play/', function(req, res, next) {
+//     res.render('play/');
+// });
+//
+// router.get('/new/play_mult', function(req, res, next){
+//    res.render('play/mult_choice', req.query);
+// });
+//
+// router.get('/new/play_blanks', function(req, res, next){
+//     res.render('play/blanks', req.query);
+// });
+//
+// router.get('/new/play_video', function(req, res, next){
+//     res.render('play/video', req.query);
+// });
+// /* GET New Create page. */
+// router.get('/new/create/', function(req, res, next) {
+//     res.render('create/');
+// });
 
-/* GET Home page. */
-router.get('/', function(req, res, next) {
-    res.render('coming_soon');
-});
-
-/* GET New Play page. */
-router.get('/new/play/', function(req, res, next) {
-    res.render('play/');
-});
-
-router.get('/new/play_mult', function(req, res, next){
-   res.render('play/mult_choice', req.query);
-});
-
-router.get('/new/play_blanks', function(req, res, next){
-    res.render('play/blanks', req.query);
-});
-
-router.get('/new/play_video', function(req, res, next){
-    res.render('play/video', req.query);
-});
-/* GET New Create page. */
-router.get('/new/create/', function(req, res, next) {
-    res.render('create/');
-});
-
-/* POST New Create page. */
-router.post('/new/create/', function(req, res, next) {
-    res.render('create/');
-    var new_ques = req.body;
-    console.log("Ori: ");
-    console.log(new_ques);
-
-});
+// /* POST New Create page. */
+// router.post('/new/create/', function(req, res, next) {
+//     res.render('create/');
+//     var new_ques = req.body;
+//     console.log("Ori: ");
+//     console.log(new_ques);
+//
+// });
+//
 
 
-
-/* GET New Rank page. */
-router.get('/new/rank/', controller.fetchFriendsByScore);
-
-/* GET New Profile page. */
-router.get('/new/profile/:id', controller.fetchFriend);
-
-router.get('/new/create_mult', function(req, res, next){
-    res.render('create/mult_choice', req.query);
-});
-
-router.get('/new/create_blanks', function(req, res, next){
-    res.render('create/blanks', req.query);
-});
-
-router.get('/new/create_video', function(req, res, next){
-    res.render('create/video', req.query);
-});
+// /* GET New Rank page. */
+// router.get('/new/rank/', controller.fetchFriendsByScore);
+//
+// /* GET New Profile page. */
+// router.get('/new/profile/:id', controller.fetchFriend);
+//
+// router.get('/new/create_mult', function(req, res, next){
+//     res.render('create/mult_choice', req.query);
+// });
+//
+// router.get('/new/create_blanks', function(req, res, next){
+//     res.render('create/blanks', req.query);
+// });
+//
+// router.get('/new/create_video', function(req, res, next){
+//     res.render('create/video', req.query);
+// });
 
 /**************************************************/
 /* Old Stuff Below */
