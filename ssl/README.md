@@ -1,0 +1,1 @@
+This is a joke because Facebook also requires SSL for development.

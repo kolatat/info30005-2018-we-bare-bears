@@ -1,4 +1,3 @@
-
 /* Toggle the PopUp Window that displays the quizzes */
 function toggleQuizWindow() {
     //Set a variable to contain the DOM element of the overlay
@@ -37,7 +36,7 @@ function toggleMessageWindow() {
 }
 
 /* Check whether selected option is the correct answer */
-function checkAnswer(obj){
+function checkAnswer(obj) {
 
     toggleMessageWindow();
 
@@ -45,9 +44,9 @@ function checkAnswer(obj){
     var wrong_ans_string = "Wrong Answer!";
     var msg_container = document.getElementById("msg_insert");
 
-    if(obj.className === "correct"){
+    if (obj.className === "correct") {
         msg_container.innerHTML = correct_ans_string;
-    } else if(obj.className === "wrong"){
+    } else if (obj.className === "wrong") {
         msg_container.innerHTML = wrong_ans_string;
     }
 }
@@ -107,8 +106,7 @@ $(document).ready(function () {
 
 
 function _testAPI() {
-    $.get('/api/questions/random', function (data, status, xhr) {
-        console.log(data);
+    Recyclabears.questions.getRandomQuestion().then(function (data) {
         if (data.type == "multiple-choice") {
             // display multichoice page
             _testMult(data);
@@ -116,10 +114,10 @@ function _testAPI() {
             // display  youtube video
             _testVideo(data);
         }
-    }, 'json');
+    });
 }
 
-function _testMult(ques_details){
+function _testMult(ques_details) {
     // Get the container element that will contain the quiz
     var quiz_container = document.getElementById("quiz_container");
     quiz_container.innerHTML = "";  // Reset the container element for each use
@@ -135,7 +133,7 @@ function _testMult(ques_details){
 
     // HTML Strings containing answer options
     var ans_options_HTML = [];
-    for(var i=0; i<options.length; i++) {
+    for (var i = 0; i < options.length; i++) {
 
         // For identifying the correct answer (maybe to be changed to a better way in future?)
         var option_class;
@@ -147,7 +145,7 @@ function _testMult(ques_details){
 
         // Button elements for each answer option
         ans_options_HTML.push(
-          '<button class="' + option_class + '" onclick="checkAnswer(this)">' +
+            '<button class="' + option_class + '" onclick="checkAnswer(this)">' +
             options[i] + '</button>'
         );
     }
@@ -158,7 +156,7 @@ function _testMult(ques_details){
 }
 
 
-function _testVideo(video_details){
+function _testVideo(video_details) {
 
     // Construct the full url of the Youtube video
     var full_url = "https://www.youtube.com/embed/" + video_details.vid;
@@ -172,13 +170,13 @@ function _testVideo(video_details){
     var ques_HTML = '<p>' + video_details.question + '</p>';
 
     // HTML String for Iframe Element containing the video
-    var iframe_HTML = '<iframe width="420" height="345" src=' + full_url +'></iframe>';
+    var iframe_HTML = '<iframe width="420" height="345" src=' + full_url + '></iframe>';
 
     // Final display of quiz container
     quiz_container.innerHTML = head_HTML + ques_HTML + iframe_HTML;
 }
 
-function _testBlanks(ques_details){
+function _testBlanks(ques_details) {
 
 }
 

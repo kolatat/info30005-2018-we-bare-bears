@@ -6,8 +6,9 @@
     <link rel="stylesheet" type="text/css" href="/css/new_play.css">
     <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/play_app.js"></script>
     <script type="text/javascript" src="/js/new_play.js"></script>
-
+    <script src="/js/main.js"></script>
 </head>
 <body>
 
@@ -20,6 +21,9 @@
         <a href="/new/rank">Rank</a>
         <a href="/new/create">Create</a>
         <a href="/new/shop">Shop</a>
+        <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="medium"
+             data-button-type="login_with"
+             data-auto-logout-link="true" data-use-continue-as="true"></div>
     </div>
 </div>
 
@@ -79,7 +83,7 @@
             <button id="vid" onclick="_testVideo(getRandomVideoLink())">Test Video</button>
         </p>
         <button onclick="toggleMessageWindow(this)">Toggle Message Window</button>
-        <button  onclick="toggleQuizWindow()">Close</button>
+        <button onclick="toggleQuizWindow()">Close</button>
     </div>
 
 

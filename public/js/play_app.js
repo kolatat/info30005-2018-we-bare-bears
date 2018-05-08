@@ -3,15 +3,15 @@ function populate() {
 
     console.log("Quiz length: " + quiz.getQuizLength());
     // If no more questions are remaining, display the score
-    if(quiz.isEnded()) {
-       showScores();
+    if (quiz.isEnded()) {
+        showScores();
     }
     else {
         // Display question based on the type
         var ques_obj = quiz.getQuestionIndex();
-        if(ques_obj instanceof Mult_Question){
+        if (ques_obj instanceof Mult_Question) {
             _displayMult(ques_obj);
-        } else if (ques_obj instanceof Video){
+        } else if (ques_obj instanceof Video) {
             _displayVideo(ques_obj);
         }
 
@@ -22,7 +22,7 @@ function populate() {
 
 
 /* Populate the page with HTML elements for displaying a Multiple-Choice question */
-function _displayMult(ques_details){
+function _displayMult(ques_details) {
     // Get the container element that will contain the quiz
     var quiz_container = document.getElementById("quiz_container");
     quiz_container.innerHTML = "";  // Reset the container element for each use
@@ -37,7 +37,7 @@ function _displayMult(ques_details){
 
     // HTML Strings containing answer options
     var ans_options_HTML = [];
-    for(var i=0; i<options.length; i++) {
+    for (var i = 0; i < options.length; i++) {
         // Button elements for each answer option
         ans_options_HTML.push(
             '<button id="btn-' + i + '" onclick="guess(this)">' +
@@ -52,7 +52,7 @@ function _displayMult(ques_details){
 
 
 /* Populate the page with HTML elements for displaying a video */
-function _displayVideo(video_details){
+function _displayVideo(video_details) {
 
     // Construct the full url of the Youtube video
     var full_url = "https://www.youtube.com/embed/" + video_details.embed;
@@ -66,7 +66,7 @@ function _displayVideo(video_details){
     var ques_HTML = '<p>' + video_details.question + '</p>';
 
     // HTML String for Iframe Element containing the video
-    var iframe_HTML = '<iframe width="420" height="345" src=' + full_url +'></iframe>';
+    var iframe_HTML = '<iframe width="420" height="345" src=' + full_url + '></iframe>';
 
     var proceed_button_HTML = '<div><button onclick="proceedVideo()">Next</button></div>';
 
@@ -124,9 +124,9 @@ var quiz;
 
 
 // For testing purpose --- Get input from user on number of questions to populate the quiz
-function _generateQuizQuestions(){
+function _generateQuizQuestions() {
     var num_questions = parseInt(prompt("How many questions would you like to answer?"));
-    if(num_questions > 0 && num_questions <= 5){
+    if (num_questions > 0 && num_questions <= 5) {
 
         alert("Starting quiz with " + num_questions + " questions!");
         _startQuiz(num_questions);
@@ -138,54 +138,33 @@ function _generateQuizQuestions(){
 
 
 /* Start the Quiz */
-function _startQuiz(num_ques){
-
+function _startQuiz(num_ques) {
     var question_list = [];
     var mcq = 0;
     var video = 0;
 
-
-    // Is SYNCHRONOUS request ok ??
-    for(var i=0;i<num_ques; i++){
-        $.ajax({
-            url: '/api/questions/random',
-            type: "GET",
-            async: false,
-            success: function(data){
-                if(data.type == "multiple-choice"){
-                    var new_ques = new Mult_Question(data);
-                    question_list.push(new_ques);
-                    mcq++;
-                }
-                else if(data.type == "youtube-video"){
-                    var new_vid = new Video(data);
-                    question_list.push(new_vid);
-                    video++;
-                }
-            }
-        });
-
-
-
-      // Problem with Asynchronous request: make one request to get all data at once?
-        // Then all the following code can simply be moved to on sucess
-      /*  $.get('/api/questions/random', function (data, status, xhr) {
-            console.log(data);
+    var promises = []
+    for (var i = 0; i < num_ques; i++) {
+        promises.push(Recyclabears.questions.getRandomQuestion().then(function (data) {
             if (data.type == "multiple-choice") {
-                // display multichoice page
                 var new_ques = new Mult_Question(data);
                 question_list.push(new_ques);
+                mcq++;
+            } else if (data.type == "youtube-video") {
+                var new_vid = new Video(data);
+                question_list.push(new_vid);
+                video++;
             }
-        }, 'json');     */
-
-
+            return 'done';
+        }));
     }
 
-    quiz = new Quiz(question_list, mcq, video);
+    Promise.all(promises).then(function(){
+        quiz = new Quiz(question_list, mcq, video);
 
-
-    //display the quiz
-    populate();
+//display the quiz
+        populate();
+    })
 }
 
 

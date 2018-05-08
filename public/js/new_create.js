@@ -1,11 +1,11 @@
 /* Toggle the PopUp Window that displays the interface for creating quizzes */
-function toggleCreateWindow(){
+function toggleCreateWindow() {
     //Set a variable to contain the DOM element of the overlay
     var overlay = document.getElementById("overlay_base");
     //Set a variable to contain the DOM element of the popup
     var popup = document.getElementById("popup_base");
     // Toggle visibility of overlay and popup
-    if(overlay.style.display === "none" || overlay.style.display === ""){
+    if (overlay.style.display === "none" || overlay.style.display === "") {
         overlay.style.display = "block";
         popup.style.display = "block";
     } else {
@@ -37,20 +37,16 @@ function toggleMessageWindow() {
 }
 
 
-
-
-
-$(document).ready(function() {
-
+$(document).ready(function () {
 
 
     var $create_container = $('#create_container');
 
 
-    $('#create_video').click(function() {
+    $('#create_video').click(function () {
         toggleCreateWindow();
         $.get('create_video', test_vid_param)
-            .done(function(data){
+            .done(function (data) {
                 $create_container.html(data);
             });
 
@@ -58,7 +54,7 @@ $(document).ready(function() {
 });
 
 
-function _createMult(){
+function _createMult() {
     toggleCreateWindow();
 
 
@@ -91,8 +87,8 @@ function _createMult(){
     form_HTML.push('<input type="number" name="difficulty" required>');
     form_HTML.push('<p class="container-text">Score points: </p>');
     form_HTML.push('<input type="number" name="points" required>');
-    form_HTML.push('<p class="container-text">Created By: </p>');
-    form_HTML.push('<input type="text" name="createdBy" required>');
+    //form_HTML.push('<p class="container-text">Created By: </p>');
+    //form_HTML.push('<input type="text" name="createdBy" required>');
 
 
     // Complete the form element HTML string
@@ -104,8 +100,7 @@ function _createMult(){
 }
 
 
-
-function _createBlanks(){
+function _createBlanks() {
     toggleCreateWindow();
 
     // Get the container element that will contain the quiz
