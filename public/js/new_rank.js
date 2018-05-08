@@ -51,6 +51,7 @@ function loadRank(){
         rankDiv.innerHTML += "<button>X</button>";
 
         rankListDiv.appendChild(rankDiv);
+      //  rankListDiv.innerHTML += "<br>";
     }
 
 }

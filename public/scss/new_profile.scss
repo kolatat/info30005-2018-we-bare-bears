@@ -22,6 +22,29 @@
   #close:hover{
     color: $color-orange;
   }
+
+  .name{
+    font-family: $averia-libre;
+    font-size: 2em;
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    vertical-align: middle;
+    display: inline-block;
+    //background: red;
+  }
+
+  .score{
+    //background: green;
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    font-size: 2em;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 #profile-photo{
@@ -37,28 +60,7 @@
   height: 100px;
 }
 
-.name{
-  font-family: $averia-libre;
-  font-size: 2em;
-  grid-column-start: 2;
-  grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  vertical-align: middle;
-  display: inline-block;
-  //background: red;
-}
 
-.score{
-  //background: green;
-  grid-column-start: 4;
-  grid-column-end: 5;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  font-size: 2em;
-  display: inline-block;
-  vertical-align: middle;
-}
 
 .left-green-button{
   grid-column-start: 2;

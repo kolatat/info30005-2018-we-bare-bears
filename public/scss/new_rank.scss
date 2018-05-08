@@ -2,10 +2,22 @@
 @import "header";
 @import "new_profile";
 
+body{
+  background: linear-gradient(to bottom, white 0%, $color-yellow 150%);
+  background-repeat: no-repeat;
+  height: 100%;
+  background-attachment: fixed;
+}
+
+#rank-list{
+  justify-content: center;
+  align-items: center;
+}
+
 .rank{
-  text-align: left;
-  padding: 0 $main-padding-right;
-  margin: 10px 0;
+  display: block;
+  height: 50px;
+  margin: 10px auto;
   cursor: pointer;
   img{
     width: 50px;
@@ -13,6 +25,7 @@
     moz-border-radius: 15px;
     border-radius: 15px;
     vertical-align: middle;
+    margin-left: 30px;
   }
   span {
     display: inline-block;
