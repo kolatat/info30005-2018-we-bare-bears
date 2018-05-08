@@ -11,6 +11,8 @@ function populate() {
         var ques_obj = quiz.getQuestionIndex();
         if(ques_obj instanceof Mult_Question){
             _displayMult(ques_obj);
+        } else if(ques_obj instanceof Blanks_Question){
+            _displayBlanks(ques_obj);
         } else if (ques_obj instanceof Video){
             _displayVideo(ques_obj);
         }
@@ -48,6 +50,36 @@ function _displayMult(ques_details){
 
     // Final display of quiz container
     quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
+}
+
+function _displayBlanks(ques_details) {
+
+    // Get the container element that will contain the quiz
+    var quiz_container = document.getElementById("quiz_container");
+    quiz_container.innerHTML = "";  // Reset the container element for each use
+
+    // HTML Strings for Fill in the Blanks Page
+    var head_HTML = '<h1>Fill in the Blanks!</h1>';
+    var statement_HTML = '<div>';
+    var choices_HTML = '<div class="fill_buttons">';
+    var blanks_index = 0;
+
+    // HTML Strings for the statement and button options
+    for(var i = 0; i<ques_details.fill_blanks.length; i++){
+        if(ques_details.fill_blanks[i].type === "fill"){
+            statement_HTML += '<pre class="fill-blanks">' + ques_details.fill_blanks[i].value + '</pre>';
+        } else {
+            statement_HTML += '<pre id="blanks-' + blanks_index +'" class="fill-blanks"> ________________ </pre>';
+            choices_HTML += '<button onclick="assignIndex(this)"><p class="value">' + ques_details.fill_blanks[i].value + '</p></button>';
+
+            blanks_index++;
+        }
+    }
+    statement_HTML += '</div>';
+    choices_HTML += '</div>';
+
+    // Final display of quiz container
+    quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML;
 }
 
 
@@ -104,8 +136,24 @@ function showAnswer(answer_object) {
     } else {
         quesResultHTML += "<h1>Wrong Answer!</h1>";
     }
-    quesResultHTML += "<p>Question: <em>" + answer_object.question + "</em></p>";
-    quesResultHTML += "<p>Correct answer:  <em>" + answer_object.answer + "</em></p>";
+
+    if(answer_object.type === "mult"){
+        quesResultHTML += "<p>Question: <em>" + answer_object.question + "</em></p>";
+        quesResultHTML += "<p>Correct answer:  <em>" + answer_object.answer + "</em></p>";
+    } else if (answer_object.type === "blanks"){
+        quesResultHTML += "<p>Statement:</p>";
+
+        for(var i=0; i<answer_object.question.length; i++){
+            quesResultHTML += "<pre class='fill-blanks' ";
+            if(answer_object.question[i].type === "fill"){
+                quesResultHTML += ">" + answer_object.question[i].value + "</pre>";
+            } else {
+                quesResultHTML += "style='text-decoration: underline'> " + answer_object.question[i].value + "</pre>";
+            }
+        }
+    }
+
+    // Add a button to allow the user to progress to next part of quiz
     quesResultHTML += "<button onclick='toggleMessageWindow();populate();'>Next</button>";
 
     // Display the result of this question
@@ -187,12 +235,17 @@ function _startQuiz(num_ques){
             type: "GET",
             async: false,
             success: function(data){
-                if(data.type == "multiple-choice"){
+                if(data.type === "multiple-choice"){
                     var new_ques = new Mult_Question(data);
                     question_list.push(new_ques);
                     mcq++;
                 }
-                else if(data.type == "youtube-video"){
+                else if(data.type === "fill-in-the-blanks"){
+                    var new_blanks = new Blanks_Question(data);
+                    question_list.push(new_blanks);
+                    mcq++;
+                }
+                else if(data.type === "youtube-video"){
                     var new_vid = new Video(data);
                     question_list.push(new_vid);
                     video++;

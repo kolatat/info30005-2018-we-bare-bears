@@ -87,7 +87,7 @@ function getRandomVideoLink() {
 function getRandomBlanks() {
     var test_blank_param = {
         fill_blanks: [
-            {type: "fill", value: "Rendering this "},
+            {type: "fill", value: "Rendering this"},
             {type: "blank", value: "first answer"},
             {type: "fill", value: "Insert stuff here"},
             {type: "blank", value: "second answer"},
@@ -112,13 +112,16 @@ function _testBlanks(ques_details){
     var head_HTML = '<h1>Fill in the Blanks!</h1>';
     var statement_HTML = '<div>';
     var choices_HTML = '<div class="fill_buttons">';
+    var blanks_index = 0;
 
     for(var i = 0; i<ques_details.fill_blanks.length; i++){
         if(ques_details.fill_blanks[i].type === "fill"){
             statement_HTML += '<pre class="fill-blanks">' + ques_details.fill_blanks[i].value + '</pre>';
         } else {
-            statement_HTML += '<pre class="fill-blanks"> ________________ </pre>';
-            choices_HTML += '<button onclick="assignIndex(this)">' + ques_details.fill_blanks[i].value + '</button>';
+            statement_HTML += '<pre id="blanks-' + blanks_index +'" class="fill-blanks"> ________________ </pre>';
+            choices_HTML += '<button onclick="assignIndex(this)"><p class="value">' + ques_details.fill_blanks[i].value + '</p></button>';
+
+            blanks_index++;
         }
     }
     statement_HTML += '</div>';
@@ -178,6 +181,7 @@ function removeIndex(button) {
 
     var remove_assigned = button.getElementsByClassName("assigned_order")[0];
     var remove_value = Number(remove_assigned.innerHTML) - 1;
+    console.log(remove_value);
 
     console.log("Removing: " + remove_value);
     var index = blanks_indices.indexOf(remove_value);
@@ -189,18 +193,26 @@ function removeIndex(button) {
     remove_container.remove();
     console.log(blanks_indices);
 
+
+    var preview_text = document.getElementById("blanks-" + remove_value);
+    preview_text.innerHTML = " ________________ ";
+
     button.setAttribute("onclick", "assignIndex(this)");
 }
 
 function assignIndex(button) {
 
-    var cur_index = getNextIndex() +1;
-    console.log("Assigning: " + cur_index);
-    button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + cur_index + '</span>)</p>';
+    var cur_index = getNextIndex();
+    var assign_num = cur_index +1;
+    console.log("Assigning: " + assign_num);
+    button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + assign_num + '</span>)</p>';
     button.setAttribute("onclick", "removeIndex(this)");
+
+    var preview_text = document.getElementById("blanks-" + cur_index);
+    preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML +" ";
 }
 
-function submitOrder() {
+function checkSubmit() {
     
 }
 
