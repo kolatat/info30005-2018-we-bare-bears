@@ -32,7 +32,7 @@ function statusChangeCallback(response) {
     Recyclabears.__fbAuth = response;
     if (firstTime) {
         firstTime = false;
-        if (wbbInit) {
+        if (wbbInit != null && wbbInit != undefined) {
             wbbInit();
         }
     }
@@ -68,6 +68,20 @@ var Recyclabears = {
         },
         getUserByFbId: function (fbId) {
             return Recyclabears.__apiCall('GET', '/api/users/' + fbId);
+        },
+        getFriendRequests: function () {
+            return Recyclabears.__apiCall('GET', '/api/users/me/requests');
+        },
+        acceptFriendRequest: function (fbId) {
+            return Recyclabears.__apiCall('PUT', '/api/users/me/requests/' + fbId, {
+                action: 'accept'
+            });
+        },
+        sendFriendRequest: function (fbId) {
+            return Recyclabears.__apiCall('POST', '/api/users/' + fbId + '/request');
+        },
+        deleteFriendRequest: function (fbId) {
+            return Recyclabears.__apiCall('DELETE', '/api/users/me/requests/' + fbId);
         }
     }
 }
