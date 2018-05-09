@@ -55,8 +55,11 @@ var Recyclabears = {
         return $.ajax(config);
     },
     questions: {
-        getRandomQuestion: function () {
-            return Recyclabears.__apiCall('GET', '/api/questions/random');
+        getRandomQuestion: function (howMany) {
+            req = {
+                n: howMany||1
+            };
+            return Recyclabears.__apiCall('GET', '/api/questions/random', req);
         },
         addQuestion: function (data) {
             return Recyclabears.__apiCall('POST', '/api/questions', data);
