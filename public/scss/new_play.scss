@@ -20,16 +20,10 @@ h1{
   grid-template-rows: repeat(3, min-content);
   grid-gap: 10px;
   grid-auto-flow: column;
-}
 
-.page > button {
-  justify-content: center;
-}
-
-/* Making pre elements stay on one line -- Mainly for "fill in the blanks" page */
-pre.fill-blanks{
-  display: inline;
-
+  button{
+    justify-content: center;
+  }
 }
 
 .flag-img{
@@ -38,6 +32,28 @@ pre.fill-blanks{
   min-width: 50px;
   width: 150px;
   height: auto;
+}
+
+#options_container{
+  display: grid;
+
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  margin: 1vw;
+
+  button{
+    display: flex;
+    font-size: 1em;
+    max-width: max-content;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Making pre elements stay on one line -- Mainly for "fill in the blanks" page */
+pre.fill-blanks{
+  display: inline;
 }
 
 
