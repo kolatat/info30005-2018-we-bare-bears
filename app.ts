@@ -9,6 +9,7 @@ import {isNullOrUndefined} from "util";
 import {Facebook, FacebookApiException} from 'fb';
 import * as model from "./model";
 import * as usersRoutes from './routes/usersRoutes'
+import {User} from './model/user'
 
 require('dotenv').config();
 
@@ -49,11 +50,7 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
 interface WbbRequest extends express.Request {
-    user: WbbUser
-}
-
-interface WbbUser {
-    fbId: string
+    user: User
 }
 
 // default fields: id, first_name, last_name, name, name_format, picture, short_name

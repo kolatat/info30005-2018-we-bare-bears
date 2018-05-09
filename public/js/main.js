@@ -57,10 +57,17 @@ var Recyclabears = {
     questions: {
         getRandomQuestion: function (howMany) {
             req = {
-                n: howMany||1
+                n: howMany || 1
             };
             return Recyclabears.__apiCall('GET', '/api/questions/random', req);
         },
+        answerQuestion: function (qid, answer) {
+            req = {
+                qid: qid,
+                answer: answer
+            };
+            // TODO add API endpoint to update list of answered questions and user score
+        }
         addQuestion: function (data) {
             return Recyclabears.__apiCall('POST', '/api/questions', data);
         }
