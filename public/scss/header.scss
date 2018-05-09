@@ -7,6 +7,14 @@
   //display: block;
   //text-align: center;
   height: 60px;
+
+  a{
+    text-decoration: none;
+  }
+  a:visited{
+    color: inherit;
+
+  }
 }
 
 #site-name {
@@ -16,8 +24,7 @@
   font-size: 2em;
   color: $color-brown;
   margin: 0 0 0 $main-padding-left;
-  //height: 100%;
-  //line-height: 40px;
+
   img{
     width: 40px;
     height: 40px;

@@ -18,13 +18,30 @@ Quiz.prototype.getQuestionIndex = function() {
     return this.questions[this.questionIndex];
 }
 
-/* Guess the answer selected by user */
+/* *Unused function* Guess the answer selected by user */
 Quiz.prototype.guess = function(answer) {
     if(this.getQuestionIndex().isCorrectAnswer(answer)) {
         this.score++;
     }
     this.questionIndex++;
 }
+
+
+/* Guess the answer selected by user and returns the object */
+Quiz.prototype.guessAnswer = function (answer) {
+
+    var ans_obj = this.getQuestionIndex().getCorrectAnswer(answer);
+
+    if(ans_obj.correct){
+        this.score++;
+    }
+    this.questionIndex++;
+
+    // Return the correct answer to be shown to user
+    return ans_obj;
+
+}
+
 
 /* Move along the list of questions (used for video-type questions */
 Quiz.prototype.proceed = function(){

@@ -1,21 +1,3 @@
-/* Toggle the PopUp Window that displays the quizzes */
-function toggleShopWindow() {
-    //Set a variable to contain the DOM element of the overlay
-    // var overlay = document.getElementById("overlay_base");
-    //Set a variable to contain the DOM element of the popup
-    var popup = document.getElementById("popup_base");
-    // Toggle visibility of overlay and popup
-    if (popup.style.display === "none" || popup.style.display === "") {
-      //  overlay.style.display = "block";
-        popup.style.display = "block";
-    } else {
-      //  overlay.style.display = "none";
-        popup.style.display = "none";
-        //document.getElementById("popup_base").innerHTML = "";
-    }
-}
-
-
 var testItemList = [
     {
         name: "Tree",
@@ -97,14 +79,11 @@ var testItemList = [
 
 ];
 
-
-function populateShopMenu(button){
+function populateItemMenu(button){
 
     // Get the items_container element of the HTML to add items for display
-    var items_container = document.getElementById("items_container");
+    var items_container = document.getElementById("items-container");
     items_container.innerHTML = "";
-
-
 
     // Get the type of items to be shown
     var show_type = button.id;
@@ -136,53 +115,83 @@ function populateShopMenu(button){
 
         // Add the HTML elements for the item if to be shown
         if(add_item == 1){
+            var functionName = "showInWorld(" + JSON.stringify(testItemList[i]) + ")";
             new_item_HTML +=
                 "<div>" +
-                    "<button class='item_desc' onclick='showDescription(this)'>" +
-                        "<img src='" + testItemList[i].image + "' class='shop_item' >" +
-                        "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
-                        "<p>Cost: <span class='price'>" + testItemList[i].price + "</span></p>" +
-                        "<p style='display: none'>Type: <span class='type'>" + testItemList[i].type + "</span></p>" +
-                        "<p style='display: none'>Image Link: <span class='img_link'>" + testItemList[i].image + "</span></p>" +
-                        "<p style='display: none'>Desc: <span class='description'>" + testItemList[i].description + "</span></p>"
-                    "</button>" +
-                "</div>";
+                "<button class='item_desc' onclick='" + functionName + "'>" +
+                "<img src='" + testItemList[i].image + "' class='shop_item' >" +
+                "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
+                "<p>Cost: <span class='price'>" + testItemList[i].price + "</span></p>" +
+                "<p style='display: none'>Type: <span class='type'>" + testItemList[i].type + "</span></p>" +
+                "<p style='display: none'>Image Link: <span class='img_link'>" + testItemList[i].image + "</span></p>" +
+                "<p style='display: none'>Desc: <span class='description'>" + testItemList[i].description + "</span></p>"
+            "</button>" +
+            "</div>";
         }
 
         items_container.innerHTML += new_item_HTML;
     }
 }
 
+var id = 0
 
-function showDescription(item_button) {
+function showInWorld(obj){
+    var objDiv = document.createElement("div");
+    objDiv.setAttribute("class", "item-to-move");
+    objDiv.setAttribute("id", "id1");
+    objDiv.innerHTML = "<img src='/assets/images/world/delete2.png' class='delete-img' onclick='deleteDiv(this.parentNode)'>";
+    objDiv.innerHTML += "<img src='" + obj.image + "'>";
 
-    var popup_status = document.getElementById("popup_base").style.display;
-    //Set a variable to contain the DOM element of the popup
-    if(popup_status === "none" || popup_status === ""){
-        toggleShopWindow();
+    dragElement(objDiv);
+    document.getElementsByTagName('body')[0].appendChild(objDiv);
+
+}
+
+function deleteDiv(obj){
+    console.log(obj.id);
+    obj.remove();
+    // document.getElementsByTagName('body')[0].removeChild(obj);
+}
+
+function runDraggables(){
+    var items = document.getElementsByClassName("item-to-move");
+    for(var i= 0; i < items.length; i++)
+    {
+        dragElement(items.item(i));
+        console.log(items.item(i));
     }
 
-    var name = item_button.getElementsByClassName("name")[0].innerHTML;
-    var price = item_button.getElementsByClassName("price")[0].innerHTML;
-    var description = item_button.getElementsByClassName("description")[0].innerHTML;
-    var img_link = item_button.getElementsByClassName("img_link")[0].innerHTML;
+}
 
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    elmnt.onmousedown = dragMouseDown;
 
-    var image_container = document.getElementById("item_image");
-    var attrib_container = document.getElementById("item_attributes");
+    function dragMouseDown(e) {
+        e = e || window.event;
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
 
+    function elementDrag(e) {
+        e = e || window.event;
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
 
-    image_container.innerHTML = "";
-    attrib_container.innerHTML = "";
-    console.log(img_link);
-
-    image_container.innerHTML = "<img src='" + img_link + "' class='shop_item' >";
-
-    attrib_container.innerHTML += "<p>Name: " + name + "</p>";
-    attrib_container.innerHTML += "<p>Price: " + price +"</p>";
-    attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
-    attrib_container.innerHTML += "<button>Buy Item</button>";
-    attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
-
-
+    function closeDragElement() {
+        /* stop moving when mouse button is released:*/
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
 }
