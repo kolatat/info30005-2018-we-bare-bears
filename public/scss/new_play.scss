@@ -6,6 +6,7 @@ body{
   background-repeat: no-repeat;
   height: 100%;
   background-attachment: fixed;
+  text-align: center;
 }
 
 h1{
@@ -17,9 +18,9 @@ h1{
   margin: 5px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, min-content);
+  grid-template-rows: repeat(3, 200px);
   grid-gap: 10px;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
 
   button{
     justify-content: center;
@@ -36,18 +37,19 @@ h1{
 
 #options_container{
   display: grid;
-
   justify-content: center;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: max-content max-content;
   grid-template-rows: auto;
   margin: 1vw;
 
   button{
     display: flex;
     font-size: 1em;
-    max-width: max-content;
+    width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
+    grid-gap: 10px;
+
   }
 }
 
@@ -112,11 +114,10 @@ pre.fill-blanks{
   /* Stack the flags into a single column */
   .page {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas: "quiz-1" "quiz-2" "quiz-3";
+    grid-template-rows: auto;
   }
 
-  /* Make the popup cover the whole screen for better visibility */
+  // Make the popup cover the whole screen for better visibility
   .popup {
     width: 100vw;
     height: 100vh;
@@ -124,6 +125,10 @@ pre.fill-blanks{
     margin-top:-50vh;
   }
 
+  // Make button options appear in single column
+  #options_container{
+    grid-template-columns: max-content;
+  }
 }
 
 

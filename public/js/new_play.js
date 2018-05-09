@@ -97,9 +97,7 @@ function getRandomBlanks() {
     };
 
     return test_blank_param;
-
 }
-
 
 
 function _testBlanks(ques_details){
@@ -131,14 +129,10 @@ function _testBlanks(ques_details){
     quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML;
 }
 
+/* For Fill-in-the-blanks type questions: Remember the indices for order placement of answer choices */
 var blanks_indices = [];
 
-function testIndex() {
-    var cur_index = getNextIndex();
-    console.log(blanks_indices);
-    console.log("Current index: " +  cur_index);
-}
-
+/* For Fill-in-the-blanks type questions: Get the next position to be assigned to an answer option */
 function getNextIndex(){
 
     if(blanks_indices.length === 0){
@@ -176,8 +170,8 @@ function getNextIndex(){
 
 }
 
+/* For Fill-in-the-blanks type questions: Remove the selected option from answer placement */
 function removeIndex(button) {
-
 
     var remove_assigned = button.getElementsByClassName("assigned_order")[0];
     var remove_value = Number(remove_assigned.innerHTML) - 1;
@@ -193,65 +187,16 @@ function removeIndex(button) {
     remove_container.remove();
     console.log(blanks_indices);
 
-
+    // Remove the value from preview statement
     var preview_text = document.getElementById("blanks-" + remove_value);
     preview_text.innerHTML = " ________________ ";
 
+    // Allow the button to be re-assigned an index value
     button.setAttribute("onclick", "assignIndex(this)");
 }
 
-function _testCanvas() {
-
-    // Get the container element that will contain the quiz
-    var quiz_container = document.getElementById("quiz_container");
-    quiz_container.innerHTML = "";  // Reset the container element for each use
-
-    quiz_container.innerHTML += '<canvas id="myCanvas" style="width:50%;height:50%;border:1px solid black;background:#fff;"></canvas>';
-
-    quiz_container.innerHTML +=
-        '<div>' +
-            '<button>' +
-                '<img src="/assets/images/items/penguin.png" alt="/assets/images/items/penguin.png" class="shop_item" style="width:100px;height:100px;">' +
-            '</button>';
 
 
-    console.log("HI!");
-}
-
-function add_image(image_button){
-    var image_link = image_button.getElementsByClassName("shop_item")[0].alt;
-    console.log(image_link);
-    var canvas = document.getElementById("myCanvas");
-
-    var ctx = c.getContext("2d");
-    var img = document.getElementById("scream");
-    ctx.drawImage(img, 10, 10);
-
-}
-
-
-function make_pic(ctx) {
-    ctx.clearRect(0, 0, 400, 550);
-
-    // Mask for clipping
-    var mask_image = new Image();
-    mask_image.src = 'http://i.imgur.com/yOc0YHC.png';
-    ctx.drawImage(mask_image, 0, 0);
-    ctx.save();
-
-    var pic_image = new Image();
-    pic_image.src = 'http://i.imgur.com/DVhVSH1.jpg';
-    xfact = prep_image();
-
-//    var im_width = parseInt(pic_image.width + $('#resize').slider('value') / xfact);
-  //  var im_height = parseInt(pic_image.height + $('#resize').slider('value') / xfact);
-    // alert(im_width);
-    ctx.translate(200, 275);
-    ctx.rotate($('#rotat').slider('value') * Math.PI / 180);
-    ctx.globalCompositeOperation = "source-in";
- //   ctx.drawImage(pic_image, -400 / 2 + moveXAmount, -550 / 2 + moveYAmount, im_width, im_height);
-    ctx.restore();
-}
 
 
 function assignIndex(button) {
@@ -317,46 +262,6 @@ function _testAPI() {
         }
     }, 'json');
 }
-
-function _testMult(ques_details){
-    // Get the container element that will contain the quiz
-    var quiz_container = document.getElementById("quiz_container");
-    quiz_container.innerHTML = "";  // Reset the container element for each use
-
-    // HTML Strings for MCQ Page
-    var head_HTML = '<h1>Multiple Choice Quiz!</h1>';
-    var ques_HTML = '<p>' + ques_details.question + '</p>';
-
-    // Prepare the set of answer options and shuffling them (randomize order of options)
-    var correct_ans = ques_details.answers.correct;
-    var options = ques_details.answers.other.concat(correct_ans);
-    shuffle(options);
-
-    // HTML Strings containing answer options
-    var ans_options_HTML = [];
-    for(var i=0; i<options.length; i++) {
-
-        // For identifying the correct answer (maybe to be changed to a better way in future?)
-        var option_class;
-        if (options[i] === correct_ans) {
-            option_class = "correct";
-        } else {
-            option_class = "wrong";
-        }
-
-        // Button elements for each answer option
-        ans_options_HTML.push(
-            '<button class="' + option_class + '" onclick="checkAnswer(this)">' +
-            options[i] + '</button>'
-        );
-    }
-    var ans_container_HTML = '<div id="options_container">' + ans_options_HTML.join(" ") + '</div>';
-
-
-    // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
-}
-
 
 
 

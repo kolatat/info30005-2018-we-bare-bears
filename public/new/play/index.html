@@ -28,37 +28,26 @@
 <!-- 9x9 Flags -->
 <div class="page">
 
+
+
+    <div>
+        <p></p>
+    </div>
+    <div>
+        <p></p>
+    </div>
+    <div>
+        <p></p>
+    </div>
+    <div>
+        <p></p>
+    </div>
+
     <button onclick="toggleQuizWindow(this)">
         <img class="flag-img" src="/assets/images/png/flag-green.png">
     </button>
 
-    <div>
-        <img class="flag-img" src="/assets/images/png/flag-green.png">
-    </div>
 
-    <div>
-        <img class="flag-img" src="/assets/images/png/flag-green.png">
-    </div>
-
-
-
-    <div>
-        <img class="flag-img" src="/assets/images/png/flag-red.png">
-    </div>
-
-    <div>
-        <img class="flag-img" src="/assets/images/png/flag-red.png">
-    </div>
-
-    <div>
-        <img class="flag-img" src="/assets/images/png/flag-red.png">
-    </div>
-
-
-
-    <div>
-        <img class="flag-img" src="/assets/images/png/flag-red.png">
-    </div>
 
 </div>
 
@@ -68,7 +57,6 @@
 <div class="overlay" id="overlay_base">
 </div>
 <div class="popup" id="popup_base">
-    <h2>Activities</h2>
     <div id="quiz_container">
     </div>
 
@@ -77,10 +65,8 @@
         <p>
             <button onclick="_testAPI()">Test API</button>
             <button onclick="_generateQuizQuestions()">Test Get Multiple Questions</button>
-            <button id="multiple" onclick="_testMult(getRandomQuestion())">Test Multiple Choice</button>
             <button id="blanks" onclick="_testBlanks(getRandomBlanks())">Test Fill in the Blanks</button>
             <button id="vid" onclick="_testVideo(getRandomVideoLink())">Test Video</button>
-            <button onclick="_testCanvas()">Test Canvas</button>
         </p>
 
         <button  onclick="toggleQuizWindow()">Close</button>
