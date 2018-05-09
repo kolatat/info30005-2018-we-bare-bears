@@ -6,6 +6,7 @@ body{
   background-repeat: no-repeat;
   height: 100%;
   background-attachment: fixed;
+  text-align: center;
 }
 
 .page-text-container {
@@ -20,6 +21,36 @@ body{
 }
 .page-text-container > button {
   display: inline;
+}
+
+#tab_buttons {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  align-items: center;
+  border-bottom: none;
+  width: 100%;
+
+
+  button{
+    background-color: inherit;
+    display: inline-block;
+    align-items: center;
+    border-bottom: none;
+  }
+
+  // Let visited links remain the same colour
+  button:visited{
+    background-color: inherit;
+  }
+
+  button:hover{
+    background-color: #333333;
+  }
+  button.active{
+    background-color: #7DD0E7;
+  }
 }
 
 
