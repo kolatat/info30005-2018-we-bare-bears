@@ -61,7 +61,6 @@ $(document).ready(function() {
 function _createMult(){
     toggleCreateWindow();
 
-
     // Get the container element that will contain the quiz
     var create_container = document.getElementById("create_container");
     create_container.innerHTML = "";  // Reset the container element for each use
@@ -92,7 +91,7 @@ function _createMult(){
     form_HTML.push('<p class="container-text">Score points: </p>');
     form_HTML.push('<input type="number" name="points" required>');
     form_HTML.push('<p class="container-text">Created By: </p>');
-    form_HTML.push('<input type="text" name="createdBy" required>');
+    form_HTML.push('<input type="text" name="createdBy" required><br>');
 
 
     // Complete the form element HTML string
@@ -124,24 +123,32 @@ function _createBlanks(){
 
     // HTML String for form element to input details
     var form_HTML = [];
-    form_HTML.push('<form id="createQuestion" method="post" onsubmit="submitQuestion()">');
+    form_HTML.push('<form id="createQuestion" class="fill-in-the-blanks" onsubmit="submitQuestion(event)">');
 
     // HTML String for elements to input details about the Fill/Blank statement
     var input_container_HTML = [];
     input_container_HTML.push('<div id="input_fields_blanks" class="input_fields_wrap">');
     input_container_HTML.push('<button id="add_field_button" onclick="addField(this.parentNode)">Add More Fields</button>');
     input_container_HTML.push('<div id="0">');
-    input_container_HTML.push('<select name="fill_blank_type" onchange="modifyTextDecoration(this)">');
+    input_container_HTML.push('<select name="type-0" onchange="modifyTextDecoration(this)">');
     input_container_HTML.push('<option value="fill">Fill</option>');
     input_container_HTML.push('<option value="blank">Blank</option>');
     input_container_HTML.push('</select>');
     input_container_HTML.push('<input type="text" name="options-0" onkeyup="previewText(this)" required>');
     input_container_HTML.push('</div>');
     input_container_HTML.push('</div>');
-
-    // TO INCLUDE SUBMIT BUTTON
-    // Complete the form element HTML string
     form_HTML.push(input_container_HTML.join(" "));
+
+    //HTML String for input of some extra information
+    form_HTML.push('<p class="container-text">Difficulty Level: </p>');
+    form_HTML.push('<input type="number" name="difficulty" required>');
+    form_HTML.push('<p class="container-text">Score points: </p>');
+    form_HTML.push('<input type="number" name="points" required>');
+    form_HTML.push('<p class="container-text">Created By: </p>');
+    form_HTML.push('<input type="text" name="createdBy" required><br>');
+
+    // Complete the form element HTML string
+    form_HTML.push('<button type="submit">Submit!</button>');
     form_HTML.push('</form>');
 
     // Final display of create container

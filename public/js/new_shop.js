@@ -1,7 +1,7 @@
 /* Toggle the PopUp Window that displays the quizzes */
 function toggleShopWindow() {
     //Set a variable to contain the DOM element of the overlay
-   // var overlay = document.getElementById("overlay_base");
+    // var overlay = document.getElementById("overlay_base");
     //Set a variable to contain the DOM element of the popup
     var popup = document.getElementById("popup_base");
     // Toggle visibility of overlay and popup
@@ -20,91 +20,79 @@ var testItemList = [
     {
         name: "Tree",
         type: "plant",
-        price: 100
+        price: 100,
+        image: "/assets/images/items/tree.png",
+        description: "A big tree."
     },
     {
         name: "Penguin",
         type: "animal",
-        price: 20
-    },
-    {
-        name: "Shrub",
-        type: "plant",
-        price: 10
-    },
-    {
-        name: "Potato",
-        type: "plant",
-        price: 2
+        price: 20,
+        image: "/assets/images/items/penguin.png",
+        description: "A cute little penguin."
     },
     {
         name: "Ice Bear",
         type: "animal",
-        price: 1000
+        price: 1000,
+        image: "/assets/images/items/ice_bear.png",
+        description: "The strongest and youngest bear."
     },
     {
-        name: "Yellow Recycling Bin",
+        name: "Yellow Bin",
         type: "bin",
-        price: 10
+        price: 10,
+        image: "/assets/images/items/yellow_bin.png",
+        description: "A bin that looks like it is made for disposing paper."
     },
     {
-        name: "Blue Recycling Bin",
+        name: "Red Bin",
         type: "bin",
-        price: 10
+        price: 10,
+        image: "/assets/images/items/red_bin.png",
+        description: "A bin that looks like it is made for disposing plastic."
     },
     {
-        name: "Red Recycling Bin",
+        name: "Blue Bin",
         type: "bin",
-        price: 10
+        price: 10,
+        image: "/assets/images/items/blue_bin.png",
+        description: "A bin that looks like it is made for disposing metal."
     },
     {
-        name: "Purple Recycling Bin",
+        name: "Green Bin",
         type: "bin",
-        price: 10
-    },
-    {
-        name: "Grizzly Bear",
-        type: "animal",
-        price: 1000
-    },
-    {
-        name: "Potted Plant",
-        type: "plant",
-        price: 30
+        price: 10,
+        image: "/assets/images/items/green_bin.png",
+        description: "A bin that looks like it is made for disposing glass."
     },
     {
         name: "Panda Bear",
         type: "animal",
-        price: 1000
+        price: 1000,
+        image: "/assets/images/items/panda_bear.png",
+        description: "The bear link that holds them all together."
     },
     {
-        name: "Watermelon Plant",
+        name: "Sunflower",
         type: "plant",
-        price: 25
-    },    {
-        name: "Compost Bin",
-        type: "bin",
-        price: 30
-    },
-    {
-        name: "Landfill Bin",
-        type: "bin",
-        price: 20
-    },
-    {
-        name: "Cute Plant",
-        type: "plant",
-        price: 35
+        price: 35,
+        image: "/assets/images/items/sunflower.png",
+        description: "Making your world more lively - one flower at a time."
     },
     {
         name: "Grizzly Bear",
         type: "animal",
-        price: 1000
+        price: 1000,
+        image: "/assets/images/items/grizzly_bear.png",
+        description: "The bubbly, hyperactive, loud and talkative bear."
     },
     {
-        name: "Rose Plant",
-        type: "plant",
-        price: 27
+        name: "Turtle",
+        type: "animal",
+        price: 27,
+        image: "/assets/images/items/turtle.png",
+        description: "Save me from plastic bags!"
     }
 
 ];
@@ -115,6 +103,8 @@ function populateShopMenu(button){
     // Get the items_container element of the HTML to add items for display
     var items_container = document.getElementById("items_container");
     items_container.innerHTML = "";
+
+
 
     // Get the type of items to be shown
     var show_type = button.id;
@@ -149,10 +139,12 @@ function populateShopMenu(button){
             new_item_HTML +=
                 "<div>" +
                     "<button class='item_desc' onclick='showDescription(this)'>" +
+                        "<img src='" + testItemList[i].image + "' class='shop_item' >" +
                         "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
                         "<p>Cost: <span class='price'>" + testItemList[i].price + "</span></p>" +
                         "<p style='display: none'>Type: <span class='type'>" + testItemList[i].type + "</span></p>" +
-                       // "<p>Desc: <span class='description' style='display: none'>" + testItemList[i].description + "</span></p>"
+                        "<p style='display: none'>Image Link: <span class='img_link'>" + testItemList[i].image + "</span></p>" +
+                        "<p style='display: none'>Desc: <span class='description'>" + testItemList[i].description + "</span></p>"
                     "</button>" +
                 "</div>";
         }
@@ -164,21 +156,33 @@ function populateShopMenu(button){
 
 function showDescription(item_button) {
 
-    var popup_status = document.getElementById("");
+    var popup_status = document.getElementById("popup_base").style.display;
+    //Set a variable to contain the DOM element of the popup
+    if(popup_status === "none" || popup_status === ""){
+        toggleShopWindow();
+    }
 
-    toggleShopWindow();
     var name = item_button.getElementsByClassName("name")[0].innerHTML;
     var price = item_button.getElementsByClassName("price")[0].innerHTML;
-//    var description = item_button.getElementsByClassName("description")[0].innerHTML;
-
-    var name_container = document.getElementById("item_name");
-    var price_container = document.getElementById("item_price");
-    var description_container = document.getElementById("item_description");
+    var description = item_button.getElementsByClassName("description")[0].innerHTML;
+    var img_link = item_button.getElementsByClassName("img_link")[0].innerHTML;
 
 
-    name_container.innerHTML = "Name: " + name;
-    price_container.innerHTML = "Price: " + price;
-    description_container.innerHTML = "<em>*Insert item description here*</em>";
+    var image_container = document.getElementById("item_image");
+    var attrib_container = document.getElementById("item_attributes");
+
+
+    image_container.innerHTML = "";
+    attrib_container.innerHTML = "";
+    console.log(img_link);
+
+    image_container.innerHTML = "<img src='" + img_link + "' class='shop_item' >";
+
+    attrib_container.innerHTML += "<p>Name: " + name + "</p>";
+    attrib_container.innerHTML += "<p>Price: " + price +"</p>";
+    attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
+    attrib_container.innerHTML += "<button>Buy Item</button>";
+    attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
 
 
 }
