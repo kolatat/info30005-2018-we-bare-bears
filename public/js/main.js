@@ -61,5 +61,13 @@ var Recyclabears = {
         addQuestion: function (data) {
             return Recyclabears.__apiCall('POST', '/api/questions', data);
         }
+    },
+    users: {
+        me: function () {
+            return Recyclabears.__apiCall('GET', '/api/users/me');
+        },
+        getUserByFbId: function (fbId) {
+            return Recyclabears.__apiCall('GET', '/api/users/' + fbId);
+        }
     }
 }

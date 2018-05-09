@@ -8,6 +8,7 @@ import questionRouter from './routes/questionsRoutes';
 import {isNullOrUndefined} from "util";
 import {Facebook, FacebookApiException} from 'fb';
 import * as model from "./model";
+import * as usersRoutes from './routes/usersRoutes'
 
 require('dotenv').config();
 
@@ -47,10 +48,18 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
+interface WbbRequest extends express.Request {
+    user: WbbUser
+}
+
+interface WbbUser {
+    fbId: string
+}
+
 // default fields: id, first_name, last_name, name, name_format, picture, short_name
 function fbAuth() {
-    return function (req: express.Request, res, next) {
-        var auth = req.headers.authorization;
+    return function (req: WbbRequest, res, next) {
+        var auth: string = req.header('authorization');
         if (isNullOrUndefined(auth) || !auth.startsWith('Facebook ')) {
             res.status(401).send({
                 error: 'bad authentication'
@@ -65,7 +74,15 @@ function fbAuth() {
                 $setOnInsert: {
                     fbId: res.id,
                     name: res.name,
-                    email: res.email
+                    email: res.email,
+                    friends: {
+                        list: [],
+                        reqSent: [],
+                        reqReceived: []
+                    },
+                    questions: [],
+                    wallet: 10,
+                    home: []
                 },
                 $currentDate: {
                     'lastAccessed.time': {$type: 'date'}
@@ -92,6 +109,7 @@ function fbAuth() {
 apiRouter.use(bodyParser.json());
 apiRouter.use(fbAuth());
 apiRouter.use('/questions', questionRouter);
+apiRouter.use('/users', usersRoutes.createRouter(store));
 apiRouter.use((req, res) => {
     var err = new Error('Not found');
     routerLog(err);
