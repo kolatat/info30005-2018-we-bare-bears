@@ -200,6 +200,60 @@ function removeIndex(button) {
     button.setAttribute("onclick", "assignIndex(this)");
 }
 
+function _testCanvas() {
+
+    // Get the container element that will contain the quiz
+    var quiz_container = document.getElementById("quiz_container");
+    quiz_container.innerHTML = "";  // Reset the container element for each use
+
+    quiz_container.innerHTML += '<canvas id="myCanvas" style="width:50%;height:50%;border:1px solid black;background:#fff;"></canvas>';
+
+    quiz_container.innerHTML +=
+        '<div>' +
+            '<button>' +
+                '<img src="/assets/images/items/penguin.png" alt="/assets/images/items/penguin.png" class="shop_item" style="width:100px;height:100px;">' +
+            '</button>';
+
+
+    console.log("HI!");
+}
+
+function add_image(image_button){
+    var image_link = image_button.getElementsByClassName("shop_item")[0].alt;
+    console.log(image_link);
+    var canvas = document.getElementById("myCanvas");
+
+    var ctx = c.getContext("2d");
+    var img = document.getElementById("scream");
+    ctx.drawImage(img, 10, 10);
+
+}
+
+
+function make_pic(ctx) {
+    ctx.clearRect(0, 0, 400, 550);
+
+    // Mask for clipping
+    var mask_image = new Image();
+    mask_image.src = 'http://i.imgur.com/yOc0YHC.png';
+    ctx.drawImage(mask_image, 0, 0);
+    ctx.save();
+
+    var pic_image = new Image();
+    pic_image.src = 'http://i.imgur.com/DVhVSH1.jpg';
+    xfact = prep_image();
+
+//    var im_width = parseInt(pic_image.width + $('#resize').slider('value') / xfact);
+  //  var im_height = parseInt(pic_image.height + $('#resize').slider('value') / xfact);
+    // alert(im_width);
+    ctx.translate(200, 275);
+    ctx.rotate($('#rotat').slider('value') * Math.PI / 180);
+    ctx.globalCompositeOperation = "source-in";
+ //   ctx.drawImage(pic_image, -400 / 2 + moveXAmount, -550 / 2 + moveYAmount, im_width, im_height);
+    ctx.restore();
+}
+
+
 function assignIndex(button) {
 
     var cur_index = getNextIndex();
