@@ -133,13 +133,24 @@ function populateItemMenu(button){
     }
 }
 
+var id = 0
+
 function showInWorld(obj){
     var objDiv = document.createElement("div");
     objDiv.setAttribute("class", "item-to-move");
-    objDiv.innerHTML = "<img src='" + obj.image + "'>";
+    objDiv.setAttribute("id", "id1");
+    objDiv.innerHTML = "<img src='/assets/images/world/delete2.png' class='delete-img' onclick='deleteDiv(this.parentNode)'>";
+    objDiv.innerHTML += "<img src='" + obj.image + "'>";
+
     dragElement(objDiv);
     document.getElementsByTagName('body')[0].appendChild(objDiv);
 
+}
+
+function deleteDiv(obj){
+    console.log(obj.id);
+    obj.remove();
+    // document.getElementsByTagName('body')[0].removeChild(obj);
 }
 
 function runDraggables(){
