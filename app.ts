@@ -4,7 +4,6 @@ import * as bodyParser from 'body-parser';
 
 require('dotenv').config();
 
-import userRouter from './routes/usersRoutes';
 import indexRouter from './routes/indexRoutes';
 import questionRouter from './routes/questionsRoutes';
 
@@ -37,7 +36,6 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
 apiRouter.use(bodyParser.json());
-apiRouter.use('/users', userRouter);
 apiRouter.use('/questions', questionRouter);
 apiRouter.use((req, res) => {
     var err = new Error('Not found');

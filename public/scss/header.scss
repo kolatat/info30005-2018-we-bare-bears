@@ -7,6 +7,14 @@
   //display: block;
   //text-align: center;
   height: 60px;
+
+  a{
+    text-decoration: none;
+  }
+  a:visited{
+    color: inherit;
+
+  }
 }
 
 #site-name {
@@ -16,18 +24,19 @@
   font-size: 2em;
   color: $color-brown;
   margin: 0 0 0 $main-padding-left;
-  height: 100%;
-  //line-height: 40px;
+
   img{
     width: 40px;
     height: 40px;
     vertical-align: middle;
-    //display: inline-block;
+    display: inline-block;
     margin: 0 15px;
   }
   a {
     cursor: pointer;
     line-height: 60px;
+    vertical-align: middle;
+    display: inline-block;
   }
 }
 
@@ -52,14 +61,16 @@
 
     text-decoration: none;  // Prevent vistied links from being underlined
   }
-  a.active{
-    color: $color-orange;
-  }
-  a:hover{
-    background-color: $color-beige;
-  }
   // Let visited links remain the same colour
   a:visited{
     color: inherit;
   }
+  a:hover{
+    background-color: $color-beige;
+  }
+  a.active{
+    color: $color-orange;
+  }
+
+
 }
