@@ -36,6 +36,12 @@
     <div id="site-name"><img src="/assets/images/icon.png">Recyclabears</a></div>
     <div id="navigation">
 
+        <a href="/new/world">World</a>
+        <a href="/new/play">Play</a>
+        <a href="/new/learn">Learn</a>
+        <a href="/new/rank" class="active">Rank</a>
+        <a href="/new/shop">Shop</a>
+
         <!-- User Profile -->
         <div class="dropdown">
             <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
@@ -43,16 +49,14 @@
                 <span id="score">Score: 10000</span>
                 <span id="honey">Honey Pots: 100</span>
                 <a href="#">View Profile</a>
-                <a href="#">Logout</a>
+                <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="medium"
+                     data-button-type="login_with"
+                     data-auto-logout-link="true" data-use-continue-as="true">
+                </div>
             </div>
         </div>
         <!-- End User Profile -->
 
-        <a href="/new/world">World</a>
-        <a href="/new/play">Play</a>
-        <a href="/new/learn">Learn</a>
-        <a href="/new/rank" class="active">Rank</a>
-        <a href="/new/shop">Shop</a>
     </div>
 </div>
 <!-- End Navigation Menu -->
