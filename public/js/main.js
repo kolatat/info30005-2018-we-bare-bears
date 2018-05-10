@@ -67,7 +67,7 @@ var Recyclabears = {
                 answer: answer
             };
             // TODO add API endpoint to update list of answered questions and user score
-        }
+        },
         addQuestion: function (data) {
             return Recyclabears.__apiCall('POST', '/api/questions', data);
         }
