@@ -1,7 +1,7 @@
 export class User {
-    fbId: string,
-    friends: UserFriends,
-    name:string,
+    fbId: string;
+    friends: UserFriends;
+    name:string;
     email:string
 }
 
