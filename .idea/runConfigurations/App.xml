@@ -8,6 +8,7 @@
     <node-interpreter value="project" />
     <envs>
       <env name="DEBUG" value="wbb:*" />
+      <env name="SELF_SIGNED_SSL" value="True" />
     </envs>
     <method />
   </configuration>

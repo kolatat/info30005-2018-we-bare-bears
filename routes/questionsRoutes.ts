@@ -8,14 +8,18 @@ const Log = debug('wbb:model:question');
 
 const router = Router();
 
+require('dotenv').config()
 const store = new model.MongoStore(process.env.MONGO_HOST, process.env.MONGO_PREFIX);
 store.connect().then(() => {
     Log('mongodb connected');
 });
 
-router.post('/', (req, res) => {
+router.post('/', (req: any, res) => {
     // TODO validate input
-    store.collection('questions').insertOne(req.body).then(r => {
+    var question = req.body;
+    question['created'] = new Date();
+    question['createdBy'] = req.user.fbId;
+    store.collection('questions').insertOne(question).then(r => {
         if (r.insertedCount == 1) {
             res.send({
                 insertedId: r.insertedId
@@ -36,6 +40,7 @@ router.post('/', (req, res) => {
 });
 
 router.get('/random', (req, res) => {
+    // console.log(req.user);
     store.collection('questions').aggregate([{
         $sample: {size: 1}
     }]).toArray().then(doc => {
