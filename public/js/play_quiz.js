@@ -1,15 +1,16 @@
 /* Quiz object constructor */
-function Quiz(questions, mcq, vid) {
+function Quiz(max_ques) {
     this.score = 0;
-    this.questions = questions; // Array of questions
+    this.questions = []; // Array of question added along the quiz
     this.questionIndex = 0; // Current question
-    this.mcq = mcq; // Number of Multiple Choice questions
-    this.videos = vid; // Number of videos
+    this.mcq = 0; // Number of Multiple Choice questions
+    this.videos = 0; // Number of videos
+    this.maxQues = max_ques;
 }
 
-/* Get the total number of questions */
+/* Get the maximum number of questions */
 Quiz.prototype.getQuizLength = function () {
-    return this.questions.length;
+    return this.maxQues;
 }
 
 
@@ -50,5 +51,5 @@ Quiz.prototype.proceed = function(){
 
 /* Check if there are no more questions remaining */
 Quiz.prototype.isEnded = function() {
-    return this.questionIndex === this.questions.length;
+    return this.questionIndex === this.maxQues;
 }

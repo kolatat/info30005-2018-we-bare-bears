@@ -1,21 +1,35 @@
 /* Populate the page with a question Object */
 function populate() {
 
-    console.log("Quiz length: " + quiz.getQuizLength());
+
     // If no more questions are remaining, display the score
     if (quiz.isEnded()) {
         showScores();
     }
     else {
-        // Display question based on the type
-        var ques_obj = quiz.getQuestionIndex();
-        if (ques_obj instanceof Mult_Question) {
-            _displayMult(ques_obj);
-        } else if (ques_obj instanceof Blanks_Question) {
-            _displayBlanks(ques_obj);
-        } else if (ques_obj instanceof Video) {
-            _displayVideo(ques_obj);
-        }
+
+        Recyclabears.questions.getRandomQuestion().then(function (data) {
+            if (data.type == "multiple-choice") {
+                var new_ques = new Mult_Question(data);
+                quiz.questions.push(new_ques);
+                quiz.mcq++;
+                _displayMult(new_ques);
+
+            } else if(data.type === "fill-in-the-blanks"){
+                //var new_blanks = new Blanks_Question(data);
+                //quiz.questions.push(new_blanks);
+                //mcq++;
+                //_displayBlanks(new_blanks);
+
+            } else if (data.type === "youtube-video") {
+                var new_vid = new Video(data);
+                quiz.questions.push(new_vid);
+                quiz.video++;
+                _displayVideo(new_vid);
+            }
+            return 'done';
+        });
+
 
         // Update footer text to show quiz progress
         showProgress();
@@ -177,7 +191,7 @@ function proceedVideo() {
 function showProgress() {
     var currentQuestionNumber = quiz.questionIndex + 1;
     var element = document.getElementById("footer_text");
-    element.innerHTML = "Question " + currentQuestionNumber + " of " + quiz.questions.length;
+    element.innerHTML = "Question " + currentQuestionNumber + " of " + quiz.maxQues;
 }
 
 
@@ -222,37 +236,13 @@ function _generateQuizQuestions() {
 
 /* Start the Quiz */
 function _startQuiz(num_ques) {
-    var question_list = [];
-    var mcq = 0;
-    var video = 0;
 
 
-    var promises = []
-    for (var i = 0; i < num_ques; i++) {
-        promises.push(Recyclabears.questions.getRandomQuestion().then(function (data) {
-            if (data.type == "multiple-choice") {
-                var new_ques = new Mult_Question(data);
-                question_list.push(new_ques);
-                mcq++;
-            } else if(data.type === "fill-in-the-blanks"){
-                //var new_blanks = new Blanks_Question(data);
-                //question_list.push(new_blanks);
-                //mcq++;
-            } else if (data.type == "youtube-video") {
-                var new_vid = new Video(data);
-                question_list.push(new_vid);
-                video++;
-            }
-            return 'done';
-        }));
-    }
+    quiz = new Quiz(num_ques);
+    //display the quiz
+    populate();
 
-    Promise.all(promises).then(function () {
-        quiz = new Quiz(question_list, mcq, video);
 
-        //display the quiz
-        populate();
-    })
 }
 
 
