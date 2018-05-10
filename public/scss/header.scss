@@ -1,5 +1,11 @@
 @import "master";
 
+#toggle_nav{
+  display: none;
+  float: left;
+  background-color: transparent;
+}
+
 #header {
   background-color: $color-yellow;
   font-family: $raleway;
@@ -72,24 +78,8 @@
   background-color: initial;
 }
 
-@media screen and (max-width: 720px) {
-  #navigation a {
-    display: block;
-    text-align: left;
-    line-height: 40px;
-  }
-  #navigation {
-    display: block;
-    padding-bottom: 10px;
-  }
-  #site-name {
-    display: block;
-  }
-  #header{
-    padding: 0 20px;
-  }
-}
 
+/* Medium-sized screens: Show the site name and navigation menu on separate lines */
 @media screen and (max-width: 1000px) {
   #site-name{
     display: block;
@@ -105,6 +95,46 @@
   }
 }
 
+/* Small-sized screens: Show the navigation menu in a toggeable drop-down */
+@media screen and (max-width: 720px) {
+  #toggle_nav{
+    display: inline;
+    margin-top: 15px;
+    padding: 0;
+    border: none;
+  }
+
+  #navigation a {
+    display: block;
+    text-align: left;
+    line-height: 40px;
+  }
+
+  #navigation {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    background-color: $color-yellow;
+    z-index: 10;  // Overlay this navigation bar on top of everything when in display
+
+    .dropdown{
+      float: none;
+    }
+  }
+  #site-name {
+    display: inline;
+    width: max-content;
+  }
+  #header{
+    padding: 0 20px;
+  }
+}
+
+
+/* Styling dropdown that displays the current user's profile */
 .dropdown{
   float: left;
   //display: inline;

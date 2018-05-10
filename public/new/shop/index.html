@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1", maximum-scale=1.0>
+    <meta name="viewport" content="width=device-width, initial-scale=1" maximum-scale=1.0>
     <link rel="stylesheet" type="text/css" href="/css/new_shop.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/js/new_shop.js"></script>
 </head>
 <body onload="populateShopMenu('tab_all')">
 
 <div id="header">
+    <div>
+        <button id="toggle_nav" onclick="toggleNavMenu()">
+            <img src="/assets/images/toggle_nav.png" width="30px" height="30px">
+        </button>
+
+    </div>
     <div id="site-name"><a href="/new/world"><img src="/assets/images/icon.png">Recyclabears</a></div>
     <div id="navigation">
         <div class="dropdown">
-            <a href="" id="user"><img src="/assets/images/header/user.png"></a>
+            <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
             <div class="dropdown-content">
                 <span id="score">Score: 10000</span>
                 <span id="honey">Honey Pots: 100</span>
@@ -28,9 +36,10 @@
     </div>
 </div>
 
-<div class="page-text-container">
-    <h1>World Shop</h1>
-    <p>Click on an item to learn more!</p>
+<div class="page_text_container">
+
+    <h1 class="page_text">World Shop</h1>
+    <p class="page_text">Click on an item to learn more!</p>
 
     <div id="wallet">
         <div>You currently have:</div>
@@ -47,7 +56,7 @@
     <button id="tab_bins" class="" onclick="populateShopMenu(this.id)"><h3>Bins</h3></button>
 </div>
 
-<div id="items_container" class="wrapper">
+<div id="items_container">
 </div>
 
 <!-- PopUp Window to display the quizzes;
