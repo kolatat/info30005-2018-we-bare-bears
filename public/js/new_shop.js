@@ -200,25 +200,3 @@ function changeActive(show_type) {
 }
 
 
-// Used on smaller screens: Toggle the navigation menu for view
-function toggleNavMenu() {
-    var nav_menu = document.getElementById("navigation");
-    if(nav_menu.style.display === "none" || nav_menu.style.display === ""){
-        nav_menu.style.display = "inline-block";
-
-    } else {
-        nav_menu.style.display = "none";
-    }
-}
-
-// Check size of window for handling of navigation element styles
-$(window).resize(function(){
-
-    if(window.matchMedia("(max-width: 720px)").matches){
-        // The screen is 720px or less -- Do nothing
-    } else {
-        // Clear inline styles when window is resized beyond 720px
-        $('#navigation').attr('style', '');
-    }
-
-});

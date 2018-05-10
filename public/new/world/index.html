@@ -2,34 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Recylabears | World</title>
+    <title>Recyclabears | World</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
-    <link rel="stylesheet" href="/css/new_world.css">
+    <link rel="stylesheet" type="text/css" href="/css/new_world.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/js/new_world.js"></script>
-
+    <script type="text/javascript" src="/js/header.js"></script>
 </head>
-
 <body onload="populateItemMenu('tab_all')">
+
+<!-- Navigation Menu -->
 <div id="header">
-    <div id="site-name"><img src="/assets/images/icon.png"><a href="/new/world">Recyclabears</a></div>
+    <div>
+        <button id="toggle_nav" onclick="toggleNavMenu()">
+            <img src="/assets/images/toggle_nav.png" width="30px" height="30px">
+        </button>
+    </div>
+    <div id="site-name"><img src="/assets/images/icon.png">Recyclabears</a></div>
     <div id="navigation">
+
+        <!-- User Profile -->
         <div class="dropdown">
-            <a href="" id="user"><img src="/assets/images/header/user.png"></a>
+            <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
             <div class="dropdown-content">
                 <span id="score">Score: 10000</span>
                 <span id="honey">Honey Pots: 100</span>
                 <a href="#">View Profile</a>
                 <a href="#">Logout</a>
             </div>
+            <!-- End User Profile -->
+
         </div>
+        <a href="/new/world" class="active">World</a>
         <a href="/new/play">Play</a>
         <a href="/new/learn">Learn</a>
         <a href="/new/rank">Rank</a>
-        <a href="/new/create">Create</a>
         <a href="/new/shop">Shop</a>
-
     </div>
 </div>
+<!-- End Navigation Menu -->
 
 <div id="container">
     <div id="world-container">
