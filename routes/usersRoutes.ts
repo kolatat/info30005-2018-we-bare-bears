@@ -24,7 +24,7 @@ export function createRouter(store: model.MongoStore) {
         });
     }
 
-    router.get('/me', (req, res) => {
+    router.get('/me', (req: any, res) => {
         /*getUserByFbId(req.user.fbId).then(user => {
             res.send(user);
         }).catch(err => {
@@ -41,13 +41,13 @@ export function createRouter(store: model.MongoStore) {
         });
     });
 
-    router.get('/me/requests', (req, res) => {
+    router.get('/me/requests', (req: any, res) => {
         res.send({
             requests: req.user.friends.reqReceived
         });
-    })
+    });
 
-    router.delete('/me/requests/:uid', (req, res) => {
+    router.delete('/me/requests/:uid', (req: any, res) => {
         // rejects and remove a request
         store.collection("users").updateOne({
             fbId: req.user.fbId
@@ -57,7 +57,7 @@ export function createRouter(store: model.MongoStore) {
             }
         }).then(r => {
             res.send({
-                result: R
+                result: r
             });
         }).catch(err => {
             res.send({
@@ -66,54 +66,65 @@ export function createRouter(store: model.MongoStore) {
         });
     });
 
-    router.put('/me/requests/:uid', (req, res) => {
-        // accepts a friend request
-        // make sure they actually sent a request & they exists!
-        if (req.body.action != 'accept') {
-            res.status(400).send({
-                "message": "no understand request"
-            })
-            return;
-        }
-        getUserByFbId(req.params.uid).then(friend => {
-            if (!(req.parms.uid in friend.friends.reqSent)) {
-                res.status(404).send({
-                    message: "They are not your friend. (Never sent a request. Try requesting them?"
+
+    /* ******************************
+    TO BE UN-COMMENTED
+    *********************************
+        router.put('/me/requests/:uid', (req: any, res) => {
+            // accepts a friend request
+            // make sure they actually sent a request & they exists!
+            if (req.body.action != 'accept') {
+                res.status(400).send({
+                    "message": "no understand request"
                 });
                 return;
             }
-            // remove the requests, and add friends and me to each other list
-            Promise.all([store.collection('users').updateOne({
-                fbId: friend.uid
-            }, {
-                $pull: {
-                    "friends.reqSent": req.user.fbId
-                },
-                $addToSet: {
-                    "friends.list": req.user.fbId
+            getUserByFbId(req.params.uid).then(friend => {
+                if (!(req.params.uid in friend.friends.reqSent)) {
+                    res.status(404).send({
+                        message: "They are not your friend. (Never sent a request. Try requesting them?"
+                    });
+                    return;
                 }
-            }), store.collection('users').updateOne({
-                fbId: req.user.fbId
-            }, {
-                $pull: {
-                    "friends.reqReceived": friend.fbId
-                },
-                $addToSet: {
-                    "friends.list": friend.fbId
-                }
-            })]).then(r => {
-                res.send({
-                    result: r
+                // remove the requests, and add friends and me to each other list
+                Promise.all([store.collection('users').updateOne({
+                    fbId: friend.uid
+                }, {
+                    $pull: {
+                        "friends.reqSent": req.user.fbId
+                    },
+                    $addToSet: {
+                        "friends.list": req.user.fbId
+                    }
+                }), store.collection('users').updateOne({
+                    fbId: req.user.fbId
+                }, {
+                    $pull: {
+                        "friends.reqReceived": friend.fbId
+                    },
+                    $addToSet: {
+                        "friends.list": friend.fbId
+                    }
+                })]).then(r => {
+                    res.send({
+                        result: r
+                    })
                 })
-            })
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
             });
-        });
-    })
+        })
 
-    router.post('/:uid/request', (req, res) => {
+*****************/
+
+/* ****************
+TO BE UNCOMMENTED
+*******************
+*
+
+    router.post('/:uid/request', (req: any, res) => {
         // this is like sending a request from me to UID
         // uid has to exist otherwise 404
         getUserByFbId(req.params.uid).then(friend => {
@@ -141,6 +152,7 @@ export function createRouter(store: model.MongoStore) {
                 });
             } else {
                 // already friends baka
+                // LOL -- are u sure?
                 res.send({
                     message: 'Already friends baka'
                 });
@@ -149,5 +161,9 @@ export function createRouter(store: model.MongoStore) {
             res.status(500).send(err);
         });
     });
+
+******************/
+
+
     return router;
 }

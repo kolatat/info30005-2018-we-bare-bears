@@ -14,7 +14,7 @@ store.connect().then(() => {
     Log('mongodb connected');
 });
 
-router.post('/', (req, res) => {
+router.post('/', (req: any, res) => {
     // TODO validate input
     var question = req.body;
     question['created'] = new Date();
