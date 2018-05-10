@@ -52,6 +52,7 @@ function _displayMult(ques_details) {
     quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
 }
 
+/* Populate the page with HTML elements for displaying a fill-in-the-blanks-type question */
 function _displayBlanks(ques_details) {
 
     // Get the container element that will contain the quiz
@@ -81,7 +82,7 @@ function _displayBlanks(ques_details) {
     var submit_HTML = '<button onclick="checkBlanks()">Submit</button>'
 
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML;
+    quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML + submit_HTML;
 }
 
 
@@ -177,7 +178,7 @@ function showProgress() {
     var currentQuestionNumber = quiz.questionIndex + 1;
     var element = document.getElementById("footer_text");
     element.innerHTML = "Question " + currentQuestionNumber + " of " + quiz.questions.length;
-};
+}
 
 
 /* When quiz has ended, display the tally of scores */
@@ -205,7 +206,6 @@ function showScores() {
 // Global quiz variable
 var quiz;
 
-
 // For testing purpose --- Get input from user on number of questions to populate the quiz
 function _generateQuizQuestions() {
     var num_questions = parseInt(prompt("How many questions would you like to answer?"));
@@ -226,9 +226,11 @@ function _startQuiz(num_ques) {
     var mcq = 0;
     var video = 0;
 
+
     var promises = []
     for (var i = 0; i < num_ques; i++) {
         promises.push(Recyclabears.questions.getRandomQuestion().then(function (data) {
+
             if (data.type == "multiple-choice") {
                 var new_ques = new Mult_Question(data);
                 question_list.push(new_ques);

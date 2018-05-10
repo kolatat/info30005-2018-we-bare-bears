@@ -1,61 +1,8 @@
-/* Toggle the PopUp Window that displays the interface for creating quizzes */
-function toggleCreateWindow() {
-    //Set a variable to contain the DOM element of the overlay
-    var overlay = document.getElementById("overlay_base");
-    //Set a variable to contain the DOM element of the popup
-    var popup = document.getElementById("popup_base");
-    // Toggle visibility of overlay and popup
-    if (overlay.style.display === "none" || overlay.style.display === "") {
-        overlay.style.display = "block";
-        popup.style.display = "block";
-    } else {
-        overlay.style.display = "none";
-        popup.style.display = "none";
-        document.getElementById("create_container").innerHTML = "";
-    }
-}
 
-/* Toggle the PopUp Window that displays status about the quizzes */
-function toggleMessageWindow() {
-    //Set a variable to contain the DOM element of the overlay
-    var overlay = document.getElementById("overlay_message");
-    //Set a variable to contain the DOM element of the popup
-    var popup = document.getElementById("popup_message");
-
-    // Toggle visibility of overlay and popup
-    if (overlay.style.display === "none" || overlay.style.display === "") {
-        overlay.style.display = "block";
-        popup.style.display = "block";
-
-    } else {
-        overlay.style.display = "none";
-        popup.style.display = "none";
-        // Reset popup container to default conditions
-        document.getElementById("msg_insert").innerHTML = "";
-        document.getElementById("close_msg_window").innerHTML = "Close Message Window";
-    }
-}
-
-
-$(document).ready(function () {
-
-
-    var $create_container = $('#create_container');
-
-
-    $('#create_video').click(function () {
-        toggleCreateWindow();
-        $.get('create_video', test_vid_param)
-            .done(function (data) {
-                $create_container.html(data);
-            });
-
-    });
-});
-
-
-function _createMult() {
-    toggleCreateWindow();
+/* Display interface for creating a Multiple Choice question */
+function _createMult(){
+    // Hide the Create Page Menu
+    document.getElementById("create_page_content").setAttribute("display", "none");
 
     // Get the container element that will contain the quiz
     var create_container = document.getElementById("create_container");
@@ -99,8 +46,11 @@ function _createMult() {
 }
 
 
-function _createBlanks() {
-    toggleCreateWindow();
+/* Display interface for creating a Fill-in-the-Blanks type question */
+function _createBlanks(){
+
+    // Hide the Create Page Menu
+    document.getElementById("create_page_content").setAttribute("display", "none");
 
     // Get the container element that will contain the quiz
     var create_container = document.getElementById("create_container");

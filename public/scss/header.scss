@@ -4,73 +4,146 @@
   background-color: $color-yellow;
   font-family: $raleway;
   color: white;
-  //display: block;
-  //text-align: center;
-  height: 60px;
+  //height: 60px;
+  padding: 0 $main-padding-left;
+  overflow: hidden;
 
   a{
     text-decoration: none;
   }
   a:visited{
-    color: inherit;
+    color: $color-brown;
 
   }
 }
 
 #site-name {
   font-family: $averia-libre;
-  display: inline-block;
   float: left;
   font-size: 2em;
   color: $color-brown;
-  margin: 0 0 0 $main-padding-left;
 
   img{
     width: 40px;
     height: 40px;
     vertical-align: middle;
-    display: inline-block;
-    margin: 0 15px;
+    margin: 10px;
   }
   a {
     cursor: pointer;
     line-height: 60px;
     vertical-align: middle;
-    display: inline-block;
   }
 }
 
 #navigation {
-  display: inline-block;
   float: right;
-  height: 100%;
   font-size: 1.3em;
   color: $color-brown;
   font-weight: bold;
   letter-spacing: 2px;
-  margin: 0 $main-padding-right 0 0;
   text-transform: uppercase;
-  a{
-    display: inline-block;
-    height: 100%;
-    margin-right: 10px;
-    cursor: pointer;
-    line-height: 60px;
-    padding: 0 5px;
-    //vertical-align: middle;
-
-    text-decoration: none;  // Prevent vistied links from being underlined
+  img{
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
   }
-  // Let visited links remain the same colour
-  a:visited{
-    color: inherit;
-  }
-  a:hover{
-    background-color: $color-beige;
-  }
-  a.active{
-    color: $color-orange;
-  }
-
-
 }
+
+#navigation a{
+  margin-right: 10px;
+  cursor: pointer;
+  line-height: 60px;
+  padding:10px;
+  text-decoration: none;
+}
+
+#navigation a:visited{
+  color: $color-brown;
+}
+#navigation a:hover{
+  background-color: $color-beige;
+}
+#navigation a.active{
+  color: $color-orange;
+}
+
+#navigation a#user:hover{
+  background-color: initial;
+}
+
+@media screen and (max-width: 720px) {
+  #navigation a {
+    display: block;
+    text-align: left;
+    line-height: 40px;
+  }
+  #navigation {
+    display: block;
+    padding-bottom: 10px;
+  }
+  #site-name {
+    display: block;
+  }
+  #header{
+    padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #site-name{
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+  #navigation {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.dropdown{
+  float: left;
+  //display: inline;
+  overflow: hidden;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a, .dropdown-content span {
+  float: none;
+  color: black;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 0.7em;
+  line-height: initial!important;
+  margin-right: 0!important;
+}
+
+.dropdown-content span{
+  color: $color-orange;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+

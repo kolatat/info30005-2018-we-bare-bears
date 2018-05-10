@@ -98,16 +98,16 @@ var testItemList = [
 ];
 
 
-function populateShopMenu(button){
+function populateShopMenu(show_type){
 
     // Get the items_container element of the HTML to add items for display
     var items_container = document.getElementById("items_container");
     items_container.innerHTML = "";
 
-
+    // Make all classes not active and make the target class active
+    changeActive(show_type);
 
     // Get the type of items to be shown
-    var show_type = button.id;
     var add_item = 0;
     var new_item_HTML = "";
 
@@ -144,7 +144,7 @@ function populateShopMenu(button){
                         "<p>Cost: <span class='price'>" + testItemList[i].price + "</span></p>" +
                         "<p style='display: none'>Type: <span class='type'>" + testItemList[i].type + "</span></p>" +
                         "<p style='display: none'>Image Link: <span class='img_link'>" + testItemList[i].image + "</span></p>" +
-                        "<p style='display: none'>Desc: <span class='description'>" + testItemList[i].description + "</span></p>"
+                        "<p style='display: none'>Desc: <span class='description'>" + testItemList[i].description + "</span></p>" +
                     "</button>" +
                 "</div>";
         }
@@ -153,11 +153,22 @@ function populateShopMenu(button){
     }
 }
 
+function changeActive(show_type) {
+    var buttons_container = document.getElementById("tab_buttons");
+    console.log(buttons_container);
+
+    for(var i=0; i<buttons_container.children.length; i++){
+        buttons_container.children[i].className = "";
+    }
+
+    document.getElementById(show_type).className = "active";
+}
+
 
 function showDescription(item_button) {
 
-    var popup_status = document.getElementById("popup_base").style.display;
     //Set a variable to contain the DOM element of the popup
+    var popup_status = document.getElementById("popup_base").style.display;
     if(popup_status === "none" || popup_status === ""){
         toggleShopWindow();
     }
@@ -167,17 +178,14 @@ function showDescription(item_button) {
     var description = item_button.getElementsByClassName("description")[0].innerHTML;
     var img_link = item_button.getElementsByClassName("img_link")[0].innerHTML;
 
-
+    // Insert image of item
     var image_container = document.getElementById("item_image");
-    var attrib_container = document.getElementById("item_attributes");
-
-
     image_container.innerHTML = "";
-    attrib_container.innerHTML = "";
-    console.log(img_link);
-
     image_container.innerHTML = "<img src='" + img_link + "' class='shop_item' >";
 
+    // Insert details about the item
+    var attrib_container = document.getElementById("item_attributes");
+    attrib_container.innerHTML = "";
     attrib_container.innerHTML += "<p>Name: " + name + "</p>";
     attrib_container.innerHTML += "<p>Price: " + price +"</p>";
     attrib_container.innerHTML += "<p><em>" + description + "</em></p>";

@@ -1,11 +1,3 @@
-/* What does this do?
-
-document.getElementById("add_field_button").addEventListener("click", function(event){
-    event.preventDefault()
-});
-
-*/
-
 
 /* Let users add more input fields */
 function addField(input_field_wrapper) {
@@ -57,11 +49,6 @@ function addField(input_field_wrapper) {
         add_button.disabled = true;
     }
 
-}
-
-
-function _testPrompt() {
-    prompt("Hello!");
 }
 
 
@@ -233,11 +220,17 @@ function submitQuestion(event) {
             Recyclabears.questions.addQuestion(new_question).then(function (data) {
                 console.log('success --> data :', data);
 
-                // Show success message to user
-                toggleMessageWindow();
-                var msg_container = document.getElementById("msg_insert");
-                msg_container.innerHTML = "Question successfully entered into database!";
-                document.getElementById("close_msg_window").addEventListener("click", toggleCreateWindow);
+               // Show success message to user
+                    toggleMessageWindow();
+                    var msg_container = document.getElementById("msg_insert");
+                    msg_container.innerHTML = "<p>Question successfully entered into database!</p>";
+                    msg_container.innerHTML += "<button id='close_msg'>Close</button>";
+                    document.getElementById("close_msg").addEventListener("click", function(){
+                        toggleMessageWindow();
+                        togglePageWindow();
+                        showPage("create_page");
+                    });
+              
             }).catch(function (err) {
                 console.log('error: ', err);
                 // console.log('text: ', text);
@@ -278,11 +271,16 @@ function previewMultQues(ques_details) {
     // Author of question text
     var creator_HTML = '<p>Created by: ' + ques_details.createdBy + '</p>';
 
+
+    // Back button if they changed their mind
+    var back_button_HTML = '<button onclick="toggleMessageWindow();">Back</button>';
+
     // Submit button to submit this question to database
     var submit_button_HTML = '<button id="submitDataButton">Submit!</button>';
 
+
     return preview_HTML + ques_HTML + options_HTML + correct_HTML + dif_HTML +
-        points_HTML + creator_HTML + submit_button_HTML;
+        points_HTML + creator_HTML + back_button_HTML + submit_button_HTML ;
 
 }
 
