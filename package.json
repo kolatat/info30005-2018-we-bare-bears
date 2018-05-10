@@ -29,6 +29,7 @@
     "ejs": "~2.5.8",
     "express": "~4.16.3",
     "faker": "~4.1.0",
+    "fb": "^2.0.0",
     "mongodb": "^3.0.7",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",

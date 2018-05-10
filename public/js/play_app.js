@@ -3,17 +3,17 @@ function populate() {
 
     console.log("Quiz length: " + quiz.getQuizLength());
     // If no more questions are remaining, display the score
-    if(quiz.isEnded()) {
-       showScores();
+    if (quiz.isEnded()) {
+        showScores();
     }
     else {
         // Display question based on the type
         var ques_obj = quiz.getQuestionIndex();
-        if(ques_obj instanceof Mult_Question){
+        if (ques_obj instanceof Mult_Question) {
             _displayMult(ques_obj);
-        } else if(ques_obj instanceof Blanks_Question){
+        } else if (ques_obj instanceof Blanks_Question) {
             _displayBlanks(ques_obj);
-        } else if (ques_obj instanceof Video){
+        } else if (ques_obj instanceof Video) {
             _displayVideo(ques_obj);
         }
 
@@ -24,7 +24,7 @@ function populate() {
 
 
 /* Populate the page with HTML elements for displaying a Multiple-Choice question */
-function _displayMult(ques_details){
+function _displayMult(ques_details) {
     // Get the container element that will contain the quiz
     var quiz_container = document.getElementById("quiz_container");
     quiz_container.innerHTML = "";  // Reset the container element for each use
@@ -39,7 +39,7 @@ function _displayMult(ques_details){
 
     // HTML Strings containing answer options
     var ans_options_HTML = [];
-    for(var i=0; i<options.length; i++) {
+    for (var i = 0; i < options.length; i++) {
         // Button elements for each answer option
         ans_options_HTML.push(
             '<button id="btn-' + i + '" onclick="guessAnswer(this)">' +
@@ -66,11 +66,11 @@ function _displayBlanks(ques_details) {
     var blanks_index = 0;
 
     // HTML Strings for the statement and button options
-    for(var i = 0; i<ques_details.fill_blanks.length; i++){
-        if(ques_details.fill_blanks[i].type === "fill"){
+    for (var i = 0; i < ques_details.fill_blanks.length; i++) {
+        if (ques_details.fill_blanks[i].type === "fill") {
             statement_HTML += '<pre class="fill-blanks">' + ques_details.fill_blanks[i].value + '</pre>';
         } else {
-            statement_HTML += '<pre id="blanks-' + blanks_index +'" class="fill-blanks"> ________________ </pre>';
+            statement_HTML += '<pre id="blanks-' + blanks_index + '" class="fill-blanks"> ________________ </pre>';
             choices_HTML += '<button onclick="assignIndex(this)"><p class="value">' + ques_details.fill_blanks[i].value + '</p></button>';
 
             blanks_index++;
@@ -87,7 +87,7 @@ function _displayBlanks(ques_details) {
 
 
 /* Populate the page with HTML elements for displaying a video */
-function _displayVideo(video_details){
+function _displayVideo(video_details) {
 
     // Construct the full url of the Youtube video
     var full_url = "https://www.youtube.com/embed/" + video_details.embed;
@@ -101,7 +101,7 @@ function _displayVideo(video_details){
     var ques_HTML = '<p>' + video_details.question + '</p>';
 
     // HTML String for Iframe Element containing the video
-    var iframe_HTML = '<iframe width="420" height="345" src=' + full_url +'></iframe>';
+    var iframe_HTML = '<iframe width="420" height="345" src=' + full_url + '></iframe>';
 
     var proceed_button_HTML = '<div><button onclick="proceedVideo()">Next</button></div>';
 
@@ -134,21 +134,21 @@ function showAnswer(answer_object) {
 
     var quesResultHTML = "";
 
-    if(answer_object.correct == true){
+    if (answer_object.correct == true) {
         quesResultHTML += "<h1>Correct Answer!</h1>";
     } else {
         quesResultHTML += "<h1>Wrong Answer!</h1>";
     }
 
-    if(answer_object.type === "mult"){
+    if (answer_object.type === "mult") {
         quesResultHTML += "<p>Question: <em>" + answer_object.question + "</em></p>";
         quesResultHTML += "<p>Correct answer:  <em>" + answer_object.answer + "</em></p>";
-    } else if (answer_object.type === "blanks"){
+    } else if (answer_object.type === "blanks") {
         quesResultHTML += "<p>Statement:</p>";
 
-        for(var i=0; i<answer_object.question.length; i++){
+        for (var i = 0; i < answer_object.question.length; i++) {
             quesResultHTML += "<pre class='fill-blanks' ";
-            if(answer_object.question[i].type === "fill"){
+            if (answer_object.question[i].type === "fill") {
                 quesResultHTML += ">" + answer_object.question[i].value + "</pre>";
             } else {
                 quesResultHTML += "style='text-decoration: underline'> " + answer_object.question[i].value + "</pre>";
@@ -181,8 +181,6 @@ function showProgress() {
 }
 
 
-
-
 /* When quiz has ended, display the tally of scores */
 function showScores() {
 
@@ -209,9 +207,9 @@ function showScores() {
 var quiz;
 
 // For testing purpose --- Get input from user on number of questions to populate the quiz
-function _generateQuizQuestions(){
+function _generateQuizQuestions() {
     var num_questions = parseInt(prompt("How many questions would you like to answer?"));
-    if(num_questions > 0 && num_questions <= 5){
+    if (num_questions > 0 && num_questions <= 5) {
 
         alert("Starting quiz with " + num_questions + " questions!");
         _startQuiz(num_questions);
@@ -223,59 +221,35 @@ function _generateQuizQuestions(){
 
 
 /* Start the Quiz */
-function _startQuiz(num_ques){
-
+function _startQuiz(num_ques) {
     var question_list = [];
     var mcq = 0;
     var video = 0;
 
 
-    // Is SYNCHRONOUS request ok ??
-    for(var i=0;i<num_ques; i++){
-        $.ajax({
-            url: '/api/questions/random',
-            type: "GET",
-            async: false,
-            success: function(data){
-                if(data.type === "multiple-choice"){
-                    var new_ques = new Mult_Question(data);
-                    question_list.push(new_ques);
-                    mcq++;
-                }
-                else if(data.type === "fill-in-the-blanks"){
-                    //var new_blanks = new Blanks_Question(data);
-                    //question_list.push(new_blanks);
-                    //mcq++;
-                }
-                else if(data.type === "youtube-video"){
-                    var new_vid = new Video(data);
-                    question_list.push(new_vid);
-                    video++;
-                }
-            }
-        });
+    var promises = []
+    for (var i = 0; i < num_ques; i++) {
+        promises.push(Recyclabears.questions.getRandomQuestion().then(function (data) {
 
-
-
-      // Problem with Asynchronous request: make one request to get all data at once?
-        // Then all the following code can simply be moved to on sucess
-      /*  $.get('/api/questions/random', function (data, status, xhr) {
-            console.log(data);
             if (data.type == "multiple-choice") {
-                // display multichoice page
                 var new_ques = new Mult_Question(data);
                 question_list.push(new_ques);
+                mcq++;
+            } else if (data.type == "youtube-video") {
+                var new_vid = new Video(data);
+                question_list.push(new_vid);
+                video++;
             }
-        }, 'json');     */
-
-
+            return 'done';
+        }));
     }
 
-    quiz = new Quiz(question_list, mcq, video);
+    Promise.all(promises).then(function () {
+        quiz = new Quiz(question_list, mcq, video);
 
-
-    //display the quiz
-    populate();
+//display the quiz
+        populate();
+    })
 }
 
 

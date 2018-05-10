@@ -6,10 +6,22 @@
     <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
     <link rel="stylesheet" href="/css/new_rank.css">
     <script type="text/javascript" src="/js/new_rank.js"></script>
-
+    <script src="/js/main.js"></script>
 </head>
 
 <body onload="loadRank()">
+<script>
+    function showFriendsDialog() {
+        FB.ui({
+            method: 'apprequests',
+            message: 'Add friends'
+        }, friendsDialogCallback);
+    }
+
+    function friendsDialogCallback(res) {
+        console.log(res);
+    }
+</script>
 <div id="header">
     <div id="site-name"><a href="/new/world"><img src="/assets/images/icon.png">Recyclabears</a></div>
     <div id="navigation">
@@ -20,7 +32,10 @@
         <a href="/new/shop">Shop</a>
     </div>
 </div>
-
+<div>
+    A big red button
+    <button onclick="showFriendsDialog()">Add Friends</button>
+</div>
 <div id="rank-list" onclick="loadRank()">
 </div>
 

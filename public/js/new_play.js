@@ -1,4 +1,3 @@
-
 /* Toggle the PopUp Window that displays the quizzes */
 function togglePageWindow() {
     //Set a variable to contain the DOM element of the overlay
@@ -36,6 +35,7 @@ function toggleMessageWindow() {
        // document.getElementById("msg_insert").innerHTML = "";
     }
 }
+
 
 /* Show either the Play page or Create page in the PopUp Window */
 function showPage(page_to_show) {
@@ -80,11 +80,11 @@ function _testBlanks(ques_details){
     var choices_HTML = '<div class="fill_buttons">';
     var blanks_index = 0;
 
-    for(var i = 0; i<ques_details.fill_blanks.length; i++){
-        if(ques_details.fill_blanks[i].type === "fill"){
+    for (var i = 0; i < ques_details.fill_blanks.length; i++) {
+        if (ques_details.fill_blanks[i].type === "fill") {
             statement_HTML += '<pre class="fill-blanks">' + ques_details.fill_blanks[i].value + '</pre>';
         } else {
-            statement_HTML += '<pre id="blanks-' + blanks_index +'" class="fill-blanks"> ________________ </pre>';
+            statement_HTML += '<pre id="blanks-' + blanks_index + '" class="fill-blanks"> ________________ </pre>';
             choices_HTML += '<button onclick="assignIndex(this)"><p class="value">' + ques_details.fill_blanks[i].value + '</p></button>';
 
             blanks_index++;
@@ -100,6 +100,7 @@ function _testBlanks(ques_details){
 /* For Fill-in-the-blanks type questions: Remember the indices for order placement of answer choices */
 var blanks_indices = [];
 
+
 /* For Fill-in-the-blanks type questions: Get the next position to be assigned to an answer option */
 function getNextIndex(){
 
@@ -107,8 +108,8 @@ function getNextIndex(){
     if(blanks_indices.length === 0){
         blanks_indices.push(0);
         return 0;
-    } else if(blanks_indices.length === 1){
-        if(blanks_indices[0] === 0){
+    } else if (blanks_indices.length === 1) {
+        if (blanks_indices[0] === 0) {
             blanks_indices.push(1);
             return 1;
         } else {
@@ -118,14 +119,14 @@ function getNextIndex(){
     }
 
     // For arrays with 2 or more items
-    for(var i = 0; i<blanks_indices.length -1; i++){
-        
-        if(i === blanks_indices[i]){
-            if(i+1 === blanks_indices[i+1]){
+    for (var i = 0; i < blanks_indices.length - 1; i++) {
+
+        if (i === blanks_indices[i]) {
+            if (i + 1 === blanks_indices[i + 1]) {
                 continue;
             } else {
-                blanks_indices.splice(i+1, 0, i+1);
-                return i+1;
+                blanks_indices.splice(i + 1, 0, i + 1);
+                return i + 1;
             }
         } else {
             blanks_indices.splice(i, 0, i);
@@ -133,8 +134,8 @@ function getNextIndex(){
         }
     }
 
-    blanks_indices.push(i+1);
-    return i+1;
+    blanks_indices.push(i + 1);
+    return i + 1;
 
 }
 
@@ -147,7 +148,7 @@ function removeIndex(button) {
 
     console.log("Removing: " + remove_value);
     var index = blanks_indices.indexOf(remove_value);
-    if(index > -1){
+    if (index > -1) {
         blanks_indices.splice(index, 1);
     }
 
@@ -168,13 +169,13 @@ function removeIndex(button) {
 function assignIndex(button) {
 
     var cur_index = getNextIndex();
-    var assign_num = cur_index +1;
+    var assign_num = cur_index + 1;
     console.log("Assigning: " + assign_num);
     button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + assign_num + '</span>)</p>';
     button.setAttribute("onclick", "removeIndex(this)");
 
     var preview_text = document.getElementById("blanks-" + cur_index);
-    preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML +" ";
+    preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML + " ";
 }
 
 
@@ -184,7 +185,7 @@ function checkBlanks() {
     var choice_buttons = choices_container.children;
     var answers = [];
 
-    for(var i=0; i<choice_buttons.length; i++){
+    for (var i = 0; i < choice_buttons.length; i++) {
 
         // Get the value of this option
         var value = choice_buttons.getElementsByClassName("value")[0].innerHTML;
@@ -192,12 +193,12 @@ function checkBlanks() {
         // Get the position of answer assigned to this value
         var position_string = choice_buttons[i].getElementsByClassName("assigned_order")[0].innerHTML;
 
-        if(position_string === ""){
+        if (position_string === "") {
             showError();
             return;
         }
 
-        var assigned_position = Number(position_string) -1;
+        var assigned_position = Number(position_string) - 1;
         answers.splice(assigned_position, 0, value);
     }
 
