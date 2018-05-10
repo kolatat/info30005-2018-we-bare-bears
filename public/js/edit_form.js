@@ -161,8 +161,6 @@ function submitQuestion(event) {
                     correct: form["correct_ans"].value,
                     other: answer_options
                 },
-                created: new Date(),
-                createdBy: form["createdBy"].value,
                 difficulty: Number(form["difficulty"].value),
                 points: Number(form["points"].value)
             };

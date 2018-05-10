@@ -10,10 +10,3 @@ interface UserFriends {
     reqSent: string[],
     reqReceived: string[]
 }
-
-interface IUser {
-    fbId: string;
-    friends: UserFriends;
-    name:string;
-    email:string
-}
