@@ -8,26 +8,22 @@
 }
 
 #world-container {
-  background: #ffb9c8;
-  //height: 100vh;
-  //position:relative;
-  //width: 100%;
 
   img{
-    //height: 100vh;
     width: 100%;
   }
   grid-column-start: 1;
   grid-column-end: 4;
 }
 
-
 #items-container{
   grid-column-start: 4;
   grid-column-end: 5;
-  //grid-row-start: 2;
-  //grid-row-end: 8;
   overflow-y: scroll;
+
+  button{
+    font-family: "Raleway", sans-serif;
+  }
 }
 
 #item-to-move, #item-to-move2, .item-to-move {

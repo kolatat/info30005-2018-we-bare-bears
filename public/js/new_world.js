@@ -1,3 +1,16 @@
+window.onresize = onResize;
+
+function onResize(){
+    var items_container = document.getElementById("items-container");
+    var worldDivHeight = document.getElementById('world-img').clientHeight;
+    console.log(worldDivHeight + 'world');
+    items_container.offsetHeight = worldDivHeight;
+    items_container.style.height = worldDivHeight+'px';
+    items_container.clientHeight = worldDivHeight;
+    console.log(items_container.offsetHeight + 'items');
+    console.log(items_container.style.height + 'items');
+}
+
 var testItemList = [
     {
         name: "Tree",
