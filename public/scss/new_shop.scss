@@ -11,47 +11,30 @@ body{
 
 .page-text-container {
   min-height: 100%;
-}
-
-.page-text-container > h1 {
-  margin: 1vh;
-}
-.page-text-container > p {
-  display: inline;
-}
-.page-text-container > button {
-  display: inline;
-}
-
-#tab_buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-
-  align-items: center;
-  border-bottom: none;
-  width: 100%;
+  position: relative;
 
 
-  button{
-    background-color: inherit;
-    display: inline-block;
-    align-items: center;
-    border-bottom: none;
+  h1{
+    margin: 1vh;
   }
 
-  // Let visited links remain the same colour
-  button:visited{
-    background-color: inherit;
+  #wallet{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    span{
+      vertical-align: middle;
+      display: inline-block;
+    }
+
+    img{
+      vertical-align: middle;
+      display: inline-block;
+    }
   }
 
-  button:hover{
-    background-color: $color-beige;
-  }
-  button.active{
-    background-color: $color-green;
-  }
 }
-
 
 .wrapper {
   display: grid;
@@ -86,6 +69,60 @@ body{
   }
 
 }
+
+.item_desc{
+  p{
+    -webkit-margin-after: 0;
+    -webkit-margin-before: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}
+
+.price_container{
+  display: inline-block;
+  span, img{
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+}
+
+
+
+#tab_buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  align-items: center;
+  border-bottom: none;
+  width: 100%;
+
+
+  button{
+    background-color: inherit;
+    display: inline-block;
+    align-items: center;
+    border-bottom: none;
+  }
+
+  // Let visited links remain the same colour
+  button:visited{
+    background-color: inherit;
+  }
+
+  button:hover{
+    background-color: $color-beige;
+  }
+  button.active{
+    background-color: $color-green;
+  }
+}
+
+
+
+
+
 
 /* Style the images in shop menu */
 img.shop_item {
