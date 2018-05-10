@@ -4,8 +4,7 @@
 #container{
   display: grid;
   grid-template-columns: 4fr 1fr;
-  width: 100vw;
-  height: 100vh;
+  overflow: hidden;
 }
 
 #world-container {
@@ -20,22 +19,15 @@
   }
   grid-column-start: 1;
   grid-column-end: 4;
-  grid-row-start: 1;
-  grid-row-end: 8;
 }
 
-#tab-buttons{
-  grid-column-start: 4;
-  grid-column-end: 5;
-  grid-row-start: 1;
-  grid-row-end: 2;
-}
 
 #items-container{
   grid-column-start: 4;
   grid-column-end: 5;
-  grid-row-start: 2;
-  grid-row-end: 8;
+  //grid-row-start: 2;
+  //grid-row-end: 8;
+  overflow-y: scroll;
 }
 
 #item-to-move, #item-to-move2, .item-to-move {
