@@ -10,12 +10,11 @@ body{
 }
 
 #rank-list{
-  justify-content: center;
-  align-items: center;
 }
 
 .rank{
-  display: block;
+  width: max-content;
+
   height: 50px;
   margin: 10px auto;
   cursor: pointer;
