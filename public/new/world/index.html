@@ -11,13 +11,23 @@
 
 <body onload="runDraggables()">
 <div id="header">
-    <div id="site-name"><a href="/new/world"><img src="/assets/images/icon.png">Recyclabears</a></div>
+    <div id="site-name"><img src="/assets/images/icon.png"><a href="/new/world">Recyclabears</a></div>
     <div id="navigation">
+        <div class="dropdown">
+            <a href="" id="user"><img src="/assets/images/header/user.png"></a>
+            <div class="dropdown-content">
+                <span id="score">Score: 10000</span>
+                <span id="honey">Honey Pots: 100</span>
+                <a href="#">View Profile</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
         <a href="/new/play">Play</a>
         <a href="/new/learn">Learn</a>
         <a href="/new/rank">Rank</a>
         <a href="/new/create">Create</a>
         <a href="/new/shop">Shop</a>
+
     </div>
 </div>
 
