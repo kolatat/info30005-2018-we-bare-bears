@@ -1,3 +1,16 @@
+window.onresize = onResize;
+
+function onResize(){
+    var items_container = document.getElementById("items-container");
+    var worldDivHeight = document.getElementById('world-img').clientHeight;
+    console.log(worldDivHeight + 'world');
+    items_container.offsetHeight = worldDivHeight;
+    items_container.style.height = worldDivHeight+'px';
+    items_container.clientHeight = worldDivHeight;
+    console.log(items_container.offsetHeight + 'items');
+    console.log(items_container.style.height + 'items');
+}
+
 var testItemList = [
     {
         name: "Tree",
@@ -79,14 +92,15 @@ var testItemList = [
 
 ];
 
-function populateItemMenu(button){
+function populateItemMenu(show_type){
 
-    // Get the items_container element of the HTML to add items for display
+    // Get the items_container element of the HTML and remove current items
     var items_container = document.getElementById("items-container");
     items_container.innerHTML = "";
 
+    items_container.innerHTML += createItemTabs();
+
     // Get the type of items to be shown
-    var show_type = button.id;
     var add_item = 0;
     var new_item_HTML = "";
 
@@ -117,7 +131,7 @@ function populateItemMenu(button){
         if(add_item == 1){
             var functionName = "showInWorld(" + JSON.stringify(testItemList[i]) + ")";
             new_item_HTML +=
-                "<div>" +
+                "<div class='item'>" +
                 "<button class='item_desc' onclick='" + functionName + "'>" +
                 "<img src='" + testItemList[i].image + "' class='shop_item' >" +
                 "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
@@ -131,9 +145,23 @@ function populateItemMenu(button){
 
         items_container.innerHTML += new_item_HTML;
     }
+
+    var worldDivHeight = document.getElementById('world-img').clientHeight;
+    console.log(worldDivHeight + 'world');
+    items_container.offsetHeight = worldDivHeight;
+    items_container.style.height = worldDivHeight+'px';
+    items_container.clientHeight = worldDivHeight;
+    console.log(items_container.offsetHeight + 'items');
+    console.log(items_container.style.height + 'items');
 }
 
-var id = 0
+function createItemTabs(){
+    var itemTabsHTML = '<button id="tab_all" class="tabs" onclick="populateItemMenu(this.id)">All</button>';
+    itemTabsHTML += '<button id="tab_plants" class="tabs" onclick="populateItemMenu(this.id)">Plants</button>';
+    itemTabsHTML += '<button id="tab_animals" class="tabs" onclick="populateItemMenu(this.id)">Animals</button>';
+    itemTabsHTML += '<button id="tab_bins" class="tabs" onclick="populateItemMenu(this.id)">Bins</button>';
+    return itemTabsHTML;
+}
 
 function showInWorld(obj){
     var objDiv = document.createElement("div");
