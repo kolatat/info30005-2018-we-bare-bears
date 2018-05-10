@@ -9,19 +9,80 @@ body{
   text-align: center;
 }
 
-.page-text-container {
+.page_text_container {
   min-height: 100%;
+  position: relative;
+
+  #wallet{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    span{
+      vertical-align: middle;
+      display: inline-block;
+    }
+
+    img{
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
 }
 
-.page-text-container > h1 {
-  margin: 1vh;
+#items_container {
+  display: grid;
+  justify-content: center;  // Center all the grid cells in the middle of container
+  grid-gap: 10px;
+  grid-auto-rows: 250px;
+  grid-template-columns: repeat(2, 250px);  // between 500 ~ 800 px
+  grid-auto-flow: row;
+  min-width: 0;
+  min-height: 0;
+  width: auto;
+  height: auto;
+  overflow: auto;
+  margin-top: 2vh;
+  padding-bottom: 10px;  /* Add some space between the bottom row grids and the container */
+
+  div {
+    border: 1px dashed black;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;  // Center items vertically within the grid cell
+    justify-content: center;  // Center items horizontally within the grid cell
+    width: 100%;
+    height: 100%;
+
+    button {
+      width: 100%;
+      height: 100%;
+      border-radius: 25px;
+    }
+  }
 }
-.page-text-container > p {
-  display: inline;
+
+
+.item_button, .popup_description_grid{
+  p{
+    -webkit-margin-after: 0;
+    -webkit-margin-before: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
 }
-.page-text-container > button {
-  display: inline;
+
+.price_container{
+  display: inline-block;
+  span, img{
+    vertical-align: middle;
+    display: inline-block;
+  }
+
 }
+
+
 
 #tab_buttons {
   display: grid;
@@ -53,39 +114,9 @@ body{
 }
 
 
-.wrapper {
-  display: grid;
-  justify-content: center;  // Center all the grid cells in the middle of container
-  grid-gap: 10px;
-  grid-auto-rows: 250px;
-  grid-template-columns: repeat(2, 250px);  // between 500 ~ 800 px
-  grid-auto-flow: row;
-  min-width: 0;
-  min-height: 0;
-  width: auto;
-  height: auto;
-  overflow: auto;
-  margin-top: 2vh;
-  padding-bottom: 10px;  /* Add some space between the bottom row grids and the container */
 
-  div {
-    border: 1px dashed black;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;  // Center items vertically within the grid cell
-    justify-content: center;  // Center items horizontally within the grid cell
-    width: 100%;
-    height: 100%;
 
-    button {
-      width: 100%;
-      height: 100%;
-      border-radius: 25px;
-    }
 
-  }
-
-}
 
 /* Style the images in shop menu */
 img.shop_item {
@@ -95,19 +126,19 @@ img.shop_item {
 
 
 @media only screen and (min-width: 800px) {
-  .wrapper{
+  #items_container{
     grid-template-columns: repeat(3, 250px);
   }
 }
 
 @media only screen and (min-width: 1100px) {
-  .wrapper{
+  #items_container{
     grid-template-columns: repeat(4, 250px);
   }
 }
 
 @media only screen and (min-width: 1350px) {
-  .wrapper{
+  #items_container{
     grid-template-columns: repeat(5, 250px);
   }
 }
@@ -115,7 +146,7 @@ img.shop_item {
 
 /* Phones with wider screens */
 @media only screen and (max-width: 500px){
-  .wrapper{
+  #items_container{
 
     grid-template-columns: repeat(2, 175px);
     grid-auto-rows: 175px;
@@ -125,11 +156,23 @@ img.shop_item {
     max-width: 105px;
     max-height: 105px;
   }
+
+  .page_text_container{
+
+    #wallet{
+      position: relative;
+      top: 0;
+      right: 0;
+    }
+
+  }
+
+
 }
 
 /* Phones with narrower screens */
 @media only screen and (max-width: 400px){
-  .wrapper{
+  #items_container{
 
     grid-template-columns: repeat(2, 150px);
     grid-auto-rows: 150px;
@@ -144,7 +187,7 @@ img.shop_item {
 
 /* Most likely (larger) phones in landscape orientation */
 @media only screen and (max-height: 500px){
-  .wrapper{
+  #items_container{
     grid-template-columns: repeat(3, 150px);
     grid-auto-rows: 150px;
   }
@@ -157,7 +200,7 @@ img.shop_item {
 
 /* Most likely (larger) phones in landscape orientation */
 @media only screen and (max-height: 500px) and (min-width: 650px){
-  .wrapper{
+  #items_container{
     grid-template-columns: repeat(4, 150px);
     grid-auto-rows: 150px;
   }

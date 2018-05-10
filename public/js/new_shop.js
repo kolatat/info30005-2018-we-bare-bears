@@ -138,19 +138,54 @@ function populateShopMenu(show_type){
         if(add_item == 1){
             new_item_HTML +=
                 "<div>" +
-                    "<button class='item_desc' onclick='showDescription(this)'>" +
+                    "<button class='item_button' onclick='showDescription(" + JSON.stringify(testItemList[i]) + ")'>" +
                         "<img src='" + testItemList[i].image + "' class='shop_item' >" +
                         "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
-                        "<p>Cost: <span class='price'>" + testItemList[i].price + "</span></p>" +
-                        "<p style='display: none'>Type: <span class='type'>" + testItemList[i].type + "</span></p>" +
-                        "<p style='display: none'>Image Link: <span class='img_link'>" + testItemList[i].image + "</span></p>" +
-                        "<p style='display: none'>Desc: <span class='description'>" + testItemList[i].description + "</span></p>" +
+                        "<p class='price_container'>" +
+                            "<span>Cost: </span>" +
+                            "<span class='price'>" + testItemList[i].price + "</span>" +
+                            "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
+                        "</p>" +
                     "</button>" +
                 "</div>";
         }
 
         items_container.innerHTML += new_item_HTML;
     }
+}
+
+function showDescription(item_obj) {
+    //Set a variable to contain the DOM element of the popup
+    var popup_status = document.getElementById("popup_base").style.display;
+    if(popup_status === "none" || popup_status === ""){
+        toggleShopWindow();
+    }
+
+    var name = item_obj.name;
+    var price = item_obj.price;
+    var description = item_obj.description;
+    var img_link = item_obj.image;
+
+    // Insert image of item
+    var image_container = document.getElementById("item_image");
+    image_container.innerHTML = "";
+    image_container.innerHTML = "<img src='" + img_link + "' class='shop_item' >";
+
+    // Insert details about the item
+    var attrib_container = document.getElementById("item_attributes");
+    attrib_container.innerHTML = "";
+    attrib_container.innerHTML += "<p>Name: " + name + "</p>";
+    attrib_container.innerHTML +=
+        "<p class='price_container'>" +
+            "<span>Cost: </span>" +
+            "<span class='price'>" + price + "</span>" +
+            "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
+        "</p>"
+
+
+    attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
+    attrib_container.innerHTML += "<button>Buy Item</button>";
+    attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
 }
 
 function changeActive(show_type) {
@@ -165,32 +200,25 @@ function changeActive(show_type) {
 }
 
 
-function showDescription(item_button) {
+// Used on smaller screens: Toggle the navigation menu for view
+function toggleNavMenu() {
+    var nav_menu = document.getElementById("navigation");
+    if(nav_menu.style.display === "none" || nav_menu.style.display === ""){
+        nav_menu.style.display = "inline-block";
 
-    //Set a variable to contain the DOM element of the popup
-    var popup_status = document.getElementById("popup_base").style.display;
-    if(popup_status === "none" || popup_status === ""){
-        toggleShopWindow();
+    } else {
+        nav_menu.style.display = "none";
+    }
+}
+
+// Check size of window for handling of navigation element styles
+$(window).resize(function(){
+
+    if(window.matchMedia("(max-width: 720px)").matches){
+        // The screen is 720px or less -- Do nothing
+    } else {
+        // Clear inline styles when window is resized beyond 720px
+        $('#navigation').attr('style', '');
     }
 
-    var name = item_button.getElementsByClassName("name")[0].innerHTML;
-    var price = item_button.getElementsByClassName("price")[0].innerHTML;
-    var description = item_button.getElementsByClassName("description")[0].innerHTML;
-    var img_link = item_button.getElementsByClassName("img_link")[0].innerHTML;
-
-    // Insert image of item
-    var image_container = document.getElementById("item_image");
-    image_container.innerHTML = "";
-    image_container.innerHTML = "<img src='" + img_link + "' class='shop_item' >";
-
-    // Insert details about the item
-    var attrib_container = document.getElementById("item_attributes");
-    attrib_container.innerHTML = "";
-    attrib_container.innerHTML += "<p>Name: " + name + "</p>";
-    attrib_container.innerHTML += "<p>Price: " + price +"</p>";
-    attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
-    attrib_container.innerHTML += "<button>Buy Item</button>";
-    attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
-
-
-}
+});
