@@ -70,8 +70,6 @@ function _displayMult(ques_details) {
 
 /* Populate the page with HTML elements for displaying a fill-in-the-blanks-type question */
 function _displayBlanks(ques_details) {
-    console.log("Inside display blanks");
-    console.log(ques_details);
 
     // Get the container element that will contain the quiz
     var quiz_container = document.getElementById("quiz_container");
@@ -84,11 +82,9 @@ function _displayBlanks(ques_details) {
     var choice_options = [];
 
 
-    console.log("Before for loop");
     // HTML Strings for the statement
     for (var i = 0; i < ques_details.question.length; i++) {
 
-        console.log("Inside for loop");
         if (ques_details.question[i].type === "fill") {
             statement_HTML += '<pre class="fill-blanks">' + ques_details.question[i].value + '</pre>';
         } else {

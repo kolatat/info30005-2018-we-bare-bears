@@ -106,6 +106,8 @@ var blanks_indices = [];
 /* For Fill-in-the-blanks type questions: Get the next position to be assigned to an answer option */
 function getNextIndex(){
 
+    console.log("In getNextIndex() function");
+    console.log(blanks_indices);
     // Base case for arrays with 0 or 1 items
     if(blanks_indices.length === 0){
 
@@ -150,10 +152,13 @@ function removeIndex(button) {
     console.log(remove_value);
 
     console.log("Removing: " + remove_value);
+    console.log(blanks_indices);
     var index = blanks_indices.indexOf(remove_value);
     if (index > -1) {
         blanks_indices.splice(index, 1);
     }
+    console.log("After removing");
+    console.log(blanks_indices);
 
     var remove_container = button.getElementsByClassName("assigned_container")[0];
     remove_container.remove();
@@ -173,6 +178,8 @@ function removeIndex(button) {
 function assignIndex(button) {
 
     var cur_index = getNextIndex();
+    console.log("After getNexIndex() function");
+    console.log(blanks_indices);
     var assign_num = cur_index + 1;
     console.log("Assigning: " + assign_num);
     button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + assign_num + '</span>)</p>';

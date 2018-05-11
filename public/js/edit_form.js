@@ -165,8 +165,6 @@ function submitQuestion(event) {
                 points: Number(form["points"].value)
             };
 
-            //console.log(new_question);
-
             // Preview the question to user before POST-ing to database
             toggleMessageWindow();
             var msg_container = document.getElementById("msg_insert");
