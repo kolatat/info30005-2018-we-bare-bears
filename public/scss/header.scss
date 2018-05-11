@@ -184,4 +184,11 @@
 }
 
 
+.price_container{
+  display: inline-block;
+  span, img{
+    vertical-align: middle;
+    display: inline-block;
+  }
 
+}

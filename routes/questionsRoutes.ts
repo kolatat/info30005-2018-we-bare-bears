@@ -112,10 +112,23 @@ router.get('/:qid', (req, res, next) => {
     });
 });
 
+router.get('/testQuery', (req, res, next) => {
+    store.collection('questions').find({
+        price: null
+    }).toArray(function (error, documents) {
+        if(error){
+            throw error;
+        }
+        res.send(documents);
+    });
+
+});
+
 
 /* New router(s) added below ---- */
-// Check if answer is correct and returns the correct answer
-router.get('/check/:qid', (req, res, next) => {
+/* To hide/delete Mei's horrible accident */
+
+router.delete('/:qid', (req,res,next) => {
     var objID;
     if (!/^[0-9a-f]{24}$/i.test(req.params.qid)) {
         Log('does not match qid, referring...');
@@ -132,42 +145,24 @@ router.get('/check/:qid', (req, res, next) => {
         return;
     }
 
-    console.log("In router");
-    console.log(objID);
-    console.log(req.body.ans);
-
-    store.collection("questions").replaceOne({
+    store.collection("questions").deleteOne({
         _id: objID
-    }, req.body).then(r => {
-
-        // Checking whether the selected answer is correct
-        let answered = req.body.ans;
-        let result = false;
-
-        if(r.type == "multiple-choice"){
-            if(r.answers.correct == answered){
-                result = true;
-            }
-        } else if (r.type == "fill-in-the-blanks"){
-            if(r.answers == answered){
-                result = true;
-            }
+    }).then(doc => {
+        if (doc.n == 0) {
+            res.status(404);
+            res.send({
+                "message": "question not found; nothing deleted"
+            });
+        } else {
+            res.send(doc);
         }
 
-        // Send the result
-        res.send({
-            correct: result,
-            answer: r.answers.correct
-        });
     }).catch(err => {
-        res.status(500);
+        Log(err);
         res.send({
             "message": err.message
         });
     });
-
-
 });
-
 
 export default router;

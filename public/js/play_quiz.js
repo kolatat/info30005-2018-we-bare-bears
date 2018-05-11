@@ -6,21 +6,14 @@ function Quiz(max_ques) {
     this.mcq = 0; // Number of Multiple Choice questions
     this.videos = 0; // Number of videos
     this.maxQues = max_ques;
+    this.totalScore = 0;
 }
 
 
 /* Get the current question */
 Quiz.prototype.getQuestionIndex = function() {
     return this.questions[this.questionIndex];
-}
-
-/* *Unused function* Guess the answer selected by user */
-Quiz.prototype.guess = function(answer) {
-    if(this.getQuestionIndex().isCorrectAnswer(answer)) {
-        this.score++;
-    }
-    this.questionIndex++;
-}
+};
 
 
 /* Guess the answer selected by user and returns the object */
@@ -32,13 +25,15 @@ Quiz.prototype.guessAnswer = function (answer) {
     console.log(ans_obj);
     if(ans_obj.correct){
         this.score++;
+        this.totalScore += ans_obj.points;
+        console.log("Current points: " + this.points);
     }
     this.questionIndex++;
 
     // Return the correct answer to be shown to user
     return ans_obj;
 
-}
+};
 
 
 /* Move along the list of questions (used for video-type questions */

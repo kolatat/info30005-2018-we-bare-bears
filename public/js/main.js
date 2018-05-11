@@ -76,46 +76,21 @@ var Recyclabears = {
             // TODO add API endpoint to update list of answered questions and user score
 
 
-            return Recyclabears.__apiCall('GET', '/api/questions/check/' + qid, {ans: answer});
-
-            // // To be modified??
-            // Recyclabears.__apiCall('GET', '/api/questions/' + qid).then(function(data){
-            //     var answer_obj = {
-            //         question: data.question,
-            //         correct: false
-            //     };
-            //     if(data.type === "multiple-choice"){
-            //         if(data.answers.correct === answer){
-            //             answer_obj.correct = true;
-            //             answer_obj.answer = data.answers.correct;
-            //             answer_obj.type = "mult";
-            //         }
-            //     } else if(data.type === "fill-in-the-blanks"){
-            //         if(data.answers === answer){
-            //             answer_obj.correct = true;
-            //             answer_obj.type = "blanks";
-            //         }
-            //     }
-            //
-            //
-            //     // add honey pots if ans true
-            //     if(answer_obj.correct == true){
-            //         req = {
-            //             action: "add",
-            //             value: data.points
-            //         };
-            //         Recyclabears.__apiCall('PUT', '/api/users/me/wallet', req);
-            //     }
-            //
-            //     console.log(answer_obj);
-            //     return answer_obj;
-            // });
-            // // End to be modified ??
-
         },
         addQuestion: function (data) {
             return Recyclabears.__apiCall('POST', '/api/questions', data);
+        },
+
+
+        /* Coz I accidently modified a bunch of questions and had to remove them ;( ....  */
+        deleteQuestion: function(qid) {
+            return Recyclabears.__apiCall('DELETE', '/api/questions/' +qid);
+        },
+        getQuestion: function (qid) {
+            return Recyclabears.__apiCall('GET', '/api/questions/testQuery');
         }
+
+
     },
     users: {
         me: function () {
@@ -141,11 +116,11 @@ var Recyclabears = {
 
 
         /* New calls below */
-        updateWallet: function(action, amount){
+        updateWallet: function(action, value){
 
             return Recyclabears.__apiCall('PUT', '/api/users/me/wallet/', {
                 action: action,
-                value: amount
+                value: value
             });
         }
     }

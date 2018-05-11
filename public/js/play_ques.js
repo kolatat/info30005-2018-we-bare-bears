@@ -5,35 +5,30 @@ function Mult_Question(ques_obj){
     this.choice = ques_obj.answers.other;
     this.answer = ques_obj.answers.correct;
     this.id = ques_obj._id;
-    this.points = ques_obj.points;
+    this.points = Number(ques_obj.points);
 //    this.difficulty = ques_obj.difficulty;
 }
 
 
 /* Check if the answer chosen by user is correct and get the correct answer */
 Mult_Question.prototype.getCorrectAnswer = function (choice) {
- /*
 
-    return ans_obj;*/
+    var ans_obj = {
+        question: this.question,
+        answer: this.answer,
+        correct: this.answer === choice,
+        type: "mult",
+        points: this.points
+    };
 
-    console.log(this.id);
-    Recyclabears.questions.answerQuestion(this.id, choice).then(function(data){
-        var ans_obj = {
-            question: this.question,
-            answer: data.answer,
-            correct: data.correct,
-            type: "mult"
-        };
+    if(ans_obj.correct === true){
+        Recyclabears.users.updateWallet("add", Number(this.points)).then(function () {
+            updatePrice();
+        });
+    }
 
+    return ans_obj;
 
-        console.log("Sindie play ques");
-        console.log(ans_obj);
-        if(ans_obj.correct == true){
-            Recyclabears.users.updateWallet("add", this.points);
-        }
-
-        return ans_obj;
-    });
 
 };
 
@@ -41,12 +36,14 @@ function Blanks_Question(ques_obj){
     this.question = ques_obj.fill_blanks;
     this.answer = ques_obj.answers;
     this.id = ques_obj.id;
+    this.points = Number(ques_obj.points);
 }
 
 Blanks_Question.prototype.getCorrectAnswer = function(answer_order){
     // answer_order is an array of strings containing the answer choices in order specified by user
 
-    /*var correct = true;
+    console.log(answer_order);
+    var correct = true;
 
     for(var i=0; i<answer_order.length; i++){
         if(answer_order[i] === this.answer[i]){
@@ -60,15 +57,19 @@ Blanks_Question.prototype.getCorrectAnswer = function(answer_order){
     var ans_obj = {
         question: this.question,
         correct: correct,
-        type: "blanks"
+        type: "blanks",
+        points: this.points
+    };
+
+    if(ans_obj.correct === true){
+        Recyclabears.users.updateWallet("add", Number(this.points)).then(function () {
+            updatePrice();
+        });
     }
-
-    return ans_obj;*/
-
-    return Recyclabears.questions.answerQuestion(this.id, answer_order);
+    return ans_obj;
 
 
-}
+};
 
 function Video(ques_obj){
     this.question = ques_obj.question;
@@ -76,4 +77,12 @@ function Video(ques_obj){
 //  this.points = ques_obj.points;
 
 
+}
+
+
+
+function getRandomQuestionOk() {
+    Recyclabears.questions.getRandomQuestion().then(function (data) {
+        console.log(data);
+    })
 }
