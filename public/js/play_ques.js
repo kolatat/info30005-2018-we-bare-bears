@@ -28,11 +28,11 @@ Mult_Question.prototype.getCorrectAnswer = function (choice) {
 
 function Blanks_Question(ques_obj){
     this.question = ques_obj.fill_blanks;
-    this.answer = ques_obj.answer;
+    this.answer = ques_obj.answers;
 }
 
 Blanks_Question.prototype.getCorrectAnswer = function(answer_order){
-    // answer_order is an array containing the answer choices in order specified by user
+    // answer_order is an array of strings containing the answer choices in order specified by user
 
     var correct = true;
 

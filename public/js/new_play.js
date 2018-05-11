@@ -192,7 +192,7 @@ function checkBlanks() {
     for (var i = 0; i < choice_buttons.length; i++) {
 
         // Get the value of this option
-        var value = choice_buttons.getElementsByClassName("value")[0].innerHTML;
+        var value = choice_buttons[i].getElementsByClassName("value")[0].innerHTML;
 
         // Get the position of answer assigned to this value
         var position_string = choice_buttons[i].getElementsByClassName("assigned_order")[0].innerHTML;

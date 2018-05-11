@@ -11,7 +11,7 @@
     <script type="text/javascript" src="/js/header.js"></script>
     <script src="/js/main.js"></script>
 </head>
-<body onload="populateShopMenu('tab_all')">
+<body onload="populateShopMenu('tab_all');">
 
 <!-- Navigation Menu -->
 <div id="header">
@@ -23,39 +23,40 @@
     <div id="site-name"><img src="/assets/images/icon.png">Recyclabears</a></div>
     <div id="navigation">
 
-        <!-- User Profile -->
-        <div class="dropdown">
-            <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
-            <div class="dropdown-content">
-                <span id="score">Score: 10000</span>
-                <span id="honey">Honey Pots: 100</span>
-                <a href="#">View Profile</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-        <!-- End User Profile -->
-
         <a href="/new/world">World</a>
         <a href="/new/play">Play</a>
         <a href="/new/learn">Learn</a>
         <a href="/new/rank">Rank</a>
         <a href="/new/shop" class="active">Shop</a>
+
+        <!-- User Profile -->
+        <div class="dropdown">
+            <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
+            <div class="dropdown-content">
+                <span id="score">Score: 10000</span>
+                <span id="honey" class="honey_wallet">Honey Pots: 100</span>
+                <a href="#">View Profile</a>
+                <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="medium"
+                     data-button-type="login_with"
+                     data-auto-logout-link="true" data-use-continue-as="true">
+                </div>
+            </div>
+        </div>
+        <!-- End User Profile -->
+
     </div>
 </div>
 <!-- End Navigation Menu -->
 
 <div class="page_text_container">
-
     <h1 class="page_text">World Shop</h1>
     <p class="page_text">Click on an item to learn more!</p>
-
     <div id="wallet">
         <div>You currently have:</div>
-        <span>100</span>
+        <span class="honey_wallet">100</span>
         <img src="/assets/images/honey_pot.png" width="25px" height="25px">
     </div>
 </div>
-
 
 <div id="tab_buttons">
     <button id="tab_all" class="active" onclick="populateShopMenu(this.id)"><h3>All</h3></button>

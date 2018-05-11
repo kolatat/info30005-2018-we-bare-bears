@@ -27,26 +27,27 @@
     <div id="site-name"><img src="/assets/images/icon.png">Recyclabears</a></div>
     <div id="navigation">
 
-        <!-- User Profile -->
-        <div class="dropdown">
-            <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
-            <div class="dropdown-content">
-                <span id="score">Score: 10000</span>
-                <span id="honey">Honey Pots: 100</span>
-                <a href="#">View Profile</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-        <!-- End User Profile -->
-
         <a href="/new/world">World</a>
         <a href="/new/play" class="active">Play</a>
         <a href="/new/learn">Learn</a>
         <a href="/new/rank">Rank</a>
         <a href="/new/shop">Shop</a>
-        <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="medium"
-             data-button-type="login_with"
-             data-auto-logout-link="true" data-use-continue-as="true"></div>
+
+        <!-- User Profile -->
+        <div class="dropdown">
+            <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
+            <div class="dropdown-content">
+                <span id="score">Score: 10000</span>
+                <span id="honey" class="honey_wallet">Honey Pots: 100</span>
+                <a href="#">View Profile</a>
+                <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="medium"
+                     data-button-type="login_with"
+                     data-auto-logout-link="true" data-use-continue-as="true">
+                </div>
+            </div>
+        </div>
+        <!-- End User Profile -->
+
     </div>
 </div>
 <!-- End Navigation Menu -->
@@ -63,7 +64,7 @@
     </div>
 
     <div>
-        <button onclick='showPage("play_page")'>
+        <button onclick='showPage("play_page");_generateQuizQuestions();'>
             <img class="flag-img" src="/assets/images/png/flag-green.png">
         </button>
 
@@ -92,11 +93,6 @@
 
         <!-- Temporary buttons to test the pages -->
         <div class="toggle_buttons">
-            <p>
-                <button onclick="_generateQuizQuestions()">Test Get Multiple Questions</button>
-                <button id="blanks" onclick="_testBlanks(getRandomBlanks())">Test Fill in the Blanks</button>
-            </p>
-
             <button onclick="togglePageWindow()">Close</button>
         </div>
 

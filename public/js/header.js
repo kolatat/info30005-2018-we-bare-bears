@@ -25,3 +25,32 @@ $(window).resize(function(){
     // If the screen is 720px or less -- do nothing
 
 });
+
+
+/* Updates the strings that should show the user's waller amount */
+updatePrice = function() {
+    Recyclabears.users.me().then( function(data) {
+        var user_name = data.name;
+        var honey_amount = data.wallet;
+
+        // Load all the HTML Elements that needs to be inserted with the 'honey_amount'
+        var name_span = document.getElementById("score");
+        name_span.innerHTML = user_name;
+
+        // Load all the HTML Elements that needs to be inserted with the 'honey_amount'
+        var honey_spans = document.getElementsByClassName("honey_wallet");
+        for(var i=0; i<honey_spans.length; i++){
+
+            // For editing value in profile dropdown menu in header
+            if(honey_spans[i].id === "honey"){
+                honey_spans[i].innerHTML = "Honey Pots: " + honey_amount;
+            }
+            // Most likely for editing the current amount in user's wallet on Shop Page
+            else {
+                honey_spans[i].innerHTML = honey_amount;
+            }
+        }
+        return 'done';
+    });
+};
+

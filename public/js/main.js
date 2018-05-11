@@ -11,6 +11,7 @@ window.fbAsyncInit = function () {
     });
     FB.AppEvents.logPageView();
     FB.getLoginStatus(statusChangeCallback);
+
 };
 
 (function (d, s, id) {
@@ -36,6 +37,12 @@ function statusChangeCallback(response) {
             wbbInit();
         }
     }
+}
+
+function wbbInit() {
+
+    // Code in header.js -- updates the strings that should show the user's waller amount
+    updatePrice();
 }
 
 var Recyclabears = {
