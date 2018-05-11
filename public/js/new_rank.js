@@ -1,9 +1,3 @@
-function wbbInit() {
-
-    // Code in header.js -- updates the strings that should show the user's waller amount
-    loadRank();
-}
-
 function generateFriends(){
     var friends = [];
     var name;
@@ -161,6 +155,7 @@ function acceptRequest(id){
     Recyclabears.users.acceptFriendRequest(id).then(function(data){
         console.log(data);
         closeProfile();
+        loadRank();
     });
 }
 
@@ -168,6 +163,7 @@ function deleteRequestReceived(id){
     Recyclabears.users.deleteFriendRequest(id).then(function(data){
         console.log(data);
         closeProfile();
+        loadRank();
         // var friendButton = document.getElementById('friend-action');
         // friendButton.setAttribute('onclick', 'addFriend('+id+')');
         // friendButton.innerHTML = "Add Friend";
@@ -192,5 +188,6 @@ function sendUnfriend(id){
     console.log(id);
     Recyclabears.users.unFriend(id).then(function(data) {
         closeProfile();
+        loadRank();
     })
 }
