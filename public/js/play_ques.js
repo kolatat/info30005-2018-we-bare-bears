@@ -5,24 +5,35 @@ function Mult_Question(ques_obj){
     this.choice = ques_obj.answers.other;
     this.answer = ques_obj.answers.correct;
     this.id = ques_obj._id;
-//    this.points = ques_obj.points;
+    this.points = ques_obj.points;
 //    this.difficulty = ques_obj.difficulty;
 }
 
 
 /* Check if the answer chosen by user is correct and get the correct answer */
 Mult_Question.prototype.getCorrectAnswer = function (choice) {
- /*   var ans_obj = {
-        question: this.question,
-        answer: this.answer,
-        correct: this.answer === choice,
-        type: "mult"
-    }
+ /*
 
     return ans_obj;*/
 
     console.log(this.id);
-    return Recyclabears.questions.answerQuestion(this.id, choice);
+    Recyclabears.questions.answerQuestion(this.id, choice).then(function(data){
+        var ans_obj = {
+            question: this.question,
+            answer: data.answer,
+            correct: data.correct,
+            type: "mult"
+        };
+
+
+        console.log("Sindie play ques");
+        console.log(ans_obj);
+        if(ans_obj.correct == true){
+            Recyclabears.users.updateWallet("add", this.points);
+        }
+
+        return ans_obj;
+    });
 
 };
 

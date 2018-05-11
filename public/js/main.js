@@ -71,43 +71,46 @@ var Recyclabears = {
         answerQuestion: function (qid, answer) {
             req = {
                 qid: qid,
-                answer: answer
+                ans: answer
             };
             // TODO add API endpoint to update list of answered questions and user score
 
-            // To be modified??
-            Recyclabears.__apiCall('GET', '/api/questions/' + qid).then(function(data){
-                var answer_obj = {
-                    question: data.question,
-                    correct: false
-                };
-                if(data.type === "multiple=choice"){
-                    if(data.answers.correct === answer){
-                        answer_obj.correct = true;
-                        answer_obj.answer = data.answers.correct;
-                        answer_obj.type = "mult";
-                    }
-                } else if(data.type === "fill-in-the-blanks"){
-                    if(data.answers === answer){
-                        answer_obj.correct = true;
-                        answer_obj.type = "blanks";
-                    }
-                }
 
+            return Recyclabears.__apiCall('GET', '/api/questions/check/' + qid, {ans: answer});
 
-                // add honey pots if ans true
-                if(answer_obj.correct == true){
-                    req = {
-                        action: "add",
-                        value: data.points
-                    };
-                    Recyclabears.__apiCall('PUT', '/api/users/me/wallet', req);
-                }
-
-                console.log(answer_obj);
-                return answer_obj;
-            });
-            // End to be modified ??
+            // // To be modified??
+            // Recyclabears.__apiCall('GET', '/api/questions/' + qid).then(function(data){
+            //     var answer_obj = {
+            //         question: data.question,
+            //         correct: false
+            //     };
+            //     if(data.type === "multiple-choice"){
+            //         if(data.answers.correct === answer){
+            //             answer_obj.correct = true;
+            //             answer_obj.answer = data.answers.correct;
+            //             answer_obj.type = "mult";
+            //         }
+            //     } else if(data.type === "fill-in-the-blanks"){
+            //         if(data.answers === answer){
+            //             answer_obj.correct = true;
+            //             answer_obj.type = "blanks";
+            //         }
+            //     }
+            //
+            //
+            //     // add honey pots if ans true
+            //     if(answer_obj.correct == true){
+            //         req = {
+            //             action: "add",
+            //             value: data.points
+            //         };
+            //         Recyclabears.__apiCall('PUT', '/api/users/me/wallet', req);
+            //     }
+            //
+            //     console.log(answer_obj);
+            //     return answer_obj;
+            // });
+            // // End to be modified ??
 
         },
         addQuestion: function (data) {
@@ -135,6 +138,9 @@ var Recyclabears = {
         deleteFriendRequest: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/requests/' + fbId);
         },
+
+
+        /* New calls below */
         updateWallet: function(action, amount){
 
             return Recyclabears.__apiCall('PUT', '/api/users/me/wallet/', {

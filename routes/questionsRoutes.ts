@@ -75,7 +75,7 @@ router.put('/:qid', (req, res, next) => {
             "message": err.message
         });
     });
-})
+});
 
 router.get('/:qid', (req, res, next) => {
     var objID;
@@ -110,6 +110,64 @@ router.get('/:qid', (req, res, next) => {
             "message": err.message
         });
     });
-})
+});
+
+
+/* New router(s) added below ---- */
+// Check if answer is correct and returns the correct answer
+router.get('/check/:qid', (req, res, next) => {
+    var objID;
+    if (!/^[0-9a-f]{24}$/i.test(req.params.qid)) {
+        Log('does not match qid, referring...');
+        next();
+        return;
+    }
+    try {
+        objID = ObjectID.createFromHexString(req.params.qid);
+    } catch (e) {
+        res.status(400);
+        res.send({
+            "message": e.message
+        });
+        return;
+    }
+
+    console.log("In router");
+    console.log(objID);
+    console.log(req.body.ans);
+
+    store.collection("questions").replaceOne({
+        _id: objID
+    }, req.body).then(r => {
+
+        // Checking whether the selected answer is correct
+        let answered = req.body.ans;
+        let result = false;
+
+        if(r.type == "multiple-choice"){
+            if(r.answers.correct == answered){
+                result = true;
+            }
+        } else if (r.type == "fill-in-the-blanks"){
+            if(r.answers == answered){
+                result = true;
+            }
+        }
+
+        // Send the result
+        res.send({
+            correct: result,
+            answer: r.answers.correct
+        });
+    }).catch(err => {
+        res.status(500);
+        res.send({
+            "message": err.message
+        });
+    });
+
+
+});
+
 
 export default router;
