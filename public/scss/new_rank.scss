@@ -55,7 +55,7 @@ body{
 }
 
 .rank:hover{
-  background: $color-green;
+  color: $color-green;
 }
 
 /* Styling the overlay covering the whole screen to prevent users from clicking layer below */
@@ -88,4 +88,19 @@ body{
   border-color: $color-beige; //Change border colour
   z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
 
+}
+
+#friends-content{
+  text-align: center;
+}
+
+.user-div-title{
+  text-align: center;
+  font-size: 1.3em;
+  padding: 5px;
+  background: $color-beige;
+  font-family: "Averia Libre", cursive;
+  font-size: 2em;
+  display: inline-block;
+  margin-top: 15px;
 }

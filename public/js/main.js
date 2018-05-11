@@ -43,6 +43,9 @@ function wbbInit() {
 
     // Code in header.js -- updates the strings that should show the user's waller amount
     updatePrice();
+    if(document.title == "Recylabears | Rank"){
+        loadRank();
+    }
 }
 
 var Recyclabears = {
@@ -99,6 +102,9 @@ var Recyclabears = {
         },
         deleteFriendRequest: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/requests/' + fbId);
+        },
+        unFriend: function(fbId) {
+            return Recyclabears.__apiCall('DELETE', '/api/users/me/friends/' + fbId);
         }
     }
 }

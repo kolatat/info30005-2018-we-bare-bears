@@ -41,6 +41,46 @@ export function createRouter(store: model.MongoStore) {
         });
     });
 
+
+    // returns list of friends
+    router.get('/me/friends', (req: any, res) => {
+        res.send({
+            requests: req.user.friends.list
+        });
+    });
+
+    // unfriend
+    router.delete('/me/friends/:uid', (req: any, res) => {
+        console.log("in delete friend")
+        store.collection("users").updateOne({
+            fbId: req.user.fbId
+        }, {
+           $pull: {
+               "friends.list": req.params.uid
+           }
+        }).then(r => {
+            res.send({result: r});
+        }).catch(err => {
+            res.send({message: err.message});
+        });
+        store.collection("users").updateOne({
+            fbId: req.params.uid
+        }, {
+            $pull: {
+                "friends.list": req.user.fbId
+            }
+        }).then(r => {
+
+            console.log(r);
+            // res.send({result: r});
+        }).catch(err => {
+            console.log("error");
+            console.log(err.message);
+
+            // res.send({message: err.message});
+        });
+    });
+
     router.get('/me/requests', (req: any, res) => {
         res.send({
             requests: req.user.friends.reqReceived
@@ -64,65 +104,77 @@ export function createRouter(store: model.MongoStore) {
                 message: err.message
             });
         });
+        // remove request from user who sent it
+        store.collection("users").updateOne({
+            fbId: req.params.uid
+        }, {
+            $pull: {
+                "friends.reqSent": req.user.fbId
+            }
+        }).then(r => {
+            res.send({
+                result: r
+            });
+        }).catch(err => {
+            res.send({
+                message: err.message
+            });
+        });
     });
 
+    router.put('/me/requests/:uid', (req: any, res) => {
 
-    /* ******************************
-    TO BE UN-COMMENTED
-    *********************************
-        router.put('/me/requests/:uid', (req: any, res) => {
-            // accepts a friend request
-            // make sure they actually sent a request & they exists!
-            if (req.body.action != 'accept') {
-                res.status(400).send({
-                    "message": "no understand request"
+
+        // accepts a friend request
+        // make sure they actually sent a request & they exists!
+        if (req.body.action != 'accept') {
+            res.status(400).send({
+                "message": "no understand request"
+            });
+            return;
+        }
+        console.log("in userroutes");
+        getUserByFbId(req.params.uid).then(friend => {
+            if (friend.friends.reqSent.indexOf(req.user.fbId) < 0) {
+                console.log(req.user.fbId);
+                console.log(friend.friends.reqSent);
+                console.log('to send 404');
+                res.status(404).send({
+                    message: "They are not your friend. (Never sent a request. Try requesting them?"
                 });
                 return;
             }
-            getUserByFbId(req.params.uid).then(friend => {
-                if (!(req.params.uid in friend.friends.reqSent)) {
-                    res.status(404).send({
-                        message: "They are not your friend. (Never sent a request. Try requesting them?"
-                    });
-                    return;
+            // remove the requests, and add friends and me to each other list
+            Promise.all([store.collection('users').updateOne({
+                fbId: friend.fbId
+            }, {
+                $pull: {
+                    "friends.reqSent": req.user.fbId
+                },
+                $addToSet: {
+                    "friends.list": req.user.fbId
                 }
-                // remove the requests, and add friends and me to each other list
-                Promise.all([store.collection('users').updateOne({
-                    fbId: friend.uid
-                }, {
-                    $pull: {
-                        "friends.reqSent": req.user.fbId
-                    },
-                    $addToSet: {
-                        "friends.list": req.user.fbId
-                    }
-                }), store.collection('users').updateOne({
-                    fbId: req.user.fbId
-                }, {
-                    $pull: {
-                        "friends.reqReceived": friend.fbId
-                    },
-                    $addToSet: {
-                        "friends.list": friend.fbId
-                    }
-                })]).then(r => {
-                    res.send({
-                        result: r
-                    })
+            }), store.collection('users').updateOne({
+                fbId: req.user.fbId
+            }, {
+                $pull: {
+                    "friends.reqReceived": friend.fbId
+                },
+                $addToSet: {
+                    "friends.list": friend.fbId
+                }
+            })]).then(r => {
+                res.send({
+                    result: r
                 })
-            }).catch(err => {
-                res.status(500).send({
-                    message: err.message
-                });
+            })
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
             });
-        })
+        });
+    })
 
-*****************/
-
-/* ****************
-TO BE UNCOMMENTED
-*******************
-*
 
     router.post('/:uid/request', (req: any, res) => {
         // this is like sending a request from me to UID
@@ -143,7 +195,7 @@ TO BE UNCOMMENTED
                         fbId: req.user.fbId
                     }, {
                         $addToSet: {
-                            'friends.reqSend': friend.fbId
+                            'friends.reqSent': friend.fbId
                         }
                     })]).then(r => {
                     res.send({
@@ -161,9 +213,6 @@ TO BE UNCOMMENTED
             res.status(500).send(err);
         });
     });
-
-******************/
-
 
     return router;
 }
