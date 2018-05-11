@@ -23,7 +23,7 @@ function addField(input_field_wrapper) {
     // Adding buttons for filling in the blanks page
     else if (input_field_wrapper.id === "input_fields_blanks") {
         input_field_html.innerHTML =
-            '<select name="fill_blank_type" onchange="modifyTextDecoration(this)">' +
+            '<select name="type-' + current_id + '" onchange="modifyTextDecoration(this)">' +
             '<option value="fill">Fill</option>' +
             '<option value="blank">Blank</option>' +
             '</select>' +
@@ -59,7 +59,6 @@ function removeField(element, input_field_wrapper) {
     // Only for Create Blanks page
     if (input_field_wrapper.parentNode.id === "input_fields_blanks") {
         // Remove the target preview span
-        alert("preview id to remove: " + input_field_wrapper.id);
         var id_to_remove = element.parentNode.id;
         var span_id_to_remove = id_to_remove + "-preview";
         document.getElementById(span_id_to_remove).remove();
@@ -128,7 +127,8 @@ function submitQuestion(event) {
             if (Math.floor(num) != num || num < 1 || num > 10) {
                 errorCount++;
                 toggleMessageWindow();
-                msg_container.innerHTML = "(" + $(this).attr("name") + "): Please enter a valid integer between 1 and 10!";
+                msg_container.innerHTML = "<p>(" + $(this).attr("name") + "): Please enter a valid integer between 1 and 10!</p>";
+                msg_container.innerHTML += "<button onclick='toggleMessageWindow()'>Close</button>";
                 return false;
             }
         }
@@ -274,7 +274,7 @@ function previewMultQues(ques_details) {
 
 
     return preview_HTML + ques_HTML + options_HTML + correct_HTML + dif_HTML +
-        points_HTML + creator_HTML + back_button_HTML + submit_button_HTML ;
+        points_HTML + back_button_HTML + submit_button_HTML ;
 
 }
 
@@ -286,10 +286,13 @@ function previewBlanks(ques_details, preview){
     // Preview Content
     var content_HTML = preview + '<br>';
 
+    // Back button if they changed their mind
+    var back_button_HTML = '<button onclick="toggleMessageWindow();">Back</button>';
+
     // Submit button to submit this question to database
     var submit_button_HTML = '<button id="submitDataButton">Submit!</button>';
 
-    return preview_HTML + content_HTML + submit_button_HTML;
+    return preview_HTML + content_HTML + back_button_HTML + submit_button_HTML;
 
 
 }

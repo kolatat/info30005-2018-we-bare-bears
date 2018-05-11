@@ -89,8 +89,6 @@ function _createBlanks(){
     form_HTML.push('<input type="number" name="difficulty" required>');
     form_HTML.push('<p class="container-text">Score points: </p>');
     form_HTML.push('<input type="number" name="points" required>');
-    form_HTML.push('<p class="container-text">Created By: </p>');
-    form_HTML.push('<input type="text" name="createdBy" required><br>');
 
     // Complete the form element HTML string
     form_HTML.push('<button type="submit">Submit!</button>');

@@ -8,11 +8,6 @@ function Quiz(max_ques) {
     this.maxQues = max_ques;
 }
 
-/* Get the maximum number of questions */
-Quiz.prototype.getQuizLength = function () {
-    return this.maxQues;
-}
-
 
 /* Get the current question */
 Quiz.prototype.getQuestionIndex = function() {

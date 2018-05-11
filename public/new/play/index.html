@@ -64,7 +64,7 @@
     </div>
 
     <div>
-        <button onclick='showPage("play_page")'>
+        <button onclick='showPage("play_page");_generateQuizQuestions();'>
             <img class="flag-img" src="/assets/images/png/flag-green.png">
         </button>
 
@@ -93,11 +93,6 @@
 
         <!-- Temporary buttons to test the pages -->
         <div class="toggle_buttons">
-            <p>
-                <button onclick="_generateQuizQuestions()">Test Get Multiple Questions</button>
-                <button id="blanks" onclick="_testBlanks(getRandomBlanks())">Test Fill in the Blanks</button>
-            </p>
-
             <button onclick="togglePageWindow()">Close</button>
         </div>
 
