@@ -1,5 +1,4 @@
 import * as express from 'express'
-import * as controller from '../controllers/friendsController';
 
 const router = express.Router();
 //
