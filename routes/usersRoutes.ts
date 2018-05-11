@@ -124,7 +124,6 @@ export function createRouter(store: model.MongoStore) {
     });
 
     router.put('/me/requests/:uid', (req: any, res) => {
-
         // accepts a friend request
         // make sure they actually sent a request & they exists!
         if (req.body.action != 'accept') {
@@ -197,8 +196,7 @@ export function createRouter(store: model.MongoStore) {
                         fbId: req.user.fbId
                     }, {
                         $addToSet: {
-                            'friends.reqSent': friendJSON.fbId
-                        }
+                            'friends.reqSent': friendJSON.fbId }
                     })]).then(r => {
                     res.send({
                         result: r
@@ -215,6 +213,48 @@ export function createRouter(store: model.MongoStore) {
             res.status(500).send(err);
         });
     });
+
+
+    /* New router below */
+    /* Router for updating wallet value */
+    router.put('/me/wallet', (req: any, res) => {
+
+        console.log("Original amount: " + req.user.wallet);
+
+        let update_wallet = 10;
+        let change_amount = Number(req.body.value);
+
+        // Only update the wallet if input is valid
+        if(update_wallet != null && ! isNaN(update_wallet) && change_amount!=null && !isNaN(change_amount)){
+
+            console.log(req.body.value);
+            if(req.body.action == "add"){
+                update_wallet = req.user.wallet + change_amount;
+            } else if (req.body.action == "minus"){
+                update_wallet = req.user.wallet - change_amount;
+            }
+
+            //updates the current user's wallet
+            // rejects and remove a request
+            store.collection("users").updateOne({
+                fbId: req.user.fbId
+            }, {
+                $set: {
+                    "wallet": update_wallet
+                }
+
+            }).then( r => {
+                res.send({
+                    result: r
+                });
+            }). catch(err => {
+                res.send({
+                    message: err.message
+                });
+            });
+        }
+    });
+    /* End router for updating wallet value */
 
     return router;
 }

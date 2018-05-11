@@ -70,8 +70,6 @@ function _displayMult(ques_details) {
 
 /* Populate the page with HTML elements for displaying a fill-in-the-blanks-type question */
 function _displayBlanks(ques_details) {
-    console.log("Inside display blanks");
-    console.log(ques_details);
 
     // Get the container element that will contain the quiz
     var quiz_container = document.getElementById("quiz_container");
@@ -84,11 +82,9 @@ function _displayBlanks(ques_details) {
     var choice_options = [];
 
 
-    console.log("Before for loop");
     // HTML Strings for the statement
     for (var i = 0; i < ques_details.question.length; i++) {
 
-        console.log("Inside for loop");
         if (ques_details.question[i].type === "fill") {
             statement_HTML += '<pre class="fill-blanks">' + ques_details.question[i].value + '</pre>';
         } else {
@@ -218,6 +214,11 @@ function showScores() {
     var gameOverHTML = "<h1>Result</h1>";
     gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " out of " + quiz.mcq + " question(s) correctly!</h2>";
     gameOverHTML += "<h2 id='vid'> You watched " + quiz.videos + " video(s)!</h2>";
+    gameOverHTML +=
+        "<div class='price_container'> You earned a total of " +
+            "<span>" + quiz.totalScore + "</span>" +
+            "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
+        "</div><br>";
     gameOverHTML += "<button id='close_msg_window' onclick='toggleMessageWindow();togglePageWindow();'>Close Message Window</button>";
 
 
