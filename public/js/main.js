@@ -10,9 +10,36 @@ window.fbAsyncInit = function () {
         version: 'v3.0'
     });
     FB.AppEvents.logPageView();
-    FB.getLoginStatus(statusChangeCallback);
-
+    // FB.getLoginStatus(statusChangeCallback);
+    // mock facebook callback
+    getLoginStatus(statusChangeCallback);
 };
+
+function getLoginStatus(callback) {
+    if (typeof(Storage) !== "undefined") {
+        var sess_auth = sessionStorage.getItem('fbAuth');
+        if (sess_auth != null) {
+            sess_auth = JSON.parse(sess_auth);
+            if (new Date() < new Date(sess_auth.expiresAt)) {
+                console.log('HIT');
+                callback(sess_auth);
+                return;
+            } else {
+                console.log('STALE');
+            }
+        }
+        FB.getLoginStatus(function (response) {
+            if (response.status == 'connected') {
+                response.expiresAt = new Date(new Date().getTime() + response.authResponse.expiresIn * 500);
+                sessionStorage.setItem('fbAuth', JSON.stringify(response));
+            }
+            callback(response);
+        });
+    } else {
+        // do it the old hard way
+        FB.getLoginStatus(callback);
+    }
+}
 
 (function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -43,15 +70,15 @@ function wbbInit() {
 
     // Code in header.js -- updates the strings that should show the user's waller amount
     updatePrice();
-    if(document.title == "Recylabears | Rank"){
+    if (document.title == "Recylabears | Rank") {
         loadRank();
     }
 
     // Code in new_play.js -- allow user to start playing once initialising is complete
     // - Prevent authAccess undefined problem
-    try{
+    try {
         enablePlayPage();
-    } catch(err){
+    } catch (err) {
         console.log("Not on Play Page");
     }
 
@@ -95,8 +122,8 @@ var Recyclabears = {
 
 
         /* Coz I accidently modified a bunch of questions and had to remove them ;( ....  */
-        deleteQuestion: function(qid) {
-            return Recyclabears.__apiCall('DELETE', '/api/questions/' +qid);
+        deleteQuestion: function (qid) {
+            return Recyclabears.__apiCall('DELETE', '/api/questions/' + qid);
         },
         getQuestion: function (qid) {
             return Recyclabears.__apiCall('GET', '/api/questions/testQuery');
@@ -125,13 +152,13 @@ var Recyclabears = {
         deleteFriendRequest: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/requests/' + fbId);
         },
-        unFriend: function(fbId) {
+        unFriend: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/friends/' + fbId);
         },
 
 
         /* New calls below */
-        updateWallet: function(action, value){
+        updateWallet: function (action, value) {
             return Recyclabears.__apiCall('PUT', '/api/users/me/wallet', {
                 action: action,
                 value: value

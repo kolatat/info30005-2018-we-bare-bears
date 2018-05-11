@@ -5,8 +5,10 @@ import {User} from "../model/user";
 const Log = debug('wbb:model:users');
 
 export function initRouter(router: WbbRouter): WbbRouter {
+    //@deprecate('Use the router.store.getUserByFbId to use caching')
+    // but careful if modifying
     function getUserByFbId(uid): Promise<User> {
-        Log(uid);
+        Log('WARNING DEPRECATE');
         return new Promise((resolve, reject) => {
             router.mongo('users').findOne({
                 fbId: uid
@@ -32,7 +34,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
     });
 
     router.get('/:uid', (req, res) => {
-        res.sendPromise(getUserByFbId(req.params.uid));
+        res.sendPromise(router.store.getUserByFbId(req.params.uid));
     });
 
 
@@ -45,6 +47,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
 
     // unfriend
     router.delete('/me/friends/:uid', (req, res) => {
+        // delete cache
+        router.store.usersCache.del([req.user.fbId, req.params.uid]);
         res.sendPromise(Promise.all([
             router.mongo("users").updateOne({
                 fbId: req.user.fbId
@@ -71,6 +75,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
     });
 
     router.delete('/me/requests/:uid', (req: any, res) => {
+        // delete cache
+        router.store.usersCache.del([req.user.fbId, req.params.uid]);
         // rejects and remove a request
         res.sendPromise(Promise.all([
             router.mongo("users").updateOne({
@@ -101,6 +107,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
             });
             return;
         }
+        // delete cache
+        router.store.usersCache.del([req.user.fbId, req.params.uid]);
         getUserByFbId(req.params.uid).then(friend => {
             if (!(req.user.fbId in friend.friends.reqSent)) {
                 res.status(404).send({
@@ -136,6 +144,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
     });
 
     router.post('/:uid/request', (req: any, res) => {
+        // delete cache
+        router.store.usersCache.del([req.user.fbId, req.params.uid]);
         // this is like sending a request from me to UID
         // uid has to exist otherwise 404
         res.sendPromise(getUserByFbId(req.params.uid).then<any>(friend => {
@@ -174,8 +184,10 @@ export function initRouter(router: WbbRouter): WbbRouter {
     /* New router below */
     /* Router for updating wallet value */
     router.put('/me/wallet', (req, res) => {
+        // delete cache
+        router.store.usersCache.del(req.user.fbId);
 
-        Log("Original amount: " + req.user.wallet);
+        // Log("Original amount: " + req.user.wallet);
 
         let update_wallet = 10;
         let change_amount = Number(req.body.value);
@@ -183,7 +195,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         // Only update the wallet if input is valid
         if (update_wallet != null && !isNaN(update_wallet) && change_amount != null && !isNaN(change_amount)) {
 
-            console.log(req.body.value);
+            // console.log(req.body.value);
             if (req.body.action == "add") {
                 update_wallet = req.user.wallet + change_amount;
             } else if (req.body.action == "minus") {

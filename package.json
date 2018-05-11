@@ -26,17 +26,18 @@
     "autoprefixer": "^8.3.0",
     "chokidar-cli": "^1.2.0",
     "debug": "^3.1.0",
+    "dotenv": "^5.0.1",
     "ejs": "~2.5.8",
     "express": "~4.16.3",
     "faker": "~4.1.0",
     "fb": "^2.0.0",
     "mongodb": "^3.0.7",
+    "node-cache": "^4.2.0",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
     "postcss-cli": "^5.0.0",
     "q": "^1.5.1",
-    "typescript": "~2.7.2",
-    "dotenv": "^5.0.1"
+    "typescript": "~2.7.2"
   },
   "devDependencies": {
     "@types/ejs": "^2.5.0",

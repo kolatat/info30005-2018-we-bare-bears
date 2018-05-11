@@ -43,7 +43,7 @@ interface RouteHandler {
 
 export class WbbRouter {
     protected router: express.Router;
-    protected store: MongoStore;
+    public store: MongoStore;
     public config: any;
 
     public constructor(store: MongoStore, router?: express.Router) {
