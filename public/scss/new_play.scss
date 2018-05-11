@@ -98,6 +98,9 @@ pre.fill-blanks{
   display: inline-block;
 }
 
+button:disabled{
+  background-color: #768591;
+}
 
 /* Styling the overlay covering the whole screen to prevent users from clicking layer below */
 .overlay {

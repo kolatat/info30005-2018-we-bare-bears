@@ -219,7 +219,7 @@ function showScores() {
     gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " out of " + quiz.mcq + " question(s) correctly!</h2>";
     gameOverHTML += "<h2 id='vid'> You watched " + quiz.videos + " video(s)!</h2>";
     gameOverHTML +=
-        "<div> You earned a total of " +
+        "<div class='price_container'> You earned a total of " +
             "<span>" + quiz.totalScore + "</span>" +
             "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
         "</div><br>";

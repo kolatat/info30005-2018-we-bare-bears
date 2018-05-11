@@ -43,6 +43,15 @@ function wbbInit() {
 
     // Code in header.js -- updates the strings that should show the user's waller amount
     updatePrice();
+
+    // Code in new_play.js -- allow user to start playing once initialising is complete
+    // - Prevent authAccess undefined problem
+    try{
+        enablePlayPage();
+    } catch(err){
+        console.log("Not on Play Page");
+    }
+
 }
 
 var Recyclabears = {

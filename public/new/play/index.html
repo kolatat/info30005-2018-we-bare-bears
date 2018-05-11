@@ -37,8 +37,8 @@
         <div class="dropdown">
             <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
             <div class="dropdown-content">
-                <span id="score">Score: 10000</span>
-                <span id="honey" class="honey_wallet">Honey Pots: 100</span>
+                <span id="score"></span>
+                <span id="honey" class="honey_wallet"></span>
                 <a href="#">View Profile</a>
                 <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="medium"
                      data-button-type="login_with"
@@ -64,14 +64,14 @@
     </div>
 
     <div>
-        <button onclick='showPage("play_page");_generateQuizQuestions();'>
+        <button class='page_buttons' onclick='showPage("play_page");_generateQuizQuestions();' disabled="true">
             <img class="flag-img" src="/assets/images/png/flag-green.png">
         </button>
 
     </div>
 
     <div>
-        <button onclick='showPage("create_page")'>
+        <button class='page_buttons' onclick='showPage("create_page")' disabled="true">
             <img class="flag-img" src="/assets/images/png/flag-red.png">
         </button>
 

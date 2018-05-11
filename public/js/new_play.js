@@ -239,3 +239,15 @@ function shuffle(a) {
     }
     return a;
 }
+
+
+// Allow users to start on Play Page once FB initialisation has been completed
+function enablePlayPage(){
+
+    var page_buttons = document.getElementsByClassName("page_buttons");
+
+    for(var i=0; i<page_buttons.length; i++){
+        page_buttons[i].disabled = false;
+    }
+
+}
