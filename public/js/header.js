@@ -30,8 +30,12 @@ $(window).resize(function(){
 /* Updates the strings that should show the user's waller amount */
 updatePrice = function() {
     Recyclabears.users.me().then( function(data) {
+        var user_name = data.name;
         var honey_amount = data.wallet;
-        console.log("Received --> " + honey_amount);
+
+        // Load all the HTML Elements that needs to be inserted with the 'honey_amount'
+        var name_span = document.getElementById("score");
+        name_span.innerHTML = user_name;
 
         // Load all the HTML Elements that needs to be inserted with the 'honey_amount'
         var honey_spans = document.getElementsByClassName("honey_wallet");
