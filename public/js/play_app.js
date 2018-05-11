@@ -9,6 +9,8 @@ function populate() {
     else {
 
         Recyclabears.questions.getRandomQuestion().then(function (data) {
+            console.log("Received --> ");
+            console.log(data);
             if (data.type == "multiple-choice") {
                 var new_ques = new Mult_Question(data);
                 quiz.questions.push(new_ques);

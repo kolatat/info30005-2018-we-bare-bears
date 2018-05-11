@@ -11,6 +11,20 @@ window.fbAsyncInit = function () {
     });
     FB.AppEvents.logPageView();
     FB.getLoginStatus(statusChangeCallback);
+
+    /* Temporary -- To be changed?
+    Idk how to deal with async stuff rip */
+    FB.Event.subscribe('auth.statusChange', function(response) {
+        if(response.status === 'connected') {
+            // Update the response token
+            Recyclabears.__fbAuth = response;
+
+            // Code in header.js -- updates the strings that should show the user's waller amount
+            updatePrice();
+        }
+    });
+    /* End temporary code */
+
 };
 
 (function (d, s, id) {
@@ -37,6 +51,8 @@ function statusChangeCallback(response) {
         }
     }
 }
+
+
 
 var Recyclabears = {
     __fbAuth: null,

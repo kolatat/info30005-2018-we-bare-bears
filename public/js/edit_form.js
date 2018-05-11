@@ -197,8 +197,6 @@ function submitQuestion(event) {
                 fill_blanks: fill_blanks,
                 answers: answers,
                 type: form.className,
-                created: new Date(),
-                createdBy: form["createdBy"].value,
                 difficulty: Number(form["difficulty"].value),
                 points: Number(form["points"].value)
             };
@@ -267,10 +265,6 @@ function previewMultQues(ques_details) {
 
     // Score points text
     var points_HTML = '<p>Score points: ' + ques_details.points + '</p>';
-
-    // Author of question text
-    var creator_HTML = '<p>Created by: ' + ques_details.createdBy + '</p>';
-
 
     // Back button if they changed their mind
     var back_button_HTML = '<button onclick="toggleMessageWindow();">Back</button>';

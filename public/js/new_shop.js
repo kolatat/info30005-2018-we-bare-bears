@@ -143,7 +143,7 @@ function populateShopMenu(show_type){
                         "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
                         "<p class='price_container'>" +
                             "<span>Cost: </span>" +
-                            "<span class='price'>" + testItemList[i].price + "</span>" +
+                            "<span class='honey'>" + testItemList[i].price + "</span>" +
                             "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
                         "</p>" +
                     "</button>" +
@@ -178,7 +178,7 @@ function showDescription(item_obj) {
     attrib_container.innerHTML +=
         "<p class='price_container'>" +
             "<span>Cost: </span>" +
-            "<span class='price'>" + price + "</span>" +
+            "<span class='honey'>" + price + "</span>" +
             "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
         "</p>"
 
@@ -190,7 +190,6 @@ function showDescription(item_obj) {
 
 function changeActive(show_type) {
     var buttons_container = document.getElementById("tab_buttons");
-    console.log(buttons_container);
 
     for(var i=0; i<buttons_container.children.length; i++){
         buttons_container.children[i].className = "";
