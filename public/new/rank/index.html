@@ -11,7 +11,7 @@
     <script type="text/javascript" src="/js/header.js"></script>
     <script src="/js/main.js"></script>
 </head>
-<body onload="loadRank()">
+<body>
 
 <script>
     function showFriendsDialog() {
@@ -22,7 +22,11 @@
     }
 
     function friendsDialogCallback(res) {
-        console.log(res);
+        console.log(res.to);
+        for (var i = 0; i < res.to.length; i++){
+            Recyclabears.users.sendFriendRequest(res.to[i]);
+        }
+        loadRank();
     }
 </script>
 
@@ -61,17 +65,24 @@
 </div>
 <!-- End Navigation Menu -->
 
-<div>
-    A big red button
-    <button onclick="showFriendsDialog()">Add Friends</button>
-</div>
-<div id="rank-list" onclick="loadRank()">
+<div id="friends-content">
+    <div>
+        A big red button
+        <button onclick="showFriendsDialog()">Add Friends</button>
+    </div>
+    <span class="user-div-title">Received Requests</span>
+    <div id="req-received">
+    </div>
+    <span class="user-div-title">Sent Requests</span>
+    <div id="req-sent">
+    </div>
+    <span class="user-div-title">Friends</span>
+    <div id="rank-list">
+    </div>
 </div>
 
 <div id="overlay"></div>
-<div id="pop-up">
-
-</div>
+<div id="pop-up"></div>
 
 </body>
 </html>
