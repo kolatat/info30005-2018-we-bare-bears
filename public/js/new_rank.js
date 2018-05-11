@@ -177,7 +177,7 @@ function deleteRequestReceived(id){
 function unfriend(friend){
     var popup = document.getElementById("pop-up");
     var profileHTML = "<div id='profile' class='grid-container'>";
-    profileHTML += "<img id='profile-photo' src='" + friend.photo + "'>";
+    profileHTML += "<img id='profile-photo' src='" + "/assets/images/rank/user.png" + "'>";
     profileHTML += "<span class='name'>Are you sure you would like to delete " + friend.name + "?</span>";
     var functionName = "sendUnfriend(" + friend.fbId + ")";
     profileHTML += "<button class='left-green-button' onclick=" + functionName + ">Yes</button>";

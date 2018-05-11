@@ -1,6 +1,7 @@
 import * as model from '../model';
 import {Router} from 'express';
 import * as debug from 'debug';
+import {User} from "../model/user";
 
 const Log = debug('wbb:model:users');
 
@@ -124,7 +125,6 @@ export function createRouter(store: model.MongoStore) {
 
     router.put('/me/requests/:uid', (req: any, res) => {
 
-
         // accepts a friend request
         // make sure they actually sent a request & they exists!
         if (req.body.action != 'accept') {
@@ -135,9 +135,10 @@ export function createRouter(store: model.MongoStore) {
         }
         console.log("in userroutes");
         getUserByFbId(req.params.uid).then(friend => {
-            if (friend.friends.reqSent.indexOf(req.user.fbId) < 0) {
+            var friendJSON = <any>friend;
+            if (friendJSON.friends.reqSent.indexOf(req.user.fbId) < 0) {
                 console.log(req.user.fbId);
-                console.log(friend.friends.reqSent);
+                console.log(friendJSON.friends.reqSent);
                 console.log('to send 404');
                 res.status(404).send({
                     message: "They are not your friend. (Never sent a request. Try requesting them?"
@@ -146,7 +147,7 @@ export function createRouter(store: model.MongoStore) {
             }
             // remove the requests, and add friends and me to each other list
             Promise.all([store.collection('users').updateOne({
-                fbId: friend.fbId
+                fbId: friendJSON.fbId
             }, {
                 $pull: {
                     "friends.reqSent": req.user.fbId
@@ -158,10 +159,10 @@ export function createRouter(store: model.MongoStore) {
                 fbId: req.user.fbId
             }, {
                 $pull: {
-                    "friends.reqReceived": friend.fbId
+                    "friends.reqReceived": friendJSON.fbId
                 },
                 $addToSet: {
-                    "friends.list": friend.fbId
+                    "friends.list": friendJSON.fbId
                 }
             })]).then(r => {
                 res.send({
@@ -180,12 +181,13 @@ export function createRouter(store: model.MongoStore) {
         // this is like sending a request from me to UID
         // uid has to exist otherwise 404
         getUserByFbId(req.params.uid).then(friend => {
+            var friendJSON = <any>friend;
             // add friend.uid to me.friends.reqSent
             // add me.uid to friend.friends.reqReceived
             // only if not already friends
-            if (!(req.user.fbId in friend.friends.list)) {
+            if (!(req.user.fbId in friendJSON.friends.list)) {
                 Promise.all([store.collection('users').updateOne({
-                    fbId: friend.fbId
+                    fbId: friendJSON.fbId
                 }, {
                     $addToSet: {
                         'friends.reqReceived': req.user.fbId
@@ -195,7 +197,7 @@ export function createRouter(store: model.MongoStore) {
                         fbId: req.user.fbId
                     }, {
                         $addToSet: {
-                            'friends.reqSent': friend.fbId
+                            'friends.reqSent': friendJSON.fbId
                         }
                     })]).then(r => {
                     res.send({
