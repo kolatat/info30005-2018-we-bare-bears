@@ -28,6 +28,8 @@ Quiz.prototype.guessAnswer = function (answer) {
 
     var ans_obj = this.getQuestionIndex().getCorrectAnswer(answer);
 
+    console.log("Checking ans obj");
+    console.log(ans_obj);
     if(ans_obj.correct){
         this.score++;
     }
