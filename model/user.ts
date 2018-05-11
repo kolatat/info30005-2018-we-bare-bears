@@ -1,12 +1,13 @@
 export class User {
     fbId: string;
     friends: UserFriends;
-    name:string;
-    email:string
+    name: string;
+    email: string;
+    wallet: number;
 }
 
 interface UserFriends {
-    list: string[],
-    reqSent: string[],
-    reqReceived: string[]
+    list: string[];
+    reqSent: string[];
+    reqReceived: string[];
 }

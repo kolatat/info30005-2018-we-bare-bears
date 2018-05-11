@@ -132,8 +132,7 @@ var Recyclabears = {
 
         /* New calls below */
         updateWallet: function(action, value){
-
-            return Recyclabears.__apiCall('PUT', '/api/users/me/wallet/', {
+            return Recyclabears.__apiCall('PUT', '/api/users/me/wallet', {
                 action: action,
                 value: value
             });

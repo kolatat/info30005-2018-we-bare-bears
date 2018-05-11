@@ -1,17 +1,14 @@
-import * as model from '../model';
-import {Router} from 'express';
 import * as debug from 'debug';
+import {WbbRouter} from "../utils";
 import {User} from "../model/user";
 
 const Log = debug('wbb:model:users');
 
-export function createRouter(store: model.MongoStore) {
-    const router = Router();
-
-    function getUserByFbId(uid) {
+export function initRouter(router: WbbRouter): WbbRouter {
+    function getUserByFbId(uid): Promise<User> {
         Log(uid);
         return new Promise((resolve, reject) => {
-            store.collection('users').findOne({
+            router.mongo('users').findOne({
                 fbId: uid
             }, (err, dat) => {
                 if (err) {
@@ -25,7 +22,7 @@ export function createRouter(store: model.MongoStore) {
         });
     }
 
-    router.get('/me', (req: any, res) => {
+    router.get('/me', (req, res) => {
         /*getUserByFbId(req.user.fbId).then(user => {
             res.send(user);
         }).catch(err => {
@@ -35,11 +32,7 @@ export function createRouter(store: model.MongoStore) {
     });
 
     router.get('/:uid', (req, res) => {
-        getUserByFbId(req.params.uid).then(user => {
-            res.send(user);
-        }).catch(err => {
-            res.status(500).send(err);
-        });
+        res.sendPromise(getUserByFbId(req.params.uid));
     });
 
 
@@ -51,35 +44,24 @@ export function createRouter(store: model.MongoStore) {
     });
 
     // unfriend
-    router.delete('/me/friends/:uid', (req: any, res) => {
-        console.log("in delete friend")
-        store.collection("users").updateOne({
-            fbId: req.user.fbId
-        }, {
-           $pull: {
-               "friends.list": req.params.uid
-           }
-        }).then(r => {
-            res.send({result: r});
-        }).catch(err => {
-            res.send({message: err.message});
-        });
-        store.collection("users").updateOne({
-            fbId: req.params.uid
-        }, {
-            $pull: {
-                "friends.list": req.user.fbId
-            }
-        }).then(r => {
-
-            console.log(r);
-            // res.send({result: r});
-        }).catch(err => {
-            console.log("error");
-            console.log(err.message);
-
-            // res.send({message: err.message});
-        });
+    router.delete('/me/friends/:uid', (req, res) => {
+        res.sendPromise(Promise.all([
+            router.mongo("users").updateOne({
+                fbId: req.user.fbId
+            }, {
+                $pull: {
+                    "friends.list": req.params.uid
+                }
+            }),
+            router.mongo("users").updateOne({
+                fbId: req.params.uid
+            }, {
+                $pull: {
+                    "friends.list": req.user.fbId
+                }
+            })]).then(r => {
+            return {results: r};
+        }));
     });
 
     router.get('/me/requests', (req: any, res) => {
@@ -90,37 +72,24 @@ export function createRouter(store: model.MongoStore) {
 
     router.delete('/me/requests/:uid', (req: any, res) => {
         // rejects and remove a request
-        store.collection("users").updateOne({
-            fbId: req.user.fbId
-        }, {
-            $pull: {
-                "friends.reqReceived": req.params.uid
-            }
-        }).then(r => {
-            res.send({
-                result: r
-            });
-        }).catch(err => {
-            res.send({
-                message: err.message
-            });
-        });
-        // remove request from user who sent it
-        store.collection("users").updateOne({
-            fbId: req.params.uid
-        }, {
-            $pull: {
-                "friends.reqSent": req.user.fbId
-            }
-        }).then(r => {
-            res.send({
-                result: r
-            });
-        }).catch(err => {
-            res.send({
-                message: err.message
-            });
-        });
+        res.sendPromise(Promise.all([
+            router.mongo("users").updateOne({
+                fbId: req.user.fbId
+            }, {
+                $pull: {
+                    "friends.reqReceived": req.params.uid
+                }
+            }),
+            // remove request from user who sent it
+            router.mongo("users").updateOne({
+                fbId: req.params.uid
+            }, {
+                $pull: {
+                    "friends.reqSent": req.user.fbId
+                }
+            })]).then(r => {
+            return {results: r};
+        }));
     });
 
     router.put('/me/requests/:uid', (req: any, res) => {
@@ -132,129 +101,113 @@ export function createRouter(store: model.MongoStore) {
             });
             return;
         }
-        console.log("in userroutes");
         getUserByFbId(req.params.uid).then(friend => {
-            var friendJSON = <any>friend;
-            if (friendJSON.friends.reqSent.indexOf(req.user.fbId) < 0) {
-                console.log(req.user.fbId);
-                console.log(friendJSON.friends.reqSent);
-                console.log('to send 404');
+            if (!(req.user.fbId in friend.friends.reqSent)) {
                 res.status(404).send({
                     message: "They are not your friend. (Never sent a request. Try requesting them?"
                 });
                 return;
             }
             // remove the requests, and add friends and me to each other list
-            Promise.all([store.collection('users').updateOne({
-                fbId: friendJSON.fbId
-            }, {
-                $pull: {
-                    "friends.reqSent": req.user.fbId
-                },
-                $addToSet: {
-                    "friends.list": req.user.fbId
-                }
-            }), store.collection('users').updateOne({
-                fbId: req.user.fbId
-            }, {
-                $pull: {
-                    "friends.reqReceived": friendJSON.fbId
-                },
-                $addToSet: {
-                    "friends.list": friendJSON.fbId
-                }
-            })]).then(r => {
-                res.send({
-                    result: r
-                })
-            })
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
+            res.sendPromise(Promise.all([
+                router.mongo('users').updateOne({
+                    fbId: friend.fbId
+                }, {
+                    $pull: {
+                        "friends.reqSent": req.user.fbId
+                    },
+                    $addToSet: {
+                        "friends.list": req.user.fbId
+                    }
+                }),
+                router.mongo('users').updateOne({
+                    fbId: req.user.fbId
+                }, {
+                    $pull: {
+                        "friends.reqReceived": friend.fbId
+                    },
+                    $addToSet: {
+                        "friends.list": friend.fbId
+                    }
+                })]).then(r => {
+                return {results: r};
+            }));
         });
-    })
-
+    });
 
     router.post('/:uid/request', (req: any, res) => {
         // this is like sending a request from me to UID
         // uid has to exist otherwise 404
-        getUserByFbId(req.params.uid).then(friend => {
-            var friendJSON = <any>friend;
+        res.sendPromise(getUserByFbId(req.params.uid).then<any>(friend => {
             // add friend.uid to me.friends.reqSent
             // add me.uid to friend.friends.reqReceived
             // only if not already friends
-            if (!(req.user.fbId in friendJSON.friends.list)) {
-                Promise.all([store.collection('users').updateOne({
-                    fbId: friendJSON.fbId
-                }, {
-                    $addToSet: {
-                        'friends.reqReceived': req.user.fbId
-                    }
-                }),
-                    store.collection('users').updateOne({
+            if (!(req.user.fbId in friend.friends.list)) {
+                return Promise.all([
+                    router.mongo('users').updateOne({
+                        fbId: friend.fbId
+                    }, {
+                        $addToSet: {
+                            'friends.reqReceived': req.user.fbId
+                        }
+                    }),
+                    router.mongo('users').updateOne({
                         fbId: req.user.fbId
                     }, {
                         $addToSet: {
-                            'friends.reqSent': friendJSON.fbId }
-                    })]).then(r => {
-                    res.send({
-                        result: r
+                            'friends.reqSent': friend.fbId
+                        }
                     })
+                ]).then(r => {
+                    return {results: r};
                 });
             } else {
                 // already friends baka
                 // LOL -- are u sure?
-                res.send({
+                return {
                     message: 'Already friends baka'
-                });
+                };
             }
-        }).catch(err => {
-            res.status(500).send(err);
-        });
+        }));
     });
-
 
     /* New router below */
     /* Router for updating wallet value */
-    router.put('/me/wallet', (req: any, res) => {
+    router.put('/me/wallet', (req, res) => {
 
-        console.log("Original amount: " + req.user.wallet);
+        Log("Original amount: " + req.user.wallet);
 
         let update_wallet = 10;
         let change_amount = Number(req.body.value);
 
         // Only update the wallet if input is valid
-        if(update_wallet != null && ! isNaN(update_wallet) && change_amount!=null && !isNaN(change_amount)){
+        if (update_wallet != null && !isNaN(update_wallet) && change_amount != null && !isNaN(change_amount)) {
 
             console.log(req.body.value);
-            if(req.body.action == "add"){
+            if (req.body.action == "add") {
                 update_wallet = req.user.wallet + change_amount;
-            } else if (req.body.action == "minus"){
+            } else if (req.body.action == "minus") {
                 update_wallet = req.user.wallet - change_amount;
             }
 
             //updates the current user's wallet
             // rejects and remove a request
-            store.collection("users").updateOne({
+            res.sendPromise(router.mongo("users").updateOne({
                 fbId: req.user.fbId
             }, {
                 $set: {
                     "wallet": update_wallet
                 }
 
-            }).then( r => {
-                res.send({
-                    result: r
-                });
-            }). catch(err => {
-                res.send({
-                    message: err.message
-                });
+            }).then(r => {
+                return {result: r};
+            }));
+        } else {
+            res.status(400).send({
+                error: "Bad request"
             });
         }
     });
-    /* End router for updating wallet value */
 
     return router;
 }
