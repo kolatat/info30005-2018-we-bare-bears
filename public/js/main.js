@@ -46,6 +46,15 @@ function wbbInit() {
     if(document.title == "Recylabears | Rank"){
         loadRank();
     }
+
+    // Code in new_play.js -- allow user to start playing once initialising is complete
+    // - Prevent authAccess undefined problem
+    try{
+        enablePlayPage();
+    } catch(err){
+        console.log("Not on Play Page");
+    }
+
 }
 
 var Recyclabears = {
@@ -74,13 +83,26 @@ var Recyclabears = {
         answerQuestion: function (qid, answer) {
             req = {
                 qid: qid,
-                answer: answer
+                ans: answer
             };
             // TODO add API endpoint to update list of answered questions and user score
+
+
         },
         addQuestion: function (data) {
             return Recyclabears.__apiCall('POST', '/api/questions', data);
+        },
+
+
+        /* Coz I accidently modified a bunch of questions and had to remove them ;( ....  */
+        deleteQuestion: function(qid) {
+            return Recyclabears.__apiCall('DELETE', '/api/questions/' +qid);
+        },
+        getQuestion: function (qid) {
+            return Recyclabears.__apiCall('GET', '/api/questions/testQuery');
         }
+
+
     },
     users: {
         me: function () {
@@ -105,6 +127,16 @@ var Recyclabears = {
         },
         unFriend: function(fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/friends/' + fbId);
+        },
+
+
+        /* New calls below */
+        updateWallet: function(action, value){
+
+            return Recyclabears.__apiCall('PUT', '/api/users/me/wallet/', {
+                action: action,
+                value: value
+            });
         }
     }
 }

@@ -75,7 +75,7 @@ router.put('/:qid', (req, res, next) => {
             "message": err.message
         });
     });
-})
+});
 
 router.get('/:qid', (req, res, next) => {
     var objID;
@@ -110,6 +110,59 @@ router.get('/:qid', (req, res, next) => {
             "message": err.message
         });
     });
-})
+});
+
+router.get('/testQuery', (req, res, next) => {
+    store.collection('questions').find({
+        price: null
+    }).toArray(function (error, documents) {
+        if(error){
+            throw error;
+        }
+        res.send(documents);
+    });
+
+});
+
+
+/* New router(s) added below ---- */
+/* To hide/delete Mei's horrible accident */
+
+router.delete('/:qid', (req,res,next) => {
+    var objID;
+    if (!/^[0-9a-f]{24}$/i.test(req.params.qid)) {
+        Log('does not match qid, referring...');
+        next();
+        return;
+    }
+    try {
+        objID = ObjectID.createFromHexString(req.params.qid);
+    } catch (e) {
+        res.status(400);
+        res.send({
+            "message": e.message
+        });
+        return;
+    }
+
+    store.collection("questions").deleteOne({
+        _id: objID
+    }).then(doc => {
+        if (doc.n == 0) {
+            res.status(404);
+            res.send({
+                "message": "question not found; nothing deleted"
+            });
+        } else {
+            res.send(doc);
+        }
+
+    }).catch(err => {
+        Log(err);
+        res.send({
+            "message": err.message
+        });
+    });
+});
 
 export default router;
