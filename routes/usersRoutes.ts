@@ -191,6 +191,30 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+    router.delete('/me/sent-requests/:uid', (req: any, res) => {
+        // delete cache
+        router.store.usersCache.del([req.user.fbId, req.params.uid]);
+        // rejects and remove a request
+        res.sendPromise(Promise.all([
+            router.mongo("users").updateOne({
+                fbId: req.user.fbId
+            }, {
+                $pull: {
+                    "friends.reqSent": req.params.uid
+                }
+            }),
+            // remove request from user who sent it
+            router.mongo("users").updateOne({
+                fbId: req.params.uid
+            }, {
+                $pull: {
+                    "friends.reqReceived": req.user.fbId
+                }
+            })]).then(r => {
+            return {results: r};
+        }));
+    });
+
     /* New router below */
     /* Router for updating wallet value */
     router.put('/me/wallet', (req, res) => {

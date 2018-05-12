@@ -76,15 +76,12 @@ function populateWithUsers(div, friends){
             data.isFriend = isFriend;
             var rankDiv = document.createElement("div");
             rankDiv.setAttribute("class", "rank");
-            // rankDiv.setAttribute("onclick", "openProfile(" + JSON.stringify(data)+ ")");
-
             rankDiv.innerHTML = "<img src=\"" + "/assets/images/rank/user.png" + "\">";
             var nameSpan = document.createElement("span");
             nameSpan.setAttribute("class", "name");
             nameSpan.setAttribute("onclick", "openProfile(" + JSON.stringify(data)+ ")");
             nameSpan.innerHTML = data.name;
             rankDiv.appendChild(nameSpan);
-            // rankDiv.innerHTML += "<span class=\"name\">" + data.name + "</span>";
             rankDiv.innerHTML += "<span class=\"score\">" + data.wallet + "</span>";
 
             // if(isFriend == 1)
@@ -123,6 +120,7 @@ function openProfile(friend){
     else{
         friendActionButton.setAttribute("onclick", "cancelRequest(" + friend.fbId + ")");
         friendActionButton.innerHTML = 'Cancel Request';
+        profileDiv.appendChild(friendActionButton);
     }
 
     var profileHTML = "<img id='profile-photo' src='" + "/assets/images/rank/user.png" + "'>";
@@ -164,9 +162,14 @@ function deleteRequestReceived(id){
         console.log(data);
         closeProfile();
         loadRank();
-        // var friendButton = document.getElementById('friend-action');
-        // friendButton.setAttribute('onclick', 'addFriend('+id+')');
-        // friendButton.innerHTML = "Add Friend";
+    });
+}
+
+function cancelRequest(id){
+    Recyclabears.users.deleteSentFriendRequest(id).then(function(data){
+        console.log(data);
+        closeProfile();
+        loadRank();
     });
 }
 
