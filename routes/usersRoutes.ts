@@ -110,7 +110,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         // delete cache
         router.store.usersCache.del([req.user.fbId, req.params.uid]);
         getUserByFbId(req.params.uid).then(friend => {
-            if (!(req.user.fbId in friend.friends.reqSent)) {
+            if ((friend.friends.reqSent.indexOf(req.user.fbId) < 0)) {
                 res.status(404).send({
                     message: "They are not your friend. (Never sent a request. Try requesting them?"
                 });
