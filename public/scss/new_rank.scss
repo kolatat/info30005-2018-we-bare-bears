@@ -13,10 +13,11 @@ body{
 }
 
 .rank{
-  width: max-content;
-
+  width: 100%;
+  background-color: white;
   height: 50px;
-  margin: 10px auto;
+  padding: 10px 0;
+  margin: auto;
   cursor: pointer;
   img{
     width: 50px;
@@ -55,7 +56,7 @@ body{
 }
 
 .rank:hover{
-  color: $color-green;
+  color: $color-beige;
 }
 
 /* Styling the overlay covering the whole screen to prevent users from clicking layer below */
@@ -92,6 +93,8 @@ body{
 
 #friends-content{
   text-align: center;
+  margin: 0 auto;
+  width: max-content;
 }
 
 .user-div-title{
@@ -101,6 +104,19 @@ body{
   background: $color-beige;
   font-family: "Averia Libre", cursive;
   font-size: 2em;
-  display: inline-block;
+  display: block;
   margin-top: 15px;
+  //width: 100%;
+}
+
+#add-friends{
+  cursor: pointer;
+  background-color: $color-orange;
+
+}
+
+
+#add-friends:hover{
+  cursor: pointer;
+  color: $color-beige;
 }
