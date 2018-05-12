@@ -7,7 +7,7 @@ import indexRouter from './routes/indexRoutes';
 import * as questionRoutes from './routes/questionsRoutes';
 import * as model from "./model";
 import * as usersRoutes from './routes/usersRoutes'
-import {sendError, WbbRequest, WbbRouter} from './utils'
+import {sendError, WbbRouter} from './utils'
 import {fbAuth} from "./facebook";
 
 const Log = debug('wbb:main');
@@ -37,6 +37,9 @@ app.use((req, res, next) => {
     next();
 })
 app.use('/', indexRouter);
+app.get('/config/fbAppId', (_, res) => {
+    res.send(process.env.FB_APP_ID);
+})
 app.use('/api', apiRouter);
 
 apiRouter.use(bodyParser.json());

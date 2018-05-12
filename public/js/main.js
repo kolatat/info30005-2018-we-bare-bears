@@ -2,9 +2,33 @@
 
 var firstTime = true;
 
+var appId;
+
+function getAppId(save) {
+    var request = new XMLHttpRequest();
+    request.open('GET', '/config/fbAppId', false);
+    request.send(null);
+    if (request.status === 200) {
+        if (save) {
+            sessionStorage.setItem('fbAppId', request.responseText);
+        }
+        return request.responseText;
+    }
+    alert('Error reading config.');
+}
+
+if (typeof(Storage) !== "undefined") {
+    appId = sessionStorage.getItem('fbAppId');
+    if (appId == null) {
+        appId = getAppId(true);
+    }
+} else {
+    appId = getAppId(false);
+}
+
 window.fbAsyncInit = function () {
     FB.init({
-        appId: '590373231339046',
+        appId: appId,
         cookie: true,
         xfbml: true,
         version: 'v3.0'
