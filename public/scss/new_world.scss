@@ -1,37 +1,41 @@
 @import "master";
 @import "header";
 
-#container{
+#container {
   display: grid;
-  grid-template-columns: 4fr 1fr;
-  overflow: hidden;
+  // grid-template-columns: auto auto;
+  top: $header-height;
+  bottom: 0;
+  position: absolute;
 }
 
 #world-container {
 
-  img{
-    width: 100%;
+  img#world-img {
+    height: 100%
   }
   grid-column-start: 1;
   grid-column-end: 4;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-#items-container{
+#items-container {
   grid-column-start: 4;
   grid-column-end: 5;
-  overflow-y: scroll;
+  overflow-y: auto;
 
-  button{
-    font-family: "Raleway", sans-serif;
+  button {
+    font-family: $raleway;
   }
 }
 
 #item-to-move, #item-to-move2, .item-to-move {
   //background: #f6f6f6;
-  cursor:move;
+  cursor: move;
   width: min-content;
   height: min-content;
-  img{
+  img {
     width: 100px;
   }
   position: absolute;
