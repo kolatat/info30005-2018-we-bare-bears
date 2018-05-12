@@ -149,6 +149,9 @@ var Recyclabears = {
         sendFriendRequest: function (fbId) {
             return Recyclabears.__apiCall('POST', '/api/users/' + fbId + '/request');
         },
+        deleteSentFriendRequest: function (fbId) {
+            return Recyclabears.__apiCall('DELETE', '/api/users/me/sent-requests/' + fbId);
+        },
         deleteFriendRequest: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/requests/' + fbId);
         },
