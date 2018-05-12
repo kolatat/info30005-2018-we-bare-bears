@@ -152,7 +152,23 @@ export function initRouter(router: WbbRouter): WbbRouter {
             // add friend.uid to me.friends.reqSent
             // add me.uid to friend.friends.reqReceived
             // only if not already friends
-            if (!(req.user.fbId in friend.friends.list)) {
+
+            if(friend.friends.list.indexOf(req.user.fbId) >= 0){
+                return{
+                    message: 'Already friends baka'
+                }
+            }
+            else if(friend.friends.reqReceived.indexOf(req.user.fbId) >= 0){
+                return{
+                    message: 'Already sent a request to this friend'
+                }
+            }
+            else if(friend.friends.reqSent.indexOf(req.user.fbId) >= 0){
+                return{
+                    message: 'Already received a request from this friend'
+                }
+            }
+            else{
                 return Promise.all([
                     router.mongo('users').updateOne({
                         fbId: friend.fbId
@@ -171,12 +187,6 @@ export function initRouter(router: WbbRouter): WbbRouter {
                 ]).then(r => {
                     return {results: r};
                 });
-            } else {
-                // already friends baka
-                // LOL -- are u sure?
-                return {
-                    message: 'Already friends baka'
-                };
             }
         }));
     });
