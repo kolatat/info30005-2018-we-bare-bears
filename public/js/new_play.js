@@ -258,3 +258,4 @@ function enablePlayPage(){
     }
 
 }
+wbbInit(enablePlayPage);

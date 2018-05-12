@@ -3,26 +3,28 @@
 
 #container {
   display: grid;
-  // grid-template-columns: auto auto;
+  grid-template-columns: auto 213px;
   top: $header-height;
   bottom: 0;
   position: absolute;
+  width: 100%;
 }
 
 #world-container {
-
+  background-color: #4CAF50;
   img#world-img {
-    height: 100%
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
   }
-  grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column: 1;
   overflow-x: auto;
   overflow-y: hidden;
 }
 
 #items-container {
-  grid-column-start: 4;
-  grid-column-end: 5;
+  grid-column: 2;
   overflow-y: auto;
 
   button {

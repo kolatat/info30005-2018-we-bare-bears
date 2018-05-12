@@ -37,7 +37,6 @@ export function initRouter(router: WbbRouter): WbbRouter {
         res.sendPromise(router.store.getUserByFbId(req.params.uid));
     });
 
-
     // returns list of friends
     router.get('/me/friends', (req: any, res) => {
         res.send({
@@ -153,22 +152,22 @@ export function initRouter(router: WbbRouter): WbbRouter {
             // add me.uid to friend.friends.reqReceived
             // only if not already friends
 
-            if(friend.friends.list.indexOf(req.user.fbId) >= 0){
-                return{
+            if (friend.friends.list.indexOf(req.user.fbId) >= 0) {
+                return {
                     message: 'Already friends baka'
                 }
             }
-            else if(friend.friends.reqReceived.indexOf(req.user.fbId) >= 0){
-                return{
+            else if (friend.friends.reqReceived.indexOf(req.user.fbId) >= 0) {
+                return {
                     message: 'Already sent a request to this friend'
                 }
             }
-            else if(friend.friends.reqSent.indexOf(req.user.fbId) >= 0){
-                return{
+            else if (friend.friends.reqSent.indexOf(req.user.fbId) >= 0) {
+                return {
                     message: 'Already received a request from this friend'
                 }
             }
-            else{
+            else {
                 return Promise.all([
                     router.mongo('users').updateOne({
                         fbId: friend.fbId

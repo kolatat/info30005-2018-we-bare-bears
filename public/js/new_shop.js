@@ -6,10 +6,10 @@ function toggleShopWindow() {
     var popup = document.getElementById("popup_base");
     // Toggle visibility of overlay and popup
     if (popup.style.display === "none" || popup.style.display === "") {
-      //  overlay.style.display = "block";
+        //  overlay.style.display = "block";
         popup.style.display = "block";
     } else {
-      //  overlay.style.display = "none";
+        //  overlay.style.display = "none";
         popup.style.display = "none";
         //document.getElementById("popup_base").innerHTML = "";
     }
@@ -98,7 +98,7 @@ var testItemList = [
 ];
 
 
-function populateShopMenu(show_type){
+function populateShopMenu(show_type) {
 
     // Get the items_container element of the HTML to add items for display
     var items_container = document.getElementById("items_container");
@@ -112,41 +112,41 @@ function populateShopMenu(show_type){
     var new_item_HTML = "";
 
     // Loop over items from database and determine whether to display them based on user selection
-    for(var i=0; i<testItemList.length; i++){
+    for (var i = 0; i < testItemList.length; i++) {
 
         add_item = 0;
         new_item_HTML = "";
 
         // Determine whether to show the item
-        if(show_type == "tab_all"){
+        if (show_type == "tab_all") {
             add_item = 1;
-        } else if(show_type === "tab_plants"){
-            if(testItemList[i].type === "plant"){
+        } else if (show_type === "tab_plants") {
+            if (testItemList[i].type === "plant") {
                 add_item = 1;
             }
-        } else if(show_type === "tab_animals"){
-            if(testItemList[i].type === "animal"){
+        } else if (show_type === "tab_animals") {
+            if (testItemList[i].type === "animal") {
                 add_item = 1;
             }
-        } else if(show_type === "tab_bins"){
-            if(testItemList[i].type === "bin"){
+        } else if (show_type === "tab_bins") {
+            if (testItemList[i].type === "bin") {
                 add_item = 1;
             }
         }
 
         // Add the HTML elements for the item if to be shown
-        if(add_item == 1){
+        if (add_item == 1) {
             new_item_HTML +=
                 "<div>" +
-                    "<button class='item_button' onclick='showDescription(" + JSON.stringify(testItemList[i]) + ")'>" +
-                        "<img src='" + testItemList[i].image + "' class='shop_item' >" +
-                        "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
-                        "<p class='price_container'>" +
-                            "<span>Cost: </span>" +
-                            "<span class='honey'>" + testItemList[i].price + "</span>" +
-                            "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
-                        "</p>" +
-                    "</button>" +
+                "<button class='item_button' onclick='showDescription(" + JSON.stringify(testItemList[i]) + ")'>" +
+                "<img src='" + testItemList[i].image + "' class='shop_item' >" +
+                "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
+                "<p class='price_container'>" +
+                "<span>Cost: </span>" +
+                "<span class='honey'>" + testItemList[i].price + "</span>" +
+                "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
+                "</p>" +
+                "</button>" +
                 "</div>";
         }
 
@@ -157,7 +157,7 @@ function populateShopMenu(show_type){
 function showDescription(item_obj) {
     //Set a variable to contain the DOM element of the popup
     var popup_status = document.getElementById("popup_base").style.display;
-    if(popup_status === "none" || popup_status === ""){
+    if (popup_status === "none" || popup_status === "") {
         toggleShopWindow();
     }
 
@@ -177,9 +177,9 @@ function showDescription(item_obj) {
     attrib_container.innerHTML += "<p>Name: " + name + "</p>";
     attrib_container.innerHTML +=
         "<p class='price_container'>" +
-            "<span>Cost: </span>" +
-            "<span class='honey'>" + price + "</span>" +
-            "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
+        "<span>Cost: </span>" +
+        "<span class='honey'>" + price + "</span>" +
+        "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
         "</p>"
 
 
@@ -191,11 +191,13 @@ function showDescription(item_obj) {
 function changeActive(show_type) {
     var buttons_container = document.getElementById("tab_buttons");
 
-    for(var i=0; i<buttons_container.children.length; i++){
+    for (var i = 0; i < buttons_container.children.length; i++) {
         buttons_container.children[i].className = "";
     }
 
     document.getElementById(show_type).className = "active";
 }
 
-
+wbbInit(function populateShopMenuHelper() {
+    populateShopMenu('tab_all');
+});
