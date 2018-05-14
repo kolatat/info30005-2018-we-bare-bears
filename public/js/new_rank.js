@@ -58,15 +58,23 @@ function loadRank() {
 
 }
 
-function populateWithUsers(div, friends) {
-    // console.log("populating with users");
+function populateWithUsers(div, friends){
+    if (friends.length <= 0)
+        return;
+
+    console.log("populating with users");
     div.innerHTML = "";
 
     var isFriend = 0;
-    if (div.id == 'req-received') {
+    if (div.id == 'rank-list'){
+        div.innerHTML += "<span class='user-div-title'>Friends</span>";
+    }
+    if (div.id == 'req-received'){
+        div.innerHTML += "<span class='user-div-title'>Received Requests</span>";
         isFriend = 1;
     }
-    else if (div.id == 'req-sent') {
+    else if(div.id == 'req-sent'){
+        div.innerHTML += "<span class='user-div-title'>Sent Requests</span>";
         isFriend = 2
     }
 
@@ -83,10 +91,6 @@ function populateWithUsers(div, friends) {
             nameSpan.innerHTML = data.name;
             rankDiv.appendChild(nameSpan);
             rankDiv.innerHTML += "<span class=\"score\">" + data.wallet + "</span>";
-
-            // if(isFriend == 1)
-            //     rankDiv.innerHTML += "<button onclick='deleteRequestReceived(" + data.fbId + ")'>X</button>";
-
             div.appendChild(rankDiv);
         });
     }
