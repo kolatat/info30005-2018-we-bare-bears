@@ -29,12 +29,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
         res.sendPromise(router.mongo('questions').aggregate([{
             $sample: {size: size}
         }]).toArray().then(doc => {
-            // TODO should actually always return array, but for legacy purposes
-            if (size == 1) {
-                return doc[0];
-            } else {
-                return {docs: doc};
-            }
+            // Returning an object (?) that contains an array of questions
+            return {docs: doc};
         }));
     });
 
@@ -81,11 +77,11 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+
+    /* TO DELETE CODE BELOW !! */
     router.get('/testQuery', (req, res) => {
         // what is this?
-        router.mongo('questions').find({
-            price: null
-        }).toArray(function (error, documents) {
+        router.mongo('users').find({}).toArray(function (error, documents) {
             if (error) {
                 throw error;
             }
@@ -93,36 +89,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
         });
 
     });
+    /* END TO DELETE CODE BELOW !! */
 
-
-    /* New router(s) added below ---- */
-    /* To hide/delete Mei's horrible accident */
-
-    router.delete('/:qid', (req, res, next) => {
-        var objID;
-        if (!/^[0-9a-f]{24}$/i.test(req.params.qid)) {
-            Log('does not match qid, deferring...');
-            next();
-            return;
-        }
-        try {
-            objID = ObjectID.createFromHexString(req.params.qid);
-        } catch (e) {
-            sendError(res, "Bad request", e, 400);
-            return;
-        }
-
-        router.mongo("questions").deleteOne({
-            _id: objID
-        }).then(doc => {
-            if (doc.deletedCount == 0) {
-                throw new WbbError("Question not found", 404);
-            } else {
-                res.send(doc);
-            }
-
-        });
-    });
 
     return router;
 }
