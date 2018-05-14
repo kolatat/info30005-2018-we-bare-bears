@@ -1,37 +1,43 @@
 @import "master";
 @import "header";
 
-#container{
+#container {
   display: grid;
-  grid-template-columns: 4fr 1fr;
-  overflow: hidden;
+  grid-template-columns: auto 213px;
+  top: $header-height;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
 }
 
 #world-container {
-
-  img{
-    width: 100%;
+  background-color: #4CAF50;
+  img#world-img {
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
   }
-  grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-#items-container{
-  grid-column-start: 4;
-  grid-column-end: 5;
-  overflow-y: scroll;
+#items-container {
+  grid-column: 2;
+  overflow-y: auto;
 
-  button{
-    font-family: "Raleway", sans-serif;
+  button {
+    font-family: $raleway;
   }
 }
 
 #item-to-move, #item-to-move2, .item-to-move {
   //background: #f6f6f6;
-  cursor:move;
+  cursor: move;
   width: min-content;
   height: min-content;
-  img{
+  img {
     width: 100px;
   }
   position: absolute;

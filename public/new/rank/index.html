@@ -7,62 +7,14 @@
     <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
     <link rel="stylesheet" type="text/css" href="/css/new_rank.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/new_rank.js"></script>
-    <script type="text/javascript" src="/js/header.js"></script>
     <script src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/header.js"></script>
+    <script type="text/javascript" src="/js/new_rank.js"></script>
 </head>
 <body>
-
-<script>
-    function showFriendsDialog() {
-        FB.ui({
-            method: 'apprequests',
-            message: 'Add friends'
-        }, friendsDialogCallback);
-    }
-
-    function friendsDialogCallback(res) {
-        console.log(res.to);
-        for (var i = 0; i < res.to.length; i++){
-            Recyclabears.users.sendFriendRequest(res.to[i]);
-        }
-        loadRank();
-    }
-</script>
-
+  
 <!-- Navigation Menu -->
-<div id="header">
-    <div>
-        <button id="toggle_nav" onclick="toggleNavMenu()">
-            <img src="/assets/images/toggle_nav.png" width="30px" height="30px">
-        </button>
-    </div>
-    <div id="site-name"><img src="/assets/images/icon.png">Recyclabears</a></div>
-    <div id="navigation">
-
-        <a href="/new/world">World</a>
-        <a href="/new/play">Play</a>
-        <a href="/new/learn">Learn</a>
-        <a href="/new/rank" class="active">Friends</a>
-        <a href="/new/shop">Shop</a>
-
-        <!-- User Profile -->
-        <div class="dropdown">
-            <a href="#" id="user"><img src="/assets/images/header/user.png"></a>
-            <div class="dropdown-content">
-                <span id="score"></span>
-                <span id="honey" class="honey_wallet"></span>
-                <a href="#">View Profile</a>
-                <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="medium"
-                     data-button-type="login_with"
-                     data-auto-logout-link="true" data-use-continue-as="true">
-                </div>
-            </div>
-        </div>
-        <!-- End User Profile -->
-
-    </div>
-</div>
+<nav id="header"></nav>
 <!-- End Navigation Menu -->
 
 <div id="friends-content">

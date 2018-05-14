@@ -2,9 +2,33 @@
 
 var firstTime = true;
 
+var appId;
+
+function getAppId(save) {
+    var request = new XMLHttpRequest();
+    request.open('GET', '/config/fbAppId', false);
+    request.send(null);
+    if (request.status === 200) {
+        if (save) {
+            sessionStorage.setItem('fbAppId', request.responseText);
+        }
+        return request.responseText;
+    }
+    alert('Error reading config.');
+}
+
+if (typeof(Storage) !== "undefined") {
+    appId = sessionStorage.getItem('fbAppId');
+    if (appId == null) {
+        appId = getAppId(true);
+    }
+} else {
+    appId = getAppId(false);
+}
+
 window.fbAsyncInit = function () {
     FB.init({
-        appId: '590373231339046',
+        appId: appId,
         cookie: true,
         xfbml: true,
         version: 'v3.0'
@@ -21,11 +45,11 @@ function getLoginStatus(callback) {
         if (sess_auth != null) {
             sess_auth = JSON.parse(sess_auth);
             if (new Date() < new Date(sess_auth.expiresAt)) {
-                console.log('HIT');
+                console.log('HIT login status');
                 callback(sess_auth);
                 return;
             } else {
-                console.log('STALE');
+                console.log('STALE login status');
             }
         }
         FB.getLoginStatus(function (response) {
@@ -52,6 +76,18 @@ function getLoginStatus(callback) {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+var wbbInitList = [];
+
+function wbbInit(callback) {
+    if (firstTime) {
+        console.log("queued initializer " + callback.name);
+        wbbInitList.push(callback);
+    } else {
+        console.log("past initialization time, directly invoking " + callback.name);
+        setTimeout(callback, 0);
+    }
+}
+
 function statusChangeCallback(response) {
     // console.log(response);
     if (response.status != 'connected') {
@@ -60,28 +96,10 @@ function statusChangeCallback(response) {
     Recyclabears.__fbAuth = response;
     if (firstTime) {
         firstTime = false;
-        if (wbbInit != null && wbbInit != undefined) {
-            wbbInit();
+        for (var i = 0; i < wbbInitList.length; i++) {
+            wbbInitList[i]();
         }
     }
-}
-
-function wbbInit() {
-
-    // Code in header.js -- updates the strings that should show the user's waller amount
-    updatePrice();
-    if (document.title == "Recylabears | Rank") {
-        loadRank();
-    }
-
-    // Code in new_play.js -- allow user to start playing once initialising is complete
-    // - Prevent authAccess undefined problem
-    try {
-        enablePlayPage();
-    } catch (err) {
-        console.log("Not on Play Page");
-    }
-
 }
 
 var Recyclabears = {
@@ -99,6 +117,9 @@ var Recyclabears = {
             config.data = data;
         }
         return $.ajax(config);
+    },
+    loginId: function () {
+        return Recyclabears.__fbAuth.authResponse.userID;
     },
     questions: {
         getRandomQuestion: function (howMany) {
@@ -157,6 +178,27 @@ var Recyclabears = {
         },
         unFriend: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/friends/' + fbId);
+        },
+        getUserDpUrl: function (fbId) {
+            /*return new Promise(function (resolve, reject) {
+                FB.api('/' + fbId + '/picture', 'GET', {type: 'large'}, function (response) {
+                    if (response) {
+                        console.log(response)
+                        if(response.error){
+                            //reject(response.error);
+                        } else {
+                            console.log(response);
+                            //resolve(response.data.url);
+                        }
+                    } else {
+                        reject();
+                    }
+                });
+            });*/
+            if(fbId==null){
+                fbId=Recyclabears.loginId();
+            }
+            return "https://graph.facebook.com/v3.0/"+fbId+"/picture?type=large&access_token="+Recyclabears.__fbAuth.authResponse.accessToken;
         },
 
 

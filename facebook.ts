@@ -10,7 +10,7 @@ const Log = require('debug')('wbb:facebook');
 // FB is RESTful like us!
 // no need to wait for connection
 export const FB = new Facebook({
-    appId: 590373231339046,
+    appId: process.env.FB_APP_ID,
     appSecret: process.env.FB_APP_SECRET
 });
 

@@ -1,6 +1,10 @@
 @import "master";
 
-#toggle_nav{
+$header-content-size: 40px;
+$header-padding: 10px;
+$header-height: $header-padding*2+$header-content-size;
+
+#toggle_nav {
   display: none;
   float: left;
   background-color: transparent;
@@ -14,12 +18,12 @@
   padding: 0 $main-padding-left;
   overflow: hidden;
 
-  a{
+  a {
     text-decoration: none;
-  }
-  a:visited{
-    color: $color-brown;
+    &:visited {
+      color: $color-brown;
 
+    }
   }
 }
 
@@ -29,15 +33,15 @@
   font-size: 2em;
   color: $color-brown;
 
-  img{
-    width: 40px;
-    height: 40px;
+  img {
+    width: $header-content-size;
+    height: $header-content-size;
     vertical-align: middle;
-    margin: 10px;
+    margin: $header-padding;
   }
   a {
     cursor: pointer;
-    line-height: 60px;
+    line-height: $header-height;
     vertical-align: middle;
   }
 }
@@ -49,39 +53,40 @@
   font-weight: bold;
   letter-spacing: 2px;
   text-transform: uppercase;
-  img{
-    width: 40px;
-    height: 40px;
+  img {
+    width: $header-content-size;
+    height: $header-content-size;
     vertical-align: middle;
   }
 }
 
-#navigation a{
+#navigation a {
   margin-right: 10px;
   cursor: pointer;
-  line-height: 60px;
-  padding:10px;
+  line-height: $header-height;
+  padding: $header-padding;
   text-decoration: none;
   color: $color-brown;
 }
 
-#navigation a:visited{
+#navigation a:visited {
   color: $color-brown;
 }
-#navigation a:hover{
+
+#navigation a:hover {
   background-color: $color-beige;
 }
-#navigation a.active{
+
+#navigation a.active {
   color: $color-orange;
 }
 
-#navigation a#user:hover{
+#navigation a#user:hover {
   background-color: initial;
 }
 
-
 /* Styling dropdown that displays the current user's profile */
-.dropdown{
+.dropdown {
   float: right;
   //display: inline;
   overflow: hidden;
@@ -93,7 +98,7 @@
   right: 20px;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -106,11 +111,11 @@
   display: block;
   text-align: left;
   font-size: 0.7em;
-  line-height: initial!important;
-  margin-right: 0!important;
+  line-height: initial !important;
+  margin-right: 0 !important;
 }
 
-.dropdown-content span{
+.dropdown-content span {
   color: $color-orange;
 }
 
@@ -124,11 +129,9 @@
   display: block;
 }
 
-
-
 /* Medium-sized screens: Show the site name and navigation menu on separate lines */
-@media screen and (max-width: 1000px) {
-  #site-name{
+@media screen and (max-width: 1100px) {
+  #site-name {
     display: block;
     margin: 0 auto;
     width: 100%;
@@ -144,7 +147,7 @@
 
 /* Small-sized screens: Show the navigation menu in a toggeable drop-down */
 @media screen and (max-width: 720px) {
-  #toggle_nav{
+  #toggle_nav {
     display: inline;
     margin-top: 15px;
     padding: 0;
@@ -154,23 +157,23 @@
   #navigation a {
     display: block;
     text-align: left;
-    line-height: 40px;
+    line-height: $header-content-size;
   }
 
   #navigation {
     display: none;
     position: absolute;
-    top: 60px;
+    top: $header-height;
     left: 0;
     padding-left: 10px;
     padding-bottom: 10px;
     background-color: $color-yellow;
-    z-index: 10;  // Overlay this navigation bar on top of everything when in display
+    z-index: 10; // Overlay this navigation bar on top of everything when in display
 
-    .dropdown{
+    .dropdown {
       float: none;
     }
-    .dropdown-content{
+    .dropdown-content {
       left: 20px;
     }
 
@@ -179,17 +182,15 @@
     display: inline;
     width: max-content;
   }
-  #header{
+  #header {
     padding: 0 20px;
   }
 }
 
-
-.price_container{
+.price_container {
   display: inline-block;
-  span, img{
+  span, img {
     vertical-align: middle;
     display: inline-block;
   }
-
 }
