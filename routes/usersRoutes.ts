@@ -249,5 +249,14 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }
     });
 
+    router.put('/me/inventory', (req, res) => {
+        // TODO input validation
+        return res.sendPromise(router.mongo('users').updateOne({
+            fbId: req.user.fbId
+        }, {
+            $set: req.body
+        }));
+    });
+
     return router;
 }

@@ -155,6 +155,22 @@ var Recyclabears = {
         getUserByFbId: function (fbId) {
             return Recyclabears.__apiCall('GET', '/api/users/' + fbId);
         },
+        getInventory: function () {
+            return Recyclabears.users.me().then(function (me) {
+                if (me.inventory) {
+                    return me.inventory;
+                } else {
+                    return [];
+                }
+            });
+        },
+        updateInventory: function (newInv) {
+            if (Array.isArray(newInv)) {
+                return Recyclabears.__apiCall('PUT', '/me/inventory', newInv);
+            } else {
+                console.log('WARNING Recyclabears.users.updateInventory expects Array, ' + typeof(newInv) + ' given.');
+            }
+        },
         getFriendRequests: function () {
             return Recyclabears.__apiCall('GET', '/api/users/me/requests');
         },
