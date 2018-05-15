@@ -34,7 +34,7 @@ function populateWithUsers(div, friends) {
         div.innerHTML += "<span class='user-div-title'>Received Requests</span>";
         isFriend = 1;
     }
-    else if(div.id == 'req-sent') {
+    else if (div.id == 'req-sent') {
         div.innerHTML += "<span class='user-div-title'>Sent Requests</span>";
         isFriend = 2
     }
@@ -94,7 +94,7 @@ function openProfile(friend) {
     profileHTML += "<span class='score'>" + friend.wallet + "</span>";
 
     if (friend.isFriend == 0) {
-        profileHTML += "<button id='visit-world' class='left-green-button' onclick=''>Visit World</button>";
+        profileHTML += "<button id='visit-world' class='left-green-button' onclick='displayWorld(" + friend.fbId + ")'>Visit World</button>";
     }
     else if (friend.isFriend == 1) {
         var functionName = "acceptRequest(" + friend.fbId + ")";
@@ -176,4 +176,68 @@ function friendsDialogCallback(res) {
         Recyclabears.users.sendFriendRequest(res.to[i]);
     }
     loadRank();
+}
+
+function displayWorld(fbId) {
+    const overlay = $('#overlay');
+    const popup = $('#pop-up');
+    overlay.show();
+    popup.show();
+    popup.html('');
+
+    var cont = $('<div/>', {id: 'world-container'});
+    var img = $('<img/>', {
+        id: 'world-img',
+        src: '/assets/images/world/background.png'
+    });
+    cont.append(img);
+    popup.append(cont);
+
+    const realX = 1122, realY = 626;
+    // execute image loading and world data loading in parallel
+    Promise.all([new Promise(function (resolve) {
+        img.on('load', resolve);
+    }), Recyclabears.worlds.getWorld(fbId)]).then(function (res) {
+        var world = res[1];
+        const mx = img.width() / realX, my = img.height() / realY;
+        for (var i in world.items) {
+            displayWorldItem(cont, mx, my, world.items[i]);
+        }
+    });
+    overlay.click(closeWorld);
+}
+
+function displayWorldItem(cont, mx, my, item) {
+    const size = (120 * mx) + 'px';
+    var gObj = {
+        div: $('<div/>', {
+            'class': 'item-to-move'
+        }),
+        redraw: function () {
+            gObj.div.css('left', (gObj.x * mx) + 'px');
+            gObj.div.css('top', (gObj.y * my) + 'px');
+        }
+    };
+    Object.assign(gObj, item); // copies and replace gObj with whats in obj
+    var delImg = $('<img/>', {
+        src: '/assets/images/world/delete2.png',
+        'class': 'delete-img',
+        width: size
+    });
+    delImg.css('visibility', 'hidden');
+    var objImg = $('<img/>', {
+        src: gObj.image,
+        width: size
+    });
+    gObj.div.append(delImg, objImg);
+    gObj.redraw();
+    cont.append(gObj.div);
+}
+
+function closeWorld() {
+    const overlay = $('#overlay');
+    const popup = $('#pop-up');
+    overlay.off('click');
+    overlay.hide();
+    popup.hide();
 }
