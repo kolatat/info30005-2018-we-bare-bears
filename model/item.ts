@@ -1,9 +1,17 @@
-export class ShopItem {
+export interface Item {
+    display: string;
     name: string;
     type: string;
     price: number;
     image: string;
     description: string
+};
+
+export interface ShopItem extends Item {
+}
+
+export interface BinItem extends Item {
+    binType: string
 }
 
 /*
