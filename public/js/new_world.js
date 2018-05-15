@@ -3,12 +3,12 @@ window.onresize = onResize;
 function onResize(){
     var items_container = document.getElementById("items-container");
     var worldDivHeight = document.getElementById('world-img').clientHeight;
-    console.log(worldDivHeight + 'world');
+    // console.log(worldDivHeight + 'world');
     items_container.offsetHeight = worldDivHeight;
     items_container.style.height = worldDivHeight+'px';
     items_container.clientHeight = worldDivHeight;
-    console.log(items_container.offsetHeight + 'items');
-    console.log(items_container.style.height + 'items');
+    // console.log(items_container.offsetHeight + 'items');
+    // console.log(items_container.style.height + 'items');
 }
 
 /*************************************************************************/
@@ -104,7 +104,7 @@ var worldItems = [
     {
         name: "Yellow Bin",
         type: "bin",
-        bin_type: "paper",
+        bin_type: "paper-bin",
         price: 10,
         image: "/assets/images/items/yellow_bin.png",
         description: "A bin that looks like it is made for disposing paper.",
@@ -114,7 +114,7 @@ var worldItems = [
     {
         name: "Red Bin",
         type: "bin",
-        bin_type: "plastic",
+        bin_type: "plastic-bin",
         price: 10,
         image: "/assets/images/items/red_bin.png",
         description: "A bin that looks like it is made for disposing plastic.",
@@ -124,7 +124,7 @@ var worldItems = [
     {
         name: "Blue Bin",
         type: "bin",
-        bin_type: "metal",
+        bin_type: "metal-bin",
         price: 10,
         image: "/assets/images/items/blue_bin.png",
         description: "A bin that looks like it is made for disposing metal.",
@@ -134,58 +134,13 @@ var worldItems = [
     {
         name: "Green Bin",
         type: "bin",
-        bin_type: "glass",
+        bin_type: "glass-bin",
         price: 10,
         image: "/assets/images/items/green_bin.png",
         description: "A bin that looks like it is made for disposing glass.",
         position_x: "800px",
         position_y: "550px"
     }
-];
-
-var bins = [
-    [],
-    [{
-        name: "Yellow Bin",
-        type: "bin",
-        bin_type: "paper",
-        price: 10,
-        image: "/assets/images/items/yellow_bin.png",
-        description: "A bin that looks like it is made for disposing paper.",
-        position_x: "200px",
-        position_y: "550px"
-    }],
-    [{
-        name: "Green Bin",
-        type: "bin",
-        bin_type: "glass",
-        price: 10,
-        image: "/assets/images/items/green_bin.png",
-        description: "A bin that looks like it is made for disposing glass.",
-        position_x: "800px",
-        position_y: "550px"
-    }]
-    [{
-        name: "Blue Bin",
-        type: "bin",
-        bin_type: "metal",
-        price: 10,
-        image: "/assets/images/items/blue_bin.png",
-        description: "A bin that looks like it is made for disposing metal.",
-        position_x: "600px",
-        position_y: "550px"
-    }],
-    [{
-        name: "Red Bin",
-        type: "bin",
-        bin_type: "plastic",
-        price: 10,
-        image: "/assets/images/items/red_bin.png",
-        description: "A bin that looks like it is made for disposing plastic.",
-        position_x: "400px",
-        position_y: "550px"
-    }]
-
 ];
 
 var lastDumpSession = new Date("2018-05-15T12:00:00+10:00");
@@ -202,14 +157,17 @@ function worldPageInit(){
 
 function populateWorld(){
     for(var item in worldItems){
-        console.log(JSON.stringify(worldItems[item]));
+        // console.log(JSON.stringify(worldItems[item]));
         showInWorld(worldItems[item]);
     }
 }
 
 function showInWorld(obj){
     var objDiv = document.createElement("div");
-    objDiv.setAttribute("class", "item-in-world");
+    objDiv.classList.add("item-in-world");
+    if(obj.type == 'bin'){
+        objDiv.classList.add(obj.bin_type);
+    }
     objDiv.innerHTML += "<img src='" + obj.image + "'>";
     objDiv.style.left = obj.position_x;
     objDiv.style.top = obj.position_y;
@@ -327,12 +285,9 @@ function populateItemMenu(show_type){
     }
 
     var worldDivHeight = document.getElementById('world-img').clientHeight;
-    console.log(worldDivHeight + 'world');
     items_container.offsetHeight = worldDivHeight;
     items_container.style.height = worldDivHeight+'px';
     items_container.clientHeight = worldDivHeight;
-    console.log(items_container.offsetHeight + 'items');
-    console.log(items_container.style.height + 'items');
 }
 
 function createItemTabs(){
@@ -356,7 +311,6 @@ function showInWorldEditable(obj){
 function deleteDiv(obj){
     console.log(obj.id);
     obj.remove();
-    // document.getElementsByTagName('body')[0].removeChild(obj);
 }
 
 /*************************************************************************/
@@ -393,32 +347,26 @@ function dragElement(elmnt){
         /* stop moving when mouse button is released:*/
         document.onmouseup = null;
         document.onmousemove = null;
-        console.log("element class " + elmnt.className);
+
         if (elmnt.classList.contains('rubbish-to-move')){
             if (elmnt.classList.contains('landfill')){
-                console.log("these bins " + JSON.stringify(bins[0]));
-                checkCollision(elmnt, bins[0]);
+                checkCollision(elmnt, document.getElementsByClassName("landfill-bin"));
                 console.log("i am landfill")
-
             }
             else if (elmnt.classList.contains('paper')){
-                console.log("these bins " + JSON.stringify(bins[1]));
-                checkCollision(elmnt, bins[1]);
+                checkCollision(elmnt, document.getElementsByClassName("paper-bin"));
                 console.log("i am paper")
             }
             else if (elmnt.classList.contains('glass')){
-                console.log("these bins " + JSON.stringify(bins[2]));
-                checkCollision(elmnt, bins[2]);
+                checkCollision(elmnt, document.getElementsByClassName("glass-bin"));
                 console.log("i am glass")
             }
             else if (elmnt.classList.contains('metal')){
-                console.log("these bins " + JSON.stringify(bins[3]));
-                checkCollision(elmnt, bins[3]);
+                checkCollision(elmnt, document.getElementsByClassName("metal-bin"));
                 console.log("i am metal")
             }
             else if (elmnt.classList.contains('plastic')){
-                console.log("these bins " + JSON.stringify(bins[4]));
-                checkCollision(elmnt, bins[4]);
+                checkCollision(elmnt, document.getElementsByClassName("plastic-bin"));
                 console.log("i am plastic")
             }
         }
@@ -426,24 +374,40 @@ function dragElement(elmnt){
 }
 
 function checkCollision(dom, bins){
-    for(var i in bins){
-        console.log("comparing with " + JSON.stringify(bins[i]));
+    for(var i = 0; i < bins.length; i++){
         if (collide(dom, bins[i])){
             console.log("collide");
-            obj.remove();
+            dom.remove();
         }
     }
 }
 
 function collide(dom, obj){
-    console.log("top" + dom.style.top);
-    console.log("left" + dom.style.left);
-    console.log("obj end y " + (dom.style.top + dom.offsetHeight));
-    console.log("obj end x " + (dom.style.left + dom.offsetWidth));
-    if((dom.style.top <= obj.position_y) && (obj.position_y <= (dom.style.top + dom.offsetHeight))){
-        if ((dom.style.left <= obj.position_x) && (obj.position_x <= (dom.style.left + dom.offsetWidth))){
-            return true;
-        }
+    var dom_top_left = [parseInt(dom.style.left, 10), parseInt(dom.style.top, 10)];
+    var dom_top_right = [parseInt(dom.style.left, 10) + dom.offsetWidth, parseInt(dom.style.top, 10)];
+    var dom_bot_left = [parseInt(dom.style.left, 10), parseInt(dom.style.top, 10) + dom.offsetHeight];
+    var dom_bot_right = [parseInt(dom.style.left, 10) + dom.offsetWidth, parseInt(dom.style.top, 10) + dom.offsetHeight];
+
+    var obj_left = parseInt(obj.style.left, 10);
+    var obj_right = obj_left + obj.offsetWidth;
+    var obj_top = parseInt(obj.style.top, 10);
+    var obj_bottom = obj_top + obj.offsetHeight;
+    var obj = [obj_left, obj_right, obj_top, obj_bottom];
+
+    if(overlap(dom_top_left, obj) || overlap(dom_top_right, obj) ||
+       overlap(dom_bot_left, obj) || overlap(dom_bot_right, obj)){
+        return true;
+    }
+    return false;
+}
+
+function overlap(point, obj){
+    console.log("point " + point);
+    console.log("obj " + obj);
+    // obj = coords as follows [left, right, top, bottom]
+    if (obj[0] <= point[0] && point[0] <= obj[1] &&
+        obj[2] <= point[1] && point[1] <= obj[3]){
+        return true;
     }
     return false;
 }
