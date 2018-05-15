@@ -1,14 +1,19 @@
 window.onresize = onResize;
 
+const worldSize = [1122, 626];
+
 function onResize() {
-    var items_container = document.getElementById("items-container");
-    var worldDivHeight = document.getElementById('world-img').clientHeight;
+    //var items_container = document.getElementById("items-container");
+    //var worldDivHeight = document.getElementById('world-img').clientHeight;
     // console.log(worldDivHeight + 'world');
-    items_container.offsetHeight = worldDivHeight;
-    items_container.style.height = worldDivHeight + 'px';
-    items_container.clientHeight = worldDivHeight;
+    //items_container.offsetHeight = worldDivHeight;
+    //items_container.style.height = worldDivHeight + 'px';
+    //items_container.clientHeight = worldDivHeight;
     // console.log(items_container.offsetHeight + 'items');
     // console.log(items_container.style.height + 'items');
+    //console.log('ayy');
+
+    // too difficult lets just turn a blind eye on resizing
 }
 
 /*************************************************************************/
@@ -166,6 +171,45 @@ function populateWorld(world) {
         // console.log(JSON.stringify(worldItems[item]));
         showInWorld(worldItems[item]);
     }
+    for (var item in world.items) {
+        var obj = world.items[item];
+        obj.x = parseFloat(obj.x);
+        obj.y = parseFloat(obj.y);
+        showInWorldEditable(obj, false);
+    }
+}
+
+function saveWorld() {
+    // sanitize
+    var updateList = [];
+    for (var i = 0; i < itemList.length; i++) {
+        var item = itemList[i];
+        var copy = {};
+        for (var k in item) {
+            // put your list of keys to ignore here
+            if (["div", "redraw"].indexOf(k) < 0) {
+                copy[k] = item[k];
+            }
+        }
+        updateList.push(copy);
+    }
+    //console.log(updateList);
+    var saveBtn = $('.save-btn');
+    saveBtn.text('Saving...');
+    saveBtn.prop('disabled', true);
+    Recyclabears.worlds.updateWorld('me', {
+        items: updateList
+    }).then(function () {
+        saveBtn.text('Saved');
+
+        function restore() {
+            saveBtn.text('Save');
+            saveBtn.prop('disabled', false);
+            saveBtn.hide();
+        }
+
+        setTimeout(restore, 1000);
+    });
 }
 
 function showInWorld(obj) {
@@ -185,6 +229,11 @@ function showInWorld(obj) {
 /******************* FUNCTIONS FOR DUMPING NEW RUBBISH *******************/
 
 /*************************************************************************/
+
+function worldEdited() {
+    // call this when u modify world state
+    $('button.save-btn').show();
+}
 
 function checkDumpSession(world) {
     var currDateLessThanHr = new Date("2018-05-15T12:30:00+10:00");
@@ -332,7 +381,61 @@ function createItemTabs() {
     return itemTabsHTML;
 }
 
-function showInWorldEditable(obj) {
+function getScaleFactors() {
+    const ref = $('#world-img');
+    return {
+        x0: ref.offset().left,
+        y0: ref.offset().top,
+        mx: ref.width() / worldSize[0],
+        my: ref.height() / worldSize[1]
+    }
+}
+
+var itemList = [];
+
+function showInWorldEditable(obj, edit=true) {
+    var sf = getScaleFactors();
+    var size = (120 * sf.mx) + 'px';
+    var gObj = {
+        x: worldSize[0] / 2,
+        y: worldSize[1] / 2,
+        div: $('<div/>', {
+            'class': 'item-to-move'
+        }),
+        redraw: function () {
+            var sf = getScaleFactors();
+            gObj.div.css('left', (sf.x0 + gObj.x * sf.mx) + 'px');
+            gObj.div.css('top', (gObj.y * sf.my) + 'px');
+        }
+    };
+    Object.assign(gObj, obj); // copies and replace gObj with whats in obj
+    var delImg = $('<img/>', {
+        src: '/assets/images/world/delete2.png',
+        'class': 'delete-img',
+        width: size
+    });
+    delImg.click(function () {
+        gObj.div.remove();
+        var i = itemList.indexOf(gObj);
+        if (i >= 0) {
+            itemList.splice(i, 1);
+            worldEdited();
+        } else {
+            console.log('ERROR cannot delete non-existent object');
+        }
+    });
+    var objImg = $('<img/>', {
+        src: gObj.image,
+        width: size
+    });
+    gObj.div.append(delImg, objImg);
+    dragElement2(gObj);
+    gObj.redraw();
+    $('#world-container').append(gObj.div);
+    itemList.push(gObj);
+    if (edit) worldEdited();
+    return;
+
     var objDiv = document.createElement("div");
     objDiv.setAttribute("class", "item-to-move");
     objDiv.innerHTML = "<img src='/assets/images/world/delete2.png' class='delete-img' onclick='deleteDiv(this.parentNode)'>";
@@ -351,6 +454,33 @@ function deleteDiv(obj) {
 /****************** FUNCTIONS FOR DRAG AND DROP ELEMENTS *****************/
 
 /*************************************************************************/
+function dragElement2(obj) {
+    // for OOP and not DOM, obj.div to get the div container
+    var cx, cy, dx, dy; // client pos, delta pos
+    obj.div.mousedown(function (e) {
+        e = e || window.event;
+        cx = e.clientX;
+        cy = e.clientY;
+        $(window).mousemove(drag);
+        $(window).mouseup(closeDrag);
+    });
+
+    function drag(e) {
+        var sf = getScaleFactors();
+        e = e || window.event;
+        obj.x += (e.clientX - cx) / sf.mx;
+        obj.y += (e.clientY - cy) / sf.my;
+        cx = e.clientX;
+        cy = e.clientY;
+        obj.redraw();
+        worldEdited();
+    }
+
+    function closeDrag(e) {
+        $(window).off('mousemove');
+        $(window).off('mouseup');
+    }
+}
 
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;

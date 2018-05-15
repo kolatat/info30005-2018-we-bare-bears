@@ -48,7 +48,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
             return;
         }
         var updateSet: any = {};
-        Log(req.body);
+        //Log(req.body);
         if (req.body.items) {
             updateSet.items = req.body.items;
         }
@@ -58,7 +58,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         if (req.body.lastDump) {
             updateSet.lastDump = new Date();
         }
-        Log(updateSet);
+        //Log(updateSet);
         if (updateSet == {}) {
             res.sendStatus(200);
             return;
