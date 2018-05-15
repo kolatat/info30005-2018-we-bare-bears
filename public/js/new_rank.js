@@ -17,8 +17,6 @@ function loadRank() {
 
         return 'done';
     });
-
-
 }
 
 function populateWithUsers(div, friends) {

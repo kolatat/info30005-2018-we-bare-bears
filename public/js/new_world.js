@@ -92,6 +92,53 @@ var testItemList = [
 
 ];
 
+var lastDumpSession = new Date("2018-05-15T12:00:00+10:00");
+
+function worldPageInit(){
+    populateItemMenu('tab_all');
+    checkDumpSession();
+}
+
+function checkDumpSession(){
+    var currDateLessThanHr = new Date("2018-05-15T12:30:00+10:00");
+    var currDateTwoHrs = new Date("2018-05-15T14:00:00+10:00");
+    var currDateEightHrs = new Date("2018-05-15T20:00:00+10:00");
+
+    // convert diff from msecs to secs (1000), secs to min (60), min to hrs (60)
+    // var diff = (currDateLessThanHr - lastDumpSession)/1000/60/60;
+    var diff = (currDateTwoHrs - lastDumpSession)/1000/60/60;
+    // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
+
+    // calculate rubbish amount, logarithmically increasing with time difference
+    var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
+
+    console.log("time diff " + diff);
+    console.log("adding rubbish " + rubbishAmt);
+
+    // if negative rubbishAmt from log function, then not enough time has passed
+    if (rubbishAmt <= 0){
+        return;
+    }
+
+    produceRubbish(rubbishAmt);
+    lastDumpSession = new Date();
+}
+
+function produceRubbish(amount){
+    console.log("producing rubbish")
+    for(var i = 0; i < amount; i++){
+        displayRubbish();
+    }
+}
+
+function displayRubbish (){
+    var objDiv = document.createElement("div");
+    objDiv.setAttribute("class", "rubbish-to-move");
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/plastic/plastic0.png'>";
+    dragElement(objDiv);
+    document.getElementsByTagName('body')[0].appendChild(objDiv);
+}
+
 function populateItemMenu(show_type){
 
     // Get the items_container element of the HTML and remove current items
@@ -166,13 +213,11 @@ function createItemTabs(){
 function showInWorld(obj){
     var objDiv = document.createElement("div");
     objDiv.setAttribute("class", "item-to-move");
-    objDiv.setAttribute("id", "id1");
     objDiv.innerHTML = "<img src='/assets/images/world/delete2.png' class='delete-img' onclick='deleteDiv(this.parentNode)'>";
     objDiv.innerHTML += "<img src='" + obj.image + "'>";
 
     dragElement(objDiv);
     document.getElementsByTagName('body')[0].appendChild(objDiv);
-
 }
 
 function deleteDiv(obj){
