@@ -198,6 +198,7 @@ var Recyclabears = {
             if(fbId==null){
                 fbId=Recyclabears.loginId();
             }
+            console.log("finding profile photo of " + fbId);
             return "https://graph.facebook.com/v3.0/"+fbId+"/picture?type=large&access_token="+Recyclabears.__fbAuth.authResponse.accessToken;
         },
 
