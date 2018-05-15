@@ -1,40 +1,3 @@
-function generateFriends() {
-    var friends = [];
-    var name;
-    var score;
-    var photo;
-    var id;
-    var isFriend;
-
-    for (var i = 0; i < 10; i++) {
-        name = "User " + i;
-        score = 1000 - i * 100;
-        photo = "/assets/images/rank/user.png";
-        id = i;
-        isFriend = i % 3; // 0 - friend, 1 - request received, 2 - request sent
-
-        friends[i] = {
-            name: name,
-            score: score,
-            photo: photo,
-            id: id,
-            isFriend: isFriend
-        };
-    }
-
-    return friends;
-}
-
-function getFriend(id) {
-    var friends = generateFriends();
-    for (var i = 0; i < 10; i++) {
-        if (friends[i].id == id) {
-            return friends[i];
-        }
-    }
-    return null;
-}
-
 function loadRank() {
     Recyclabears.users.me().then(function (data) {
         var friends = data.friends.list;
@@ -58,7 +21,7 @@ function loadRank() {
 
 }
 
-function populateWithUsers(div, friends){
+function populateWithUsers(div, friends) {
     if (friends.length <= 0)
         return;
 
@@ -66,14 +29,14 @@ function populateWithUsers(div, friends){
     div.innerHTML = "";
 
     var isFriend = 0;
-    if (div.id == 'rank-list'){
+    if (div.id == 'rank-list') {
         div.innerHTML += "<span class='user-div-title'>Friends</span>";
     }
-    if (div.id == 'req-received'){
+    else if (div.id == 'req-received') {
         div.innerHTML += "<span class='user-div-title'>Received Requests</span>";
         isFriend = 1;
     }
-    else if(div.id == 'req-sent'){
+    else if(div.id == 'req-sent') {
         div.innerHTML += "<span class='user-div-title'>Sent Requests</span>";
         isFriend = 2
     }
@@ -84,7 +47,8 @@ function populateWithUsers(div, friends){
             data.isFriend = isFriend;
             var rankDiv = document.createElement("div");
             rankDiv.setAttribute("class", "rank");
-            rankDiv.innerHTML = "<img src=\"" + Recyclabears.users.getUserDpUrl(friends[i]) + "\">";
+            console.log("Recyclabears.users.getUserDpUrl(" + data.fbId);
+            rankDiv.innerHTML = "<img src=\"" + Recyclabears.users.getUserDpUrl(data.fbId) + "\">";
             var nameSpan = document.createElement("span");
             nameSpan.setAttribute("class", "name");
             nameSpan.setAttribute("onclick", "openProfile(" + JSON.stringify(data) + ")");
