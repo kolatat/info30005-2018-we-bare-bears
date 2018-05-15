@@ -23,6 +23,19 @@
   overflow-y: hidden;
 }
 
+.rubbish-to-move {
+  cursor: move;
+  width: min-content;
+  height: min-content;
+  img {
+    width: 100px;
+  }
+  position: absolute;
+  bottom: 50px;
+  z-index: 9;
+  draggable: true;
+}
+
 #items-container {
   grid-column: 2;
   overflow-y: auto;
@@ -32,7 +45,7 @@
   }
 }
 
-#item-to-move, #item-to-move2, .item-to-move {
+.item-to-move {
   //background: #f6f6f6;
   cursor: move;
   width: min-content;
@@ -44,6 +57,16 @@
   top: 100px;
   z-index: 9;
   draggable: true;
+}
+
+.item-in-world{
+  width: min-content;
+  height: min-content;
+  img {
+    width: 100px;
+  }
+  position: absolute;
+  z-index: 9;
 }
 
 img.shop_item {
