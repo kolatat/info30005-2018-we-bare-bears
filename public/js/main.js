@@ -142,10 +142,6 @@ var Recyclabears = {
         },
 
 
-        /* Coz I accidently modified a bunch of questions and had to remove them ;( ....  */
-        deleteQuestion: function (qid) {
-            return Recyclabears.__apiCall('DELETE', '/api/questions/' + qid);
-        },
         getQuestion: function (qid) {
             return Recyclabears.__apiCall('GET', '/api/questions/testQuery');
         }
@@ -211,4 +207,4 @@ var Recyclabears = {
             });
         }
     }
-}
+};

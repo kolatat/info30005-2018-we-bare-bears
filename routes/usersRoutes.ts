@@ -219,31 +219,26 @@ export function initRouter(router: WbbRouter): WbbRouter {
     router.put('/me/wallet', (req, res) => {
         // delete cache
         router.store.usersCache.del(req.user.fbId);
-
-        // Log("Original amount: " + req.user.wallet);
-
-        let update_wallet = 10;
+        let update_wallet = req.user.wallet;
         let change_amount = Number(req.body.value);
 
         // Only update the wallet if input is valid
-        if (update_wallet != null && !isNaN(update_wallet) && change_amount != null && !isNaN(change_amount)) {
+        if (change_amount != null && !isNaN(change_amount)) {
 
             // console.log(req.body.value);
             if (req.body.action == "add") {
-                update_wallet = req.user.wallet + change_amount;
+                update_wallet += change_amount;
             } else if (req.body.action == "minus") {
-                update_wallet = req.user.wallet - change_amount;
+                update_wallet -= change_amount;
             }
 
-            //updates the current user's wallet
-            // rejects and remove a request
+            // Updates the user's wallet
             res.sendPromise(router.mongo("users").updateOne({
                 fbId: req.user.fbId
             }, {
                 $set: {
                     "wallet": update_wallet
                 }
-
             }).then(r => {
                 return {result: r};
             }));

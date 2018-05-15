@@ -4,39 +4,32 @@ function populate() {
 
     // If no more questions are remaining, display the score
     if (quiz.isEnded()) {
+        // Show end result of quiz
         showScores();
+
+        // Can only earn honey if user completed the whole quiz
+        Recyclabears.users.updateWallet("add", Number(quiz.totalHoney)).then(function () {
+            updatePrice();
+        });
     }
+
+
     else {
 
-        Recyclabears.questions.getRandomQuestion().then(function (data) {
-            console.log("Received --> ");
-            console.log(data);
-            if (data.type == "multiple-choice") {
-                var new_ques = new Mult_Question(data);
-                quiz.questions.push(new_ques);
-                quiz.mcq++;
-                _displayMult(new_ques);
-
-            } else if(data.type === "fill-in-the-blanks"){
-                var new_blanks = new Blanks_Question(data);
-                quiz.questions.push(new_blanks);
-                quiz.mcq++;
-                _displayBlanks(new_blanks);
-
-            } else if (data.type === "youtube-video") {
-                var new_vid = new Video(data);
-                quiz.questions.push(new_vid);
-                quiz.videos++;
-                _displayVideo(new_vid);
-            }
-            return 'done';
-        });
-
+        // Display question based on the type
+        var ques_obj = quiz.getQuestionIndex();
+        if (ques_obj instanceof Mult_Question) {
+            _displayMult(ques_obj);
+        } else if (ques_obj instanceof Blanks_Question) {
+            _displayBlanks(ques_obj);
+        } else if (ques_obj instanceof Video) {
+            _displayVideo(ques_obj);
+        }
 
         // Update footer text to show quiz progress
         showProgress();
     }
-};
+}
 
 
 /* Populate the page with HTML elements for displaying a Multiple-Choice question */
@@ -68,6 +61,7 @@ function _displayMult(ques_details) {
     quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
 }
 
+
 /* Populate the page with HTML elements for displaying a fill-in-the-blanks-type question */
 function _displayBlanks(ques_details) {
 
@@ -80,7 +74,6 @@ function _displayBlanks(ques_details) {
     var statement_HTML = '<div>';
     var blanks_index = 0;
     var choice_options = [];
-
 
     // HTML Strings for the statement
     for (var i = 0; i < ques_details.question.length; i++) {
@@ -105,7 +98,7 @@ function _displayBlanks(ques_details) {
 
     var submit_HTML = '<button onclick="checkBlanks()">Submit</button>'
 
-    // clear the indices for future blanks question use
+    // Clear the indices array for future blanks question use
     blanks_indices = [];
 
     // Final display of quiz container
@@ -138,14 +131,6 @@ function _displayVideo(video_details) {
 
 
 /* Function to be attached to the answer buttons for guessing that option */
-function guess(button) {
-    var button = document.getElementById(button.id);
-    var guess = button.innerHTML;
-    quiz.guess(guess);
-    populate();
-};
-
-/* Function to be attached to the answer buttons for guessing that option */
 function guessAnswer(button) {
 
     var button = document.getElementById(button.id);
@@ -155,24 +140,25 @@ function guessAnswer(button) {
     showAnswer(ans_obj);
 }
 
-/* Show the user the correct answer */
+
+/* Show the correct answer to the user */
 function showAnswer(answer_object) {
-
-
     var quesResultHTML = "";
 
-    if (answer_object.correct == true) {
+    if (answer_object.correct === true) {
         quesResultHTML += "<h1>Correct Answer!</h1>";
     } else {
         quesResultHTML += "<h1>Wrong Answer!</h1>";
     }
 
+    // Show question and correct answer for an MCQ-type question
     if (answer_object.type === "mult") {
         quesResultHTML += "<p>Question: <em>" + answer_object.question + "</em></p>";
         quesResultHTML += "<p>Correct answer:  <em>" + answer_object.answer + "</em></p>";
-    } else if (answer_object.type === "blanks") {
+    }
+    // Show correct statement for fill-in-the-blanks type question
+    else if (answer_object.type === "blanks") {
         quesResultHTML += "<p>Correct Statement:</p>";
-
         for (var i = 0; i < answer_object.question.length; i++) {
             quesResultHTML += "<pre class='fill-blanks' ";
             if (answer_object.question[i].type === "fill") {
@@ -190,10 +176,10 @@ function showAnswer(answer_object) {
     toggleMessageWindow();
     var msg_container = document.getElementById("msg_insert");
     msg_container.innerHTML = quesResultHTML;
-
 }
 
-/* Function to be attached to button on Video page, just skips to next question --- TO BE MODIFIED */
+
+/* TO BE MODIFIED (?) --- Function to be attached to button on Video page, just skips to next question*/
 function proceedVideo() {
     quiz.proceed();
     populate();
@@ -204,7 +190,7 @@ function proceedVideo() {
 function showProgress() {
     var currentQuestionNumber = quiz.questionIndex + 1;
     var element = document.getElementById("footer_text");
-    element.innerHTML = "Question " + currentQuestionNumber + " of " + quiz.maxQues;
+    element.innerHTML = "Question " + currentQuestionNumber + " of " + quiz.questions.length;
 }
 
 
@@ -212,15 +198,14 @@ function showProgress() {
 function showScores() {
 
     var gameOverHTML = "<h1>Result</h1>";
-    gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " out of " + quiz.mcq + " question(s) correctly!</h2>";
-    gameOverHTML += "<h2 id='vid'> You watched " + quiz.videos + " video(s)!</h2>";
+    gameOverHTML += "<h2 id='score'> You answered " + quiz.score + " out of " + quiz.numQues + " question(s) correctly!</h2>";
+    gameOverHTML += "<h2 id='vid'> You watched " + quiz.numVid + " video(s)!</h2>";
     gameOverHTML +=
         "<div class='price_container'> You earned a total of " +
-            "<span>" + quiz.totalScore + "</span>" +
+            "<span>" + quiz.totalHoney + "</span>" +
             "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
         "</div><br>";
     gameOverHTML += "<button id='close_msg_window' onclick='toggleMessageWindow();togglePageWindow();'>Close Message Window</button>";
-
 
     // Display the result of quiz
     toggleMessageWindow();
@@ -232,18 +217,19 @@ function showScores() {
     quiz_container.innerHTML = "";
     var footer_text = document.getElementById("footer_text");
     footer_text.innerHTML = "";
-};
+}
 
 
 // Global quiz variable
 var quiz;
 
-// For testing purpose --- Get input from user on number of questions to populate the quiz
-function _generateQuizQuestions() {
-    //var num_questions = parseInt(prompt("How many questions would you like to answer?"));
-    var num_questions = 5;
-    if (num_questions > 0 && num_questions <= 5) {
 
+// Get input from user on number of questions to populate the quiz
+function _generateQuizQuestions() {
+
+    // Allow users to choose only between 1-5 questions
+    var num_questions = parseInt(prompt("How many questions would you like to answer? (1 - 5)"));
+    if (num_questions > 0 && num_questions <= 5) {
         alert("Starting quiz with " + num_questions + " questions!");
         _startQuiz(num_questions);
     } else {
@@ -256,12 +242,36 @@ function _generateQuizQuestions() {
 /* Start the Quiz */
 function _startQuiz(num_ques) {
 
+    Recyclabears.questions.getRandomQuestion(num_ques).then(function(data){
+       var questions = data.docs;
+       var question_list = [];
+       var numQues = 0;
+       var numVid = 0;
 
-    quiz = new Quiz(num_ques);
-    //display the quiz
-    populate();
+       // Create new Question object based on the question type
+       for(var i = 0; i < questions.length; i++){
+           if (questions[i].type === "multiple-choice") {
+               var new_ques = new Mult_Question(questions[i]);
+               question_list.push(new_ques);
+               numQues++;
+           } else if(questions[i].type === "fill-in-the-blanks"){
+               var new_blanks = new Blanks_Question(questions[i]);
+               question_list.push(new_blanks);
+               numQues++;
+           } else if (questions[i].type === "youtube-video") {
+               var new_vid = new Video(questions[i]);
+               question_list.push(new_vid);
+               numVid++;
+           }
+       }
 
+        // Create new Quiz object for current round of quizzes
+        quiz = new Quiz(question_list, numQues, numVid);
 
+        // Display the quiz
+        populate();
+        return 'done';
+    });
 }
 
 

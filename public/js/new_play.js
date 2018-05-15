@@ -69,39 +69,8 @@ function getRandomBlanks() {
 }
 
 
-
-function _testBlanks(ques_details){
-
-    // Get the container element that will contain the quiz
-    var quiz_container = document.getElementById("quiz_container");
-    quiz_container.innerHTML = "";  // Reset the container element for each use
-
-    // HTML Strings for Fill in the Blanks Page
-    var head_HTML = '<h1>Fill in the Blanks!</h1>';
-    var statement_HTML = '<div>';
-    var choices_HTML = '<div class="fill_buttons">';
-    var blanks_index = 0;
-
-    for (var i = 0; i < ques_details.fill_blanks.length; i++) {
-        if (ques_details.fill_blanks[i].type === "fill") {
-            statement_HTML += '<pre class="fill-blanks">' + ques_details.fill_blanks[i].value + '</pre>';
-        } else {
-            statement_HTML += '<pre id="blanks-' + blanks_index + '" class="fill-blanks"> ________________ </pre>';
-            choices_HTML += '<button onclick="assignIndex(this)"><p class="value">' + ques_details.fill_blanks[i].value + '</p></button>';
-
-            blanks_index++;
-        }
-    }
-    statement_HTML += '</div>';
-    choices_HTML += '</div>';
-
-    // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML;
-}
-
 /* For Fill-in-the-blanks type questions: Remember the indices for order placement of answer choices */
 var blanks_indices = [];
-
 
 /* For Fill-in-the-blanks type questions: Get the next position to be assigned to an answer option */
 function getNextIndex(){
@@ -110,7 +79,6 @@ function getNextIndex(){
     console.log(blanks_indices);
     // Base case for arrays with 0 or 1 items
     if(blanks_indices.length === 0){
-
         blanks_indices.push(0);
         return 0;
     } else if (blanks_indices.length === 1) {
@@ -148,7 +116,7 @@ function getNextIndex(){
 function removeIndex(button) {
 
     var remove_assigned = button.getElementsByClassName("assigned_order")[0];
-    var remove_value = Number(remove_assigned.innerHTML) - 1;
+    var remove_value = Number(remove_assigned.innerHTML) - 1;   // -1 to get index of the array
     console.log(remove_value);
 
     console.log("Removing: " + remove_value);
@@ -178,13 +146,9 @@ function removeIndex(button) {
 function assignIndex(button) {
 
     var cur_index = getNextIndex();
-    console.log("After getNexIndex() function");
-    console.log(blanks_indices);
     var assign_num = cur_index + 1;
-    console.log("Assigning: " + assign_num);
     button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + assign_num + '</span>)</p>';
     button.setAttribute("onclick", "removeIndex(this)");
-
     var preview_text = document.getElementById("blanks-" + cur_index);
     preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML + " ";
 }
@@ -204,6 +168,7 @@ function checkBlanks() {
         // Get the position of answer assigned to this value
         var position_string = choice_buttons[i].getElementsByClassName("assigned_order")[0].innerHTML;
 
+        // An answer option has not been assigned a position, show error message
         if (position_string === "") {
             showError();
             return;

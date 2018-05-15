@@ -1,12 +1,11 @@
 /* Quiz object constructor */
-function Quiz(max_ques) {
-    this.score = 0;
-    this.questions = []; // Array of question added along the quiz
+function Quiz(ques_list, numQues, numVid) {
+    this.questions = ques_list; // Array of questions
     this.questionIndex = 0; // Current question
-    this.mcq = 0; // Number of Multiple Choice questions
-    this.videos = 0; // Number of videos
-    this.maxQues = max_ques;
-    this.totalScore = 0;
+    this.numQues = numQues; // Number of Multiple Choice/Fill in the Blanks questions
+    this.numVid = numVid; // Number of Videos in this quiz
+    this.score = 0;
+    this.totalHoney = 0;
 }
 
 
@@ -20,13 +19,9 @@ Quiz.prototype.getQuestionIndex = function() {
 Quiz.prototype.guessAnswer = function (answer) {
 
     var ans_obj = this.getQuestionIndex().getCorrectAnswer(answer);
-
-    console.log("Checking ans obj");
-    console.log(ans_obj);
     if(ans_obj.correct){
         this.score++;
-        this.totalScore += ans_obj.points;
-        console.log("Current points: " + this.points);
+        this.totalHoney += ans_obj.points;
     }
     this.questionIndex++;
 
@@ -39,9 +34,10 @@ Quiz.prototype.guessAnswer = function (answer) {
 /* Move along the list of questions (used for video-type questions */
 Quiz.prototype.proceed = function(){
     this.questionIndex++;
-}
+};
+
 
 /* Check if there are no more questions remaining */
 Quiz.prototype.isEnded = function() {
-    return this.questionIndex === this.maxQues;
-}
+    return this.questionIndex === this.questions.length;
+};
