@@ -1,0 +1,102 @@
+@import "master";
+@import "header";
+
+body{
+  background: linear-gradient(to bottom, $color-yellow 0%, $color-green 100%);
+  background-repeat: no-repeat;
+  height: 100%;
+  background-attachment: fixed;
+  text-align: center;
+}
+
+
+h1{
+  color: $color-brown;
+}
+
+
+/* Making pre elements stay on one line -- Mainly for "create blanks" page */
+pre.preview{
+    display: inline;
+}
+
+
+
+/* Styling the overlay covering the whole screen to prevent users from clicking layer below */
+.overlay {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  z-index:99999;   //Change the z-index so it will be above everything else
+
+}
+
+/* Styling the Popup window that contains the create question interface*/
+.popup {
+  display:none;
+  position:fixed;
+  left:50%;            //left and top here position top left page
+  top:50%;             //of the element to the center of the
+  width: 80vw;  //Set the popup to have a specific width/height
+  height: 90vh;
+  margin-left:-40vw;  //To get the popup to center correctly we need
+  margin-top:-45vh; //To displace the the top/left margins by half of the width/height
+  background:$color-yellow;  //Background of light blue
+  border:2px solid #000;  //And give it a border
+  border-radius: 25px;  //A rounded border
+  border-style: dotted; //Dotted border
+  border-color: $color-beige; //Change border colour
+  z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
+
+}
+
+/* Styling the secondary overlay to be less transparent */
+.overlay#overlay_message{
+  background: $color-transparent-70;
+  z-index:100001;
+}
+/* Make the size of popup window that contains status about the quiz smaller */
+.popup#popup_message{
+  width: 50vw;
+  margin-left: -25vw;
+  height: 50vh;
+  margin-top: -25vh;
+  opacity: 1;
+  z-index: 100002;
+}
+
+
+/* Adjustments to styling on smaller screens */
+@media screen and (max-device-width: 500px) {
+
+
+  /* Make the popup cover the whole screen for better visibility */
+  .popup {
+    width: 100vw;
+    height: 100vh;
+    margin-left:-50vw;
+    margin-top:-50vh;
+  }
+
+}
+
+
+
+//To be deleted
+body{
+  position: relative;
+}
+
+.toggle_buttons{
+  left:50%;
+  transform: translate(-50%, -50%);
+  bottom:0;
+  position: absolute;
+  align-content: center;
+
+
+}

@@ -1,0 +1,26 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+@import url(https://fonts.googleapis.com/css?family=Averia+Libre);
+
+$raleway: "Raleway", sans-serif;
+$averia-libre: "Averia Libre", cursive;
+
+body {
+  font-family: $raleway;
+  margin: 0;
+}
+
+// Colour palette from: http://www.colourlovers.com/palette/1021947/modelo_74
+$color-brown: #50232E;
+$color-orange: #F77C3E;
+$color-beige: #FABA66;
+$color-yellow: #FCE185;
+$color-green: #A2CCA5;
+$color-transparent-50: rgba(0,0,0,0.5);
+$color-transparent-70: rgba(0,0,0,0.7);
+
+$main-padding-left: 50px;
+$main-padding-right: 50px;
+
+#user_dp {
+  border-radius: 50%;
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recyclabears | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/coming_soon.css">
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
+</head>
+<body>
+<div id="fb-root"></div>
+<script>
+    var appId;
+
+    function getAppId(save) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '/config/fbAppId', false);
+        request.send(null);
+        if (request.status === 200) {
+            if (save) {
+                sessionStorage.setItem('fbAppId', request.responseText);
+            }
+            return request.responseText;
+        }
+        alert('Error reading config.');
+    }
+
+    if (typeof(Storage) !== "undefined") {
+        appId = sessionStorage.getItem('fbAppId');
+        if (appId == null) {
+            appId = getAppId(true);
+        }
+    } else {
+        appId = getAppId(false);
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: appId,
+            cookie: true,
+            xfbml: true,
+            version: 'v3.0'
+        });
+
+        FB.AppEvents.logPageView();
+
+        FB.getLoginStatus(statusChangeCallback);
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_AU/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function statusChangeCallback(response) {
+        console.log(response);
+        if (response.status == 'connected') {
+            window.location = '/new/world/';
+        }
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+</script>
+<div class="maincontent">
+    <h2>
+        Please Login
+    </h2>
+    <p>
+        Join us in keeping the world green, one recyclable at a time!
+    </p>
+
+
+    <div class="fb-login-button" onlogin="statusChangeCallback" data-max-rows="1" data-size="large"
+         data-button-type="login_with"
+         data-show-faces="true" data-auto-logout-link="true" data-use-continue-as="true" data-scope="public_profile,email"></div>
+    <div class="fb-like"
+         data-share="true"
+         data-width="450"
+         data-show-faces="true">
+    </div>
+
+    <p class="credits">
+        by Team We Bare Bears<br>
+        Mei Chin &middot; Kolatat Thangkasemvathana &middot; Dalzy Mendoza
+    </p>
+
+</div>
+
+
+</body>
+</html>

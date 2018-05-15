@@ -1,0 +1,264 @@
+@import "master";
+@import "header";
+
+body{
+  background: linear-gradient(to bottom, $color-yellow 0%, $color-green 100%);
+  background-repeat: no-repeat;
+  height: 100%;
+  background-attachment: fixed;
+  text-align: center;
+}
+
+.page_text_container {
+  min-height: 100%;
+  position: relative;
+
+  #wallet{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    span{
+      vertical-align: middle;
+      display: inline-block;
+    }
+
+    img{
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+}
+
+#items_container {
+  display: grid;
+  justify-content: center;  // Center all the grid cells in the middle of container
+  grid-gap: 10px;
+  grid-auto-rows: 250px;
+  grid-template-columns: repeat(2, 250px);  // between 500 ~ 800 px
+  grid-auto-flow: row;
+  min-width: 0;
+  min-height: 0;
+  width: auto;
+  height: auto;
+  overflow: auto;
+  margin-top: 2vh;
+  padding-bottom: 10px;  /* Add some space between the bottom row grids and the container */
+
+  div {
+    border: 1px dashed black;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;  // Center items vertically within the grid cell
+    justify-content: center;  // Center items horizontally within the grid cell
+    width: 100%;
+    height: 100%;
+
+    button {
+      width: 100%;
+      height: 100%;
+      border-radius: 25px;
+    }
+  }
+}
+
+
+.item_button, .popup_description_grid{
+  p{
+    -webkit-margin-after: 0;
+    -webkit-margin-before: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}
+
+.price_container{
+  display: inline-block;
+  span, img{
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+}
+
+
+
+#tab_buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  align-items: center;
+  border-bottom: none;
+  width: 100%;
+
+
+  button{
+    background-color: inherit;
+    display: inline-block;
+    align-items: center;
+    border-bottom: none;
+  }
+
+  // Let visited links remain the same colour
+  button:visited{
+    background-color: inherit;
+  }
+
+  button:hover{
+    background-color: $color-beige;
+  }
+  button.active{
+    background-color: $color-green;
+  }
+}
+
+
+
+
+
+
+/* Style the images in shop menu */
+img.shop_item {
+  max-width: 180px;
+  max-height: 180px;
+}
+
+
+@media only screen and (min-width: 800px) {
+  #items_container{
+    grid-template-columns: repeat(3, 250px);
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  #items_container{
+    grid-template-columns: repeat(4, 250px);
+  }
+}
+
+@media only screen and (min-width: 1350px) {
+  #items_container{
+    grid-template-columns: repeat(5, 250px);
+  }
+}
+
+
+/* Phones with wider screens */
+@media only screen and (max-width: 500px){
+  #items_container{
+
+    grid-template-columns: repeat(2, 175px);
+    grid-auto-rows: 175px;
+  }
+
+  img.shop_item {
+    max-width: 105px;
+    max-height: 105px;
+  }
+
+  .page_text_container{
+
+    #wallet{
+      position: relative;
+      top: 0;
+      right: 0;
+    }
+
+  }
+
+
+}
+
+/* Phones with narrower screens */
+@media only screen and (max-width: 400px){
+  #items_container{
+
+    grid-template-columns: repeat(2, 150px);
+    grid-auto-rows: 150px;
+  }
+
+  img.shop_item {
+    max-width: 80px;
+    max-height: 80px;
+  }
+}
+
+
+/* Most likely (larger) phones in landscape orientation */
+@media only screen and (max-height: 500px){
+  #items_container{
+    grid-template-columns: repeat(3, 150px);
+    grid-auto-rows: 150px;
+  }
+
+  img.shop_item {
+    max-width: 80px;
+    max-height: 80px;
+  }
+}
+
+/* Most likely (larger) phones in landscape orientation */
+@media only screen and (max-height: 500px) and (min-width: 650px){
+  #items_container{
+    grid-template-columns: repeat(4, 150px);
+    grid-auto-rows: 150px;
+  }
+  img.shop_item {
+    max-width: 80px;
+    max-height: 80px;
+  }
+}
+
+.popup_description_grid{
+  display: grid;
+  grid-template-areas: "item_pic" "attributes";
+}
+
+
+
+/* Styling the overlay covering the whole screen to prevent users from clicking layer below */
+.overlay {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  z-index:99999;   //Change the z-index so it will be above everything else
+
+}
+
+/* Styling the Popup window that contains the quiz question */
+.popup {
+  display:none;
+  position:fixed;
+  left:50%;            //left and top here position top left page
+  top:50%;             //of the element to the center of the
+  width: 80vw;  //Set the popup to have a specific width/height
+  height: 90vh;
+  margin-left:-40vw;  //To get the popup to center correctly we need
+  margin-top:-45vh; //To displace the the top/left margins by half of the width/height
+  background:$color-yellow;  //Background of light blue
+  border:2px solid #000;  //And give it a border
+  border-radius: 25px;  //A rounded border
+  border-style: dotted; //Dotted border
+  border-color: $color-beige; //Change border colour
+  z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
+
+}
+
+@media only screen and (min-width: 600px) and (min-height: 600px){
+  .popup {
+    width: 100vw;
+    height: 30vh;
+    margin-left: -50vw;
+    margin-top: 20vh;
+  }
+
+  .popup_description_grid{
+    grid-template-areas: "item_pic attributes";
+  }
+
+}

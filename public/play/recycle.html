@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recyclabears | Play - Recycle</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
+    <link rel="stylesheet" href="/css/play_subpage.css">
+    <link rel="stylesheet" href="/css/recycle.css">
+    <script type="text/javascript" src="/js/recycle.js"></script>
+</head>
+<body>
+
+<p class="question">
+    Which did you recycle today?
+</p>
+<div id="choice_area">
+    <div class="choice" onclick="recycleItem()"><img src="/assets/images/recyclables/newspaper.png">Newspaper</div>
+    <div class="choice" onclick="recycleItem()"><img src="/assets/images/recyclables/glass.png">Glass</div>
+    <div class="choice" onclick="recycleItem()"><img src="/assets/images/recyclables/carton.png">Carton</div>
+    <div class="choice" onclick="recycleItem()"><img src="/assets/images/recyclables/plastic.png">Plastic</div>
+</div>
+
+<div id="overlay">
+</div>
+<div id="answer_feedback">
+    <p id="feedback_text">Well done on recycling!</p>
+    <button onclick="location.href='index.html'" type="button">Close</button>
+</div>
+
+</body>
+</html>

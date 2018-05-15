@@ -1,0 +1,55 @@
+@import "master";
+@import "header";
+
+body{
+  background: linear-gradient(to bottom, white 0%, $color-yellow 150%);
+  background-repeat: no-repeat;
+  height: 100%;
+  background-attachment: fixed;
+}
+
+#content{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin: 50px 20px;
+  grid-column-gap: 20px;
+}
+
+.learn-title{
+  text-align: center;
+  background: $color-beige;
+  height: 50px;
+  //vertical-align: middle;
+
+  .title{
+    font-family: "Averia Libre", cursive;
+    font-size: 2em;
+    //vertical-align: middle;
+    //line-height: 50px;
+  }
+
+  img{
+    margin-right: 10px;
+    height: 50px;
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  span{
+    vertical-align: middle;
+    display: inline-block;
+  }
+}
+
+.content-section{
+  background-color: white;
+  padding: 10px;
+}
+
+li{
+  margin-bottom: 15px;
+}
+
+h5{
+  font-size: 0.7em;
+}

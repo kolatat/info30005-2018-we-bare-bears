@@ -1,0 +1,92 @@
+@import "master";
+
+body {
+  background: url("/assets/images/bg-bears.gif") no-repeat fixed;
+  background-size: cover;
+}
+
+.maincontent {
+  background: url("/assets/images/halftone-yellow.png") repeat;
+  opacity: 0.9;
+  position: absolute;
+  width: 45%;
+  min-width: 300px;
+  top: 20%;
+  left: 50%;
+  padding: 20px 20px 20px;
+  margin-right: -50%;
+  transform: translate(-50%, -20%);
+  font-family: Raleway, sans-serif;
+  font-size: medium;
+  text-align: center;
+  border: 3px dashed #f05249;
+  border-radius: 6px;
+  p {
+    font-size: large;
+    /*margin-bottom: 15px;*/
+  }
+  form {
+    text-align: center;
+    table {
+      width: 100%;
+    }
+  }
+}
+
+label {
+  & > span {
+    color: #f07545;
+    font-weight: bold;
+  }
+}
+
+input {
+  margin-top: 10px;
+  font-size: medium;
+  border-radius: 3px;
+  outline: none;
+  &[type=email], &[type=password] {
+    border: 1px solid #f07545;
+    color: rgba(35, 28, 30, 0.72);
+    padding: 5px 8px 5px 8px;
+    margin: 0 10px;
+    max-width: 250px;
+    box-shadow: inset 1px 1px 4px #FFD5E7;
+    background-color: #FFEFF6;
+    width: 50%;
+  }
+
+  &[type=submit], &[type=button] {
+    border: none;
+    padding: 5px 15px;
+    color: white;
+  }
+  &.login, &.submit {
+    background-color: #f05249;
+    &:hover {
+
+      background-color: #f02e35;
+    }
+  }
+  &.signup {
+    background-color: #B6C1C9;
+    &:hover {
+      background-color: #7DD0E7;
+    }
+  }
+}
+
+h2 {
+  color: #f05249;
+  line-height: 100%;
+  font-family: $averia-libre;
+  font-size: 40px;
+}
+
+.project-name {
+  font-weight: bold;
+}
+
+p.credits {
+  font-size: small;
+}

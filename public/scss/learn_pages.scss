@@ -1,0 +1,21 @@
+@import "master";
+
+ol {
+  padding-right: 0;
+}
+
+li {
+  padding-left: 0;
+}
+
+body {
+  margin: 15px;
+  padding: 30px;
+  border:5px dotted #4A7493;  // 5px-thick, dotted, light blue border
+  border-radius: 25px;  // A rounded border
+  background-color: #C2E5F4;
+}
+
+h1, h3 {
+  color: #4A7493;
+}

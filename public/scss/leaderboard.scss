@@ -1,0 +1,61 @@
+@import "master";
+
+/** Background for Table Headers */
+th {
+  background-color: #768591;
+}
+
+/** Create rounded edges around table cells */
+th, td {
+  border: 1px solid black;
+  border-radius: 25px;
+}
+
+/** Alternately colour every five rows */
+tr:nth-child(10n+2), tr:nth-child(10n+3), tr:nth-child(10n+4), tr:nth-child(10n+5), tr:nth-child(10n+6) {
+  background-color: #B6C1C9;
+}
+
+tr:nth-child(10n+7), tr:nth-child(10n+8), tr:nth-child(10n+9), tr:nth-child(10n+10), tr:nth-child(10n+1) {
+  background-color: #E1E8ED;
+}
+
+#leaderboard-container {
+  max-height: 68vh;
+  overflow-y: scroll;
+  margin:20% 15% 0 15%;
+}
+
+/* Let the table fill up the container */
+table {
+  width: 100%;
+}
+
+
+/* Place the images underneath elements to act as a background */
+img {
+  z-index: -1;
+}
+
+
+/* Working on responsive design
+
+@media only screen and (max-width: 500px) {
+  #leaderboard-container {
+    max-height: 73vh;
+  }
+}
+
+
+@media only screen and (max-width: 390px) {
+  #leaderboard-container {
+    max-height: 65vh;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  #leaderboard-container {
+    max-height: 58vh;
+  }
+}
+*/

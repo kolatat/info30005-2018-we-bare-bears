@@ -1,0 +1,77 @@
+@import "master";
+
+.grid-container{
+  display: grid;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  margin: 20px;
+  height: 100%;
+
+  button{
+    font-family: $raleway;
+    font-size: 1.3em;
+    cursor: pointer;
+    border: 0;
+    //border-radius: 10px;
+  }
+  button:hover{
+    color: white;
+  }
+}
+
+#profile-photo{
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  vertical-align: top;
+  //background: yellow;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.name{
+  font-family: $averia-libre;
+  font-size: 2em;
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  vertical-align: middle;
+  display: inline-block;
+  //background: red;
+}
+
+.score{
+  //background: green;
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  font-size: 2em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+
+#visit-world{
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+
+  background: $color-green;
+  //grid-row-end: 2;
+}
+#friend-action{
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  background: $color-orange;
+  //grid-row-end: 2;
+}
+
+
+
+
+

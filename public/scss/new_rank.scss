@@ -1,0 +1,122 @@
+@import "master";
+@import "header";
+@import "new_profile";
+
+body{
+  background: linear-gradient(to bottom, white 0%, $color-yellow 150%);
+  background-repeat: no-repeat;
+  height: 100%;
+  background-attachment: fixed;
+}
+
+#rank-list{
+}
+
+.rank{
+  width: 100%;
+  background-color: white;
+  height: 50px;
+  padding: 10px 0;
+  margin: auto;
+  cursor: pointer;
+  img{
+    width: 50px;
+    height: 50px;
+    moz-border-radius: 15px;
+    border-radius: 15px;
+    vertical-align: middle;
+    margin-left: 30px;
+  }
+  span {
+    display: inline-block;
+    font-size: 1.3em;
+  }
+  .name{
+    vertical-align: middle;
+    margin-left: 30px;
+    width: 250px;
+  }
+  .score{
+    width: 50px;
+  }
+  button{
+    margin-left: 30px;
+    cursor: pointer;
+    border: 0;
+    box-shadow: none;
+    background: $color-transparent-50;
+    padding: 5px;
+    border-radius: 5px;
+    width: 30px;
+    color: white;
+  }
+  button:hover{
+    background: $color-orange;
+  }
+}
+
+.rank:hover{
+  color: $color-beige;
+}
+
+/* Styling the overlay covering the whole screen to prevent users from clicking layer below */
+#overlay {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  z-index:99999;   //Change the z-index so it will be above everything else
+
+}
+
+/* Styling the Popup window that contains the user profile */
+#pop-up {
+  display:none;
+  position:fixed;
+  left:50%;            //left and top here position top left page
+  top:50%;             //of the element to the center of the
+  width: 50vw;  //Set the popup to have a specific width/height
+  //min-height: 50vh;
+  margin-left:-25vw;  //To get the popup to center correctly we need
+  margin-top:-25vh; //To displace the the top/left margins by half of the width/height
+  background:$color-yellow;  //Background of light blue
+  border:2px solid #000;  //And give it a border
+  border-radius: 25px;  //A rounded border
+  border-style: dotted; //Dotted border
+  border-color: $color-beige; //Change border colour
+  z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
+
+}
+
+#friends-content{
+  text-align: center;
+  margin: 0 auto;
+  width: max-content;
+}
+
+.user-div-title{
+  text-align: center;
+  font-size: 1.3em;
+  padding: 5px;
+  background: $color-beige;
+  font-family: "Averia Libre", cursive;
+  font-size: 2em;
+  display: block;
+  margin-top: 15px;
+  //width: 100%;
+}
+
+#add-friends{
+  cursor: pointer;
+  background-color: $color-orange;
+
+}
+
+
+#add-friends:hover{
+  cursor: pointer;
+  color: $color-beige;
+}

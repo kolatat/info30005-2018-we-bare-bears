@@ -1,0 +1,217 @@
+@import "master";
+@import "header";
+
+
+body{
+  background: linear-gradient(to bottom, $color-yellow 0%, $color-green 100%);
+  background-repeat: no-repeat;
+  height: 100%;
+  background-attachment: fixed;
+  text-align: center;
+}
+
+h1{
+  color: $color-brown;
+}
+
+// CSS Grid Setup
+.page {
+  margin: 5px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 200px);
+  grid-gap: 10px;
+  grid-auto-flow: row;
+
+  div{
+    display: flex;
+    justify-content: center;
+  }
+
+  /*
+  button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+  }
+  */
+}
+
+.flag-img{
+  //float: left;
+  //position: relative;
+  min-width: 50px;
+  width: 150px;
+  height: auto;
+}
+
+#play_page{
+
+  #quiz_container{
+    
+    overflow: auto;
+  }
+
+  #options_container{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: max-content max-content;
+    grid-template-rows: auto;
+    margin: 1vw;
+
+    button{
+      display: flex;
+      font-size: 1em;
+      width: 100%;
+      align-items: center;
+      justify-content: space-evenly;
+      grid-gap: 10px;
+
+    }
+  }
+}
+
+
+#create_page{
+  #create_container{
+    max-height: 70vh;
+    overflow: auto;
+
+    // Forms containing the details of question to be created
+    #createQuestion{
+    }
+  }
+
+}
+
+#msg_insert{
+  max-height: 45vh;
+  max-width: 45vw;
+  overflow: auto;
+  -webkit-margin-before:0em;
+  -webkit-margin-after:0em;
+}
+
+/* Making pre elements stay on one line -- Mainly for "fill in the blanks" page */
+pre.fill-blanks{
+  display: inline-block;
+}
+
+button:disabled{
+  background-color: #768591;
+}
+
+/* Styling the overlay covering the whole screen to prevent users from clicking layer below */
+.overlay {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  z-index:99999;   //Change the z-index so it will be above everything else
+
+}
+
+/* Styling the Popup window that contains the quiz question */
+.popup {
+  display:none;
+  position:fixed;
+  left:50%;            //left and top here position top left page
+  top:50%;             //of the element to the center of the
+  width: 80vw;  //Set the popup to have a specific width/height
+  height: 90vh;
+  margin-left:-40vw;  //To get the popup to center correctly we need
+  margin-top:-45vh; //To displace the the top/left margins by half of the width/height
+  background:$color-yellow;  //Background of light blue
+  border:2px solid #000;  //And give it a border
+  border-radius: 25px;  //A rounded border
+  border-style: dotted; //Dotted border
+  border-color: $color-beige; //Change border colour
+  z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
+
+}
+
+/* Styling the secondary overlay to be less transparent */
+.overlay#overlay_message{
+  background: $color-transparent-70;
+  z-index:100001;
+}
+/* Make the size of popup window that contains status about the quiz smaller */
+.popup#popup_message{
+  width: 50vw;
+  margin-left: -25vw;
+  height: 50vh;
+  margin-top: -25vh;
+  opacity: 1;
+  z-index: 100002;
+  margin-right: 0;
+  align-content: center;
+}
+
+
+/* Adjustments to styling on smaller screens */
+@media screen and (max-device-width: 500px) {
+  /* Stack the flags into a single column */
+  .page {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
+/* More adjustments on smaller screens */
+@media screen and (max-device-width: 500px), screen and (max-device-height: 500px){
+
+   // Make the popup cover the whole screen for better visibility
+  .popup {
+    width: 100vw;
+    height: 100vh;
+    margin-left:-50vw;
+    margin-top:-50vh;
+  }
+
+  // Make button options appear in single column
+  #options_container{
+    grid-template-columns: max-content;
+  }
+
+  #create_container{
+    max-height: 80vh;
+  }
+
+  .popup#popup_message{
+    width: 80vw;
+    height: 80vh;
+    margin-left:-40vw;
+    margin-top:-40vh;
+
+    #msg_insert{
+      max-height: 75vh;
+      max-width: 75vw;
+      overflow: auto;
+    }
+  }
+
+
+}
+
+
+
+
+
+//To be deleted
+body{
+  position: relative;
+}
+
+.toggle_buttons{
+  display: block;
+  left:50%;
+  transform: translate(-50%, -50%);
+  bottom:0;
+  position: absolute;
+  align-content: center;
+
+
+}

@@ -1,0 +1,196 @@
+@import "master";
+
+$header-content-size: 40px;
+$header-padding: 10px;
+$header-height: $header-padding*2+$header-content-size;
+
+#toggle_nav {
+  display: none;
+  float: left;
+  background-color: transparent;
+}
+
+#header {
+  background-color: $color-yellow;
+  font-family: $raleway;
+  color: white;
+  //height: 60px;
+  padding: 0 $main-padding-left;
+  overflow: hidden;
+
+  a {
+    text-decoration: none;
+    &:visited {
+      color: $color-brown;
+
+    }
+  }
+}
+
+#site-name {
+  font-family: $averia-libre;
+  float: left;
+  font-size: 2em;
+  color: $color-brown;
+
+  img {
+    width: $header-content-size;
+    height: $header-content-size;
+    vertical-align: middle;
+    margin: $header-padding;
+  }
+  a {
+    cursor: pointer;
+    line-height: $header-height;
+    vertical-align: middle;
+  }
+}
+
+#navigation {
+  float: right;
+  font-size: 1.3em;
+  color: $color-brown;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  img {
+    width: $header-content-size;
+    height: $header-content-size;
+    vertical-align: middle;
+  }
+}
+
+#navigation a {
+  margin-right: 10px;
+  cursor: pointer;
+  line-height: $header-height;
+  padding: $header-padding;
+  text-decoration: none;
+  color: $color-brown;
+}
+
+#navigation a:visited {
+  color: $color-brown;
+}
+
+#navigation a:hover {
+  background-color: $color-beige;
+}
+
+#navigation a.active {
+  color: $color-orange;
+}
+
+#navigation a#user:hover {
+  background-color: initial;
+}
+
+/* Styling dropdown that displays the current user's profile */
+.dropdown {
+  float: right;
+  //display: inline;
+  overflow: hidden;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 20px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a, .dropdown-content span {
+  float: none;
+  color: black;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 0.7em;
+  line-height: initial !important;
+  margin-right: 0 !important;
+}
+
+.dropdown-content span {
+  color: $color-orange;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Medium-sized screens: Show the site name and navigation menu on separate lines */
+@media screen and (max-width: 1100px) {
+  #site-name {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+  #navigation {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Small-sized screens: Show the navigation menu in a toggeable drop-down */
+@media screen and (max-width: 720px) {
+  #toggle_nav {
+    display: inline;
+    margin-top: 15px;
+    padding: 0;
+    border: none;
+  }
+
+  #navigation a {
+    display: block;
+    text-align: left;
+    line-height: $header-content-size;
+  }
+
+  #navigation {
+    display: none;
+    position: absolute;
+    top: $header-height;
+    left: 0;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    background-color: $color-yellow;
+    z-index: 10; // Overlay this navigation bar on top of everything when in display
+
+    .dropdown {
+      float: none;
+    }
+    .dropdown-content {
+      left: 20px;
+    }
+
+  }
+  #site-name {
+    display: inline;
+    width: max-content;
+  }
+  #header {
+    padding: 0 20px;
+  }
+}
+
+.price_container {
+  display: inline-block;
+  span, img {
+    vertical-align: middle;
+    display: inline-block;
+  }
+}

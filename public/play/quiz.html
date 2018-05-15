@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recyclabears | Play - Quiz</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/images/icon.png"/>
+    <link rel="stylesheet" href="/css/play_subpage.css">
+    <link rel="stylesheet" href="/css/quiz.css">
+    <script type="text/javascript" src="/js/quiz.js"></script>
+</head>
+<body>
+
+<p class="question">
+    Which of the following cannot be recycled?
+</p>
+
+<div class="choice" onclick="wrongAnswer()">Newspaper</div>
+<div class="choice" onclick="wrongAnswer()">Drink cans</div>
+<div class="choice" onclick="correctAnswer()">Food scrap</div>
+
+<div id="overlay">
+</div>
+<div id="answer_feedback">
+    <p id="feedback_text">Hi</p>
+    <button onclick="location.href='index.html'" type="button">Close</button>
+</div>
+
+</body>
+</html>
