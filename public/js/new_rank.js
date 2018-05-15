@@ -172,10 +172,67 @@ function showFriendsDialog() {
     }, friendsDialogCallback);
 }
 
+
 function friendsDialogCallback(res) {
-    console.log(res.to);
+    console.log(res);
+    var promises = [];
+    var errors = [];
+
     for (var i = 0; i < res.to.length; i++) {
-        Recyclabears.users.sendFriendRequest(res.to[i]);
+        promises.push(Recyclabears.users.sendFriendRequest(res.to[i]).then(function(error_obj){
+            if(error_obj.message != null){
+                errors.push(error_obj);
+            } else {
+                loadRank();
+            }
+        }));
     }
-    loadRank();
+
+    Promise.all(promises).then(function(){
+        if(errors.length > 0){
+            showAddFriendError(errors);
+        }
+    });
+
+}
+
+/* Show a popup message with the error(s) when trying to add friends */
+function showAddFriendError(errors){
+
+    toggleMessageWindow();
+    var popup = document.getElementById("pop-up");
+    popup.innerHTML = "";
+
+    var header_HTML = "<div class='error_container'><h2>Error!</h2>";
+
+    // HTML detailing the error(s) encountered when trying to send friend requests
+    var errors_HTML = "";
+    for(var i = 0; i < errors.length; i++){
+        errors_HTML += "<p><b>" + errors[i].message + ":</b> " + errors[i].friend_name + "</p>";
+    }
+
+    // Close popup button
+    var close_button_HTML = "<button onclick='toggleMessageWindow()'>Close</button>";
+
+    // Final display of popup window
+    popup.innerHTML += header_HTML + errors_HTML + close_button_HTML + "</div>";
+
+}
+
+
+/* Toggle the PopUp Window to show error messages */
+function toggleMessageWindow() {
+    var overlay = document.getElementById("overlay");
+    var popup = document.getElementById("pop-up");
+
+    // Toggle visibility of overlay and popup
+    if (overlay.style.display === "none" || overlay.style.display === "") {
+        overlay.style.display = "block";
+        popup.style.display = "block";
+
+    } else {
+        overlay.style.display = "none";
+        popup.style.display = "none";
+        // document.getElementById("msg_insert").innerHTML = "";
+    }
 }
