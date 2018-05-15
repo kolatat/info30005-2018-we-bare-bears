@@ -103,11 +103,15 @@ function checkDumpSession(){
     var currDateLessThanHr = new Date("2018-05-15T12:30:00+10:00");
     var currDateTwoHrs = new Date("2018-05-15T14:00:00+10:00");
     var currDateEightHrs = new Date("2018-05-15T20:00:00+10:00");
+    var currDate24Hrs = new Date("2018-05-16T12:00:00+10:00");
+    var currDate3Mos = new Date("2018-08-15T12:00:00+10:00");
 
     // convert diff from msecs to secs (1000), secs to min (60), min to hrs (60)
     // var diff = (currDateLessThanHr - lastDumpSession)/1000/60/60;
-    var diff = (currDateTwoHrs - lastDumpSession)/1000/60/60;
+    // var diff = (currDateTwoHrs - lastDumpSession)/1000/60/60;
     // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
+    // var diff = (currDate24Hrs - lastDumpSession)/1000/60/60;
+    var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
 
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
@@ -127,14 +131,66 @@ function checkDumpSession(){
 function produceRubbish(amount){
     console.log("producing rubbish")
     for(var i = 0; i < amount; i++){
-        displayRubbish();
+        var type = Math.floor(Math.random() * 5)
+        if(type == 0){
+            createLandfillRubbish();
+        }
+        else if(type == 1){
+            createPaperRubbish();
+        }
+        else if(type == 2){
+            createGlassRubbish();
+        }
+        else if(type == 3){
+            createMetalRubbish();
+        }
+        else if(type == 4){
+            createPlasticRubbish();
+        }
     }
 }
 
-function displayRubbish (){
+function createLandfillRubbish(){
     var objDiv = document.createElement("div");
     objDiv.setAttribute("class", "rubbish-to-move");
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/plastic/plastic0.png'>";
+    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/landfill/landfill" + Math.floor(Math.random() * 3) + ".png'>";
+    dragElement(objDiv);
+    document.getElementsByTagName('body')[0].appendChild(objDiv);
+}
+
+function createPaperRubbish(){
+    var objDiv = document.createElement("div");
+    objDiv.setAttribute("class", "rubbish-to-move");
+    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/paper/paper" + Math.floor(Math.random() * 3) + ".png'>";
+    dragElement(objDiv);
+    document.getElementsByTagName('body')[0].appendChild(objDiv);
+}
+
+function createGlassRubbish(){
+    var objDiv = document.createElement("div");
+    objDiv.setAttribute("class", "rubbish-to-move");
+    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/glass/glass" + Math.floor(Math.random() * 3) + ".png'>";
+    dragElement(objDiv);
+    document.getElementsByTagName('body')[0].appendChild(objDiv);
+}
+
+function createMetalRubbish(){
+    var objDiv = document.createElement("div");
+    objDiv.setAttribute("class", "rubbish-to-move");
+    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/metal/metal" + Math.floor(Math.random() * 3) + ".png'>";
+    dragElement(objDiv);
+    document.getElementsByTagName('body')[0].appendChild(objDiv);
+}
+
+function createPlasticRubbish (){
+    var objDiv = document.createElement("div");
+    objDiv.setAttribute("class", "rubbish-to-move");
+    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/plastic/plastic" + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
     document.getElementsByTagName('body')[0].appendChild(objDiv);
 }
