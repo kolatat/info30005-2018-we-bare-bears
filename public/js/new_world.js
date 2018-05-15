@@ -14,6 +14,7 @@ function onResize() {
     //console.log('ayy');
 
     // too difficult lets just turn a blind eye on resizing
+    // rip resize
 }
 
 /*************************************************************************/
