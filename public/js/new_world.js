@@ -11,6 +11,10 @@ function onResize(){
     console.log(items_container.style.height + 'items');
 }
 
+/*************************************************************************/
+/******************************* TEST DATA *******************************/
+/*************************************************************************/
+
 var testItemList = [
     {
         name: "Tree",
@@ -36,6 +40,7 @@ var testItemList = [
     {
         name: "Yellow Bin",
         type: "bin",
+        bin_type: "paper",
         price: 10,
         image: "/assets/images/items/yellow_bin.png",
         description: "A bin that looks like it is made for disposing paper."
@@ -43,6 +48,7 @@ var testItemList = [
     {
         name: "Red Bin",
         type: "bin",
+        bin_type: "plastic",
         price: 10,
         image: "/assets/images/items/red_bin.png",
         description: "A bin that looks like it is made for disposing plastic."
@@ -50,6 +56,7 @@ var testItemList = [
     {
         name: "Blue Bin",
         type: "bin",
+        bin_type: "metal",
         price: 10,
         image: "/assets/images/items/blue_bin.png",
         description: "A bin that looks like it is made for disposing metal."
@@ -57,6 +64,7 @@ var testItemList = [
     {
         name: "Green Bin",
         type: "bin",
+        bin_type: "glass",
         price: 10,
         image: "/assets/images/items/green_bin.png",
         description: "A bin that looks like it is made for disposing glass."
@@ -92,12 +100,126 @@ var testItemList = [
 
 ];
 
+var worldItems = [
+    {
+        name: "Yellow Bin",
+        type: "bin",
+        bin_type: "paper",
+        price: 10,
+        image: "/assets/images/items/yellow_bin.png",
+        description: "A bin that looks like it is made for disposing paper.",
+        position_x: "200px",
+        position_y: "550px"
+    },
+    {
+        name: "Red Bin",
+        type: "bin",
+        bin_type: "plastic",
+        price: 10,
+        image: "/assets/images/items/red_bin.png",
+        description: "A bin that looks like it is made for disposing plastic.",
+        position_x: "400px",
+        position_y: "550px"
+    },
+    {
+        name: "Blue Bin",
+        type: "bin",
+        bin_type: "metal",
+        price: 10,
+        image: "/assets/images/items/blue_bin.png",
+        description: "A bin that looks like it is made for disposing metal.",
+        position_x: "600px",
+        position_y: "550px"
+    },
+    {
+        name: "Green Bin",
+        type: "bin",
+        bin_type: "glass",
+        price: 10,
+        image: "/assets/images/items/green_bin.png",
+        description: "A bin that looks like it is made for disposing glass.",
+        position_x: "800px",
+        position_y: "550px"
+    }
+];
+
+var bins = [
+    [],
+    [{
+        name: "Yellow Bin",
+        type: "bin",
+        bin_type: "paper",
+        price: 10,
+        image: "/assets/images/items/yellow_bin.png",
+        description: "A bin that looks like it is made for disposing paper.",
+        position_x: "200px",
+        position_y: "550px"
+    }],
+    [{
+        name: "Green Bin",
+        type: "bin",
+        bin_type: "glass",
+        price: 10,
+        image: "/assets/images/items/green_bin.png",
+        description: "A bin that looks like it is made for disposing glass.",
+        position_x: "800px",
+        position_y: "550px"
+    }]
+    [{
+        name: "Blue Bin",
+        type: "bin",
+        bin_type: "metal",
+        price: 10,
+        image: "/assets/images/items/blue_bin.png",
+        description: "A bin that looks like it is made for disposing metal.",
+        position_x: "600px",
+        position_y: "550px"
+    }],
+    [{
+        name: "Red Bin",
+        type: "bin",
+        bin_type: "plastic",
+        price: 10,
+        image: "/assets/images/items/red_bin.png",
+        description: "A bin that looks like it is made for disposing plastic.",
+        position_x: "400px",
+        position_y: "550px"
+    }]
+
+];
+
 var lastDumpSession = new Date("2018-05-15T12:00:00+10:00");
 
 function worldPageInit(){
     populateItemMenu('tab_all');
+    populateWorld();
     checkDumpSession();
 }
+
+/*************************************************************************/
+/********************* FUNCTIONS FOR POPULATING WORLD ********************/
+/*************************************************************************/
+
+function populateWorld(){
+    for(var item in worldItems){
+        console.log(JSON.stringify(worldItems[item]));
+        showInWorld(worldItems[item]);
+    }
+}
+
+function showInWorld(obj){
+    var objDiv = document.createElement("div");
+    objDiv.setAttribute("class", "item-in-world");
+    objDiv.innerHTML += "<img src='" + obj.image + "'>";
+    objDiv.style.left = obj.position_x;
+    objDiv.style.top = obj.position_y;
+
+    document.getElementsByTagName('body')[0].appendChild(objDiv);
+}
+
+/*************************************************************************/
+/******************* FUNCTIONS FOR DUMPING NEW RUBBISH *******************/
+/*************************************************************************/
 
 function checkDumpSession(){
     var currDateLessThanHr = new Date("2018-05-15T12:30:00+10:00");
@@ -110,8 +232,8 @@ function checkDumpSession(){
     // var diff = (currDateLessThanHr - lastDumpSession)/1000/60/60;
     // var diff = (currDateTwoHrs - lastDumpSession)/1000/60/60;
     // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
-    // var diff = (currDate24Hrs - lastDumpSession)/1000/60/60;
-    var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
+    var diff = (currDate24Hrs - lastDumpSession)/1000/60/60;
+    // var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
 
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
@@ -131,69 +253,24 @@ function checkDumpSession(){
 function produceRubbish(amount){
     console.log("producing rubbish")
     for(var i = 0; i < amount; i++){
-        var type = Math.floor(Math.random() * 5)
-        if(type == 0){
-            createLandfillRubbish();
-        }
-        else if(type == 1){
-            createPaperRubbish();
-        }
-        else if(type == 2){
-            createGlassRubbish();
-        }
-        else if(type == 3){
-            createMetalRubbish();
-        }
-        else if(type == 4){
-            createPlasticRubbish();
-        }
+        var type_ind = Math.floor(Math.random() * 5);
+        var rubbish_types = ['landfill', 'paper', 'glass', 'metal', 'plastic'];
+        createRubbish(rubbish_types[type_ind]);
     }
 }
 
-function createLandfillRubbish(){
+function createRubbish(type){
     var objDiv = document.createElement("div");
-    objDiv.setAttribute("class", "rubbish-to-move");
+    objDiv.setAttribute("class", "rubbish-to-move " + type);
     objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/landfill/landfill" + Math.floor(Math.random() * 3) + ".png'>";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/" + type + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
     document.getElementsByTagName('body')[0].appendChild(objDiv);
 }
 
-function createPaperRubbish(){
-    var objDiv = document.createElement("div");
-    objDiv.setAttribute("class", "rubbish-to-move");
-    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/paper/paper" + Math.floor(Math.random() * 3) + ".png'>";
-    dragElement(objDiv);
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
-}
-
-function createGlassRubbish(){
-    var objDiv = document.createElement("div");
-    objDiv.setAttribute("class", "rubbish-to-move");
-    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/glass/glass" + Math.floor(Math.random() * 3) + ".png'>";
-    dragElement(objDiv);
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
-}
-
-function createMetalRubbish(){
-    var objDiv = document.createElement("div");
-    objDiv.setAttribute("class", "rubbish-to-move");
-    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/metal/metal" + Math.floor(Math.random() * 3) + ".png'>";
-    dragElement(objDiv);
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
-}
-
-function createPlasticRubbish (){
-    var objDiv = document.createElement("div");
-    objDiv.setAttribute("class", "rubbish-to-move");
-    objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/plastic/plastic" + Math.floor(Math.random() * 3) + ".png'>";
-    dragElement(objDiv);
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
-}
+/*************************************************************************/
+/********************** FUNCTIONS FOR THE INVENTORY **********************/
+/*************************************************************************/
 
 function populateItemMenu(show_type){
 
@@ -208,7 +285,7 @@ function populateItemMenu(show_type){
     var new_item_HTML = "";
 
     // Loop over items from database and determine whether to display them based on user selection
-    for(var i=0; i<testItemList.length; i++){
+    for(var i = 0; i < testItemList.length; i++){
 
         add_item = 0;
         new_item_HTML = "";
@@ -232,7 +309,7 @@ function populateItemMenu(show_type){
 
         // Add the HTML elements for the item if to be shown
         if(add_item == 1){
-            var functionName = "showInWorld(" + JSON.stringify(testItemList[i]) + ")";
+            var functionName = "showInWorldEditable(" + JSON.stringify(testItemList[i]) + ")";
             new_item_HTML +=
                 "<div class='item'>" +
                 "<button class='item_desc' onclick='" + functionName + "'>" +
@@ -266,7 +343,7 @@ function createItemTabs(){
     return itemTabsHTML;
 }
 
-function showInWorld(obj){
+function showInWorldEditable(obj){
     var objDiv = document.createElement("div");
     objDiv.setAttribute("class", "item-to-move");
     objDiv.innerHTML = "<img src='/assets/images/world/delete2.png' class='delete-img' onclick='deleteDiv(this.parentNode)'>";
@@ -282,17 +359,11 @@ function deleteDiv(obj){
     // document.getElementsByTagName('body')[0].removeChild(obj);
 }
 
-function runDraggables(){
-    var items = document.getElementsByClassName("item-to-move");
-    for(var i= 0; i < items.length; i++)
-    {
-        dragElement(items.item(i));
-        console.log(items.item(i));
-    }
+/*************************************************************************/
+/****************** FUNCTIONS FOR DRAG AND DROP ELEMENTS *****************/
+/*************************************************************************/
 
-}
-
-function dragElement(elmnt) {
+function dragElement(elmnt){
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     elmnt.onmousedown = dragMouseDown;
 
@@ -306,7 +377,7 @@ function dragElement(elmnt) {
         document.onmousemove = elementDrag;
     }
 
-    function elementDrag(e) {
+    function elementDrag(e){
         e = e || window.event;
         // calculate the new cursor position:
         pos1 = pos3 - e.clientX;
@@ -318,9 +389,61 @@ function dragElement(elmnt) {
         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
     }
 
-    function closeDragElement() {
+    function closeDragElement(){
         /* stop moving when mouse button is released:*/
         document.onmouseup = null;
         document.onmousemove = null;
+        console.log("element class " + elmnt.className);
+        if (elmnt.classList.contains('rubbish-to-move')){
+            if (elmnt.classList.contains('landfill')){
+                console.log("these bins " + JSON.stringify(bins[0]));
+                checkCollision(elmnt, bins[0]);
+                console.log("i am landfill")
+
+            }
+            else if (elmnt.classList.contains('paper')){
+                console.log("these bins " + JSON.stringify(bins[1]));
+                checkCollision(elmnt, bins[1]);
+                console.log("i am paper")
+            }
+            else if (elmnt.classList.contains('glass')){
+                console.log("these bins " + JSON.stringify(bins[2]));
+                checkCollision(elmnt, bins[2]);
+                console.log("i am glass")
+            }
+            else if (elmnt.classList.contains('metal')){
+                console.log("these bins " + JSON.stringify(bins[3]));
+                checkCollision(elmnt, bins[3]);
+                console.log("i am metal")
+            }
+            else if (elmnt.classList.contains('plastic')){
+                console.log("these bins " + JSON.stringify(bins[4]));
+                checkCollision(elmnt, bins[4]);
+                console.log("i am plastic")
+            }
+        }
     }
+}
+
+function checkCollision(dom, bins){
+    for(var i in bins){
+        console.log("comparing with " + JSON.stringify(bins[i]));
+        if (collide(dom, bins[i])){
+            console.log("collide");
+            obj.remove();
+        }
+    }
+}
+
+function collide(dom, obj){
+    console.log("top" + dom.style.top);
+    console.log("left" + dom.style.left);
+    console.log("obj end y " + (dom.style.top + dom.offsetHeight));
+    console.log("obj end x " + (dom.style.left + dom.offsetWidth));
+    if((dom.style.top <= obj.position_y) && (obj.position_y <= (dom.style.top + dom.offsetHeight))){
+        if ((dom.style.left <= obj.position_x) && (obj.position_x <= (dom.style.left + dom.offsetWidth))){
+            return true;
+        }
+    }
+    return false;
 }
