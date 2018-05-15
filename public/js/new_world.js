@@ -221,7 +221,7 @@ function createRubbish(type){
     var objDiv = document.createElement("div");
     objDiv.setAttribute("class", "rubbish-to-move " + type);
     objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/" + type + Math.floor(Math.random() * 3) + ".png'>";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/" + type + "/" + type + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
     document.getElementsByTagName('body')[0].appendChild(objDiv);
 }
