@@ -73,6 +73,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         });
     });
 
+    // reject a friend request -- y so mean
     router.delete('/me/requests/:uid', (req: any, res) => {
         // delete cache
         router.store.usersCache.del([req.user.fbId, req.params.uid]);
@@ -97,8 +98,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+    // accepts a friend request
     router.put('/me/requests/:uid', (req: any, res) => {
-        // accepts a friend request
         // make sure they actually sent a request & they exists!
         if (req.body.action != 'accept') {
             res.status(400).send({
@@ -142,6 +143,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         });
     });
 
+    // send a friend request
     router.post('/:uid/request', (req: any, res) => {
         // delete cache
         router.store.usersCache.del([req.user.fbId, req.params.uid]);
@@ -154,17 +156,20 @@ export function initRouter(router: WbbRouter): WbbRouter {
 
             if (friend.friends.list.indexOf(req.user.fbId) >= 0) {
                 return {
-                    message: 'Already friends baka'
+                    message: 'Already friends baka',
+                    friend_name: friend.name
                 }
             }
             else if (friend.friends.reqReceived.indexOf(req.user.fbId) >= 0) {
                 return {
-                    message: 'Already sent a request to this friend'
+                    message: 'Already sent a request to this friend',
+                    friend_name: friend.name
                 }
             }
             else if (friend.friends.reqSent.indexOf(req.user.fbId) >= 0) {
                 return {
-                    message: 'Already received a request from this friend'
+                    message: 'Already received a request from this friend',
+                    friend_name: friend.name
                 }
             }
             else {
@@ -190,6 +195,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+    // cancel a sent friend request
     router.delete('/me/sent-requests/:uid', (req: any, res) => {
         // delete cache
         router.store.usersCache.del([req.user.fbId, req.params.uid]);
@@ -247,6 +253,15 @@ export function initRouter(router: WbbRouter): WbbRouter {
                 error: "Bad request"
             });
         }
+    });
+
+    router.put('/me/inventory', (req, res) => {
+        // TODO input validation
+        return res.sendPromise(router.mongo('users').updateOne({
+            fbId: req.user.fbId
+        }, {
+            $set: req.body
+        }));
     });
 
     return router;

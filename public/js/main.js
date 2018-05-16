@@ -155,6 +155,22 @@ var Recyclabears = {
         getUserByFbId: function (fbId) {
             return Recyclabears.__apiCall('GET', '/api/users/' + fbId);
         },
+        getInventory: function () {
+            return Recyclabears.users.me().then(function (me) {
+                if (me.inventory) {
+                    return me.inventory;
+                } else {
+                    return [];
+                }
+            });
+        },
+        updateInventory: function (newInv) {
+            if (Array.isArray(newInv)) {
+                return Recyclabears.__apiCall('PUT', '/me/inventory', newInv);
+            } else {
+                console.log('WARNING Recyclabears.users.updateInventory expects Array, ' + typeof(newInv) + ' given.');
+            }
+        },
         getFriendRequests: function () {
             return Recyclabears.__apiCall('GET', '/api/users/me/requests');
         },
@@ -175,27 +191,15 @@ var Recyclabears = {
         unFriend: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/friends/' + fbId);
         },
-        getUserDpUrl: function (fbId) {
-            /*return new Promise(function (resolve, reject) {
-                FB.api('/' + fbId + '/picture', 'GET', {type: 'large'}, function (response) {
-                    if (response) {
-                        console.log(response)
-                        if(response.error){
-                            //reject(response.error);
-                        } else {
-                            console.log(response);
-                            //resolve(response.data.url);
-                        }
-                    } else {
-                        reject();
-                    }
-                });
-            });*/
-            if(fbId==null){
+        getUserDpUrl: function (fbId=Recyclabears.loginId()) {
+            /*if(fbId==null){
                 fbId=Recyclabears.loginId();
             }
-            console.log("finding profile photo of " + fbId);
-            return "https://graph.facebook.com/v3.0/"+fbId+"/picture?type=large&access_token="+Recyclabears.__fbAuth.authResponse.accessToken;
+            console.log("finding profile photo of " + fbId);*/
+            return "https://graph.facebook.com/v3.0/"
+                + fbId
+                + "/picture?type=large&access_token="
+                + Recyclabears.__fbAuth.authResponse.accessToken;
         },
 
 
@@ -205,6 +209,14 @@ var Recyclabears = {
                 action: action,
                 value: value
             });
+        }
+    },
+    worlds: {
+        getWorld: function (fbId='me') {
+            return Recyclabears.__apiCall('GET', '/api/worlds/' + fbId);
+        },
+        updateWorld: function (fbId='me', update) {
+            return Recyclabears.__apiCall('PUT', '/api/worlds/' + fbId, update);
         }
     }
 };

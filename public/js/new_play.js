@@ -224,3 +224,21 @@ function enablePlayPage(){
 
 }
 wbbInit(enablePlayPage);
+
+
+function hoverImage(image){
+
+    var random_val = Math.floor((Math.random() * 3));
+    if(image === "play"){
+        $("#play-flag").attr("src", "/assets/images/play/play_" + random_val + ".png");
+    } else if (image === "create"){
+
+        $("#create-flag").attr("src", "/assets/images/play/create_1.png");
+    }
+
+}
+
+function defaultImage(){
+    $("#play-flag").attr("src", "/assets/images/play/play_main.png");
+    $("#create-flag").attr("src", "/assets/images/play/create_main.png");
+}

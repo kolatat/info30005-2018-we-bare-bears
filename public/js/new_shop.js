@@ -184,7 +184,7 @@ function showDescription(item_obj) {
 
 
     attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
-    attrib_container.innerHTML += "<button>Buy Item</button>";
+    attrib_container.innerHTML += "<button onclick='alert(\"Credit card declined.\")'>Buy Item</button>";
     attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
 }
 
