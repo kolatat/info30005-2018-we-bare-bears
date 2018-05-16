@@ -9,19 +9,19 @@ function Mult_Question(ques_obj){
     this.answer = ques_obj.answers.correct;
     this.id = ques_obj._id;
     this.points = Number(ques_obj.points);  // Make sure this is a number
-//    this.difficulty = ques_obj.difficulty;
+    this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
 }
 
 /* Check if the answer chosen by user is correct and get the correct answer */
 Mult_Question.prototype.getCorrectAnswer = function (choice) {
 
     // Return data about the question for displaying to the user
+    // Structure to be modified if API call used in future to check answer
     return {
         question: this.question,
         answer: this.answer,
         correct: this.answer === choice,
-        type: "mult",
-        points: this.points
+        type: "mult"
     };
 };
 
@@ -36,6 +36,7 @@ function Blanks_Question(ques_obj){
     this.answer = ques_obj.answers;
     this.id = ques_obj.id;
     this.points = Number(ques_obj.points);
+    this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
 }
 
 Blanks_Question.prototype.getCorrectAnswer = function(answer_order){
@@ -55,8 +56,7 @@ Blanks_Question.prototype.getCorrectAnswer = function(answer_order){
     return {
         question: this.question,
         correct: correct,
-        type: "blanks",
-        points: this.points
+        type: "blanks"
     };
 };
 
@@ -68,7 +68,7 @@ Blanks_Question.prototype.getCorrectAnswer = function(answer_order){
 function Video(ques_obj){
     this.question = ques_obj.question;
     this.embed = ques_obj.vid;
-//  this.points = ques_obj.points;
-
+    this.points = Number(ques_obj.points);
+    this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
 
 }

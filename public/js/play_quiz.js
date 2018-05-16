@@ -21,7 +21,7 @@ Quiz.prototype.guessAnswer = function (answer) {
     var ans_obj = this.getQuestionIndex().getCorrectAnswer(answer);
     if(ans_obj.correct){
         this.score++;
-        this.totalHoney += ans_obj.points;
+        this.totalHoney += this.questions[this.questionIndex].points;
     }
     this.questionIndex++;
 
@@ -33,6 +33,7 @@ Quiz.prototype.guessAnswer = function (answer) {
 
 /* Move along the list of questions (used for video-type questions */
 Quiz.prototype.proceed = function(){
+    this.totalHoney += this.questions[this.questionIndex].points;
     this.questionIndex++;
 };
 
