@@ -305,6 +305,8 @@ function previewBlanks(ques_details, preview) {
     var submit_button_HTML = '<button id="submitDataButton">Submit!</button>';
 
     return preview_HTML + content_HTML + back_button_HTML + submit_button_HTML;
+}
 
+function previewVideo(vid_details){
 
 }

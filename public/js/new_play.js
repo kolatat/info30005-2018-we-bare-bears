@@ -47,25 +47,11 @@ function showPage(page_to_show) {
      //   document.getElementById("quiz_container").innerHTML = "";
     } else {
         document.getElementById("play_page").style.display = "none";
+        // Show the Create Page Menu
+        $('#create_page_content').show();
      //   document.getElementById("create_container").innerHTML = "";
 
     }
-}
-
-
-function getRandomBlanks() {
-    var test_blank_param = {
-        fill_blanks: [
-            {type: "fill", value: "Rendering this"},
-            {type: "blank", value: "first answer"},
-            {type: "fill", value: "Insert stuff here"},
-            {type: "blank", value: "second answer"},
-            {type: "fill", value: "yay"},
-            {type: "blank", value: "this comes after yay"}],
-        answers: ["first answer", "second answer", "this comes after yay"]
-    };
-
-    return test_blank_param;
 }
 
 
@@ -75,7 +61,7 @@ var blanks_indices = [];
 /* For Fill-in-the-blanks type questions: Get the next position to be assigned to an answer option */
 function getNextIndex(){
 
-    console.log("In getNextIndex() function");
+    console.log("In getNextIndex() function - Before adding");
     console.log(blanks_indices);
     // Base case for arrays with 0 or 1 items
     if(blanks_indices.length === 0){
@@ -113,6 +99,7 @@ function getNextIndex(){
 }
 
 /* For Fill-in-the-blanks type questions: Remove the selected option from answer placement */
+/* Note: This function is used on onclick event for answer options (if already assigned */
 function removeIndex(button) {
 
     var remove_assigned = button.getElementsByClassName("assigned_order")[0];
@@ -166,10 +153,10 @@ function checkBlanks() {
         var value = choice_buttons[i].getElementsByClassName("value")[0].innerHTML;
 
         // Get the position of answer assigned to this value
-        var position_string = choice_buttons[i].getElementsByClassName("assigned_order")[0].innerHTML;
+        var position_string = choice_buttons[i].getElementsByClassName("assigned_order")[0];
 
         // An answer option has not been assigned a position, show error message
-        if (position_string === "") {
+        if (!position_string) {
             showError();
             return;
         }
@@ -218,6 +205,7 @@ function enablePlayPage(){
 
     var page_buttons = document.getElementsByClassName("page_buttons");
 
+    // Enable play and create buttons
     for(var i=0; i<page_buttons.length; i++){
         page_buttons[i].disabled = false;
     }
@@ -226,19 +214,26 @@ function enablePlayPage(){
 wbbInit(enablePlayPage);
 
 
+/* Change image of play/create button on hover */
 function hoverImage(image){
-
     var random_val = Math.floor((Math.random() * 3));
     if(image === "play"){
         $("#play-flag").attr("src", "/assets/images/play/play_" + random_val + ".png");
     } else if (image === "create"){
-
         $("#create-flag").attr("src", "/assets/images/play/create_1.png");
     }
-
 }
-
+/* Reset image of play/create button*/
 function defaultImage(){
     $("#play-flag").attr("src", "/assets/images/play/play_main.png");
     $("#create-flag").attr("src", "/assets/images/play/create_main.png");
 }
+
+/* Prevent enter button on play page --- It messes up with the quiz */
+$('html').bind('keypress', function(e)
+{
+    if(e.keyCode === 13)
+    {
+        return false;
+    }
+});

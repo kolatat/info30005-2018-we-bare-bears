@@ -179,7 +179,8 @@ function showAnswer(answer_object) {
 }
 
 
-/* TO BE MODIFIED (?) --- Function to be attached to button on Video page, just skips to next question*/
+/* TO BE MODIFIED (?) ---
+   Current: When it is a video, just add honey pots and skip to next question*/
 function proceedVideo() {
     quiz.proceed();
     populate();

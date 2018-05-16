@@ -96,6 +96,7 @@ function _createBlanks() {
     create_container.innerHTML = head_HTML + preview_HTML.join(" ") + form_HTML.join(" ");
 }
 
+/* Display interface for entering new video into database */
 function _createVideo() {
     // Hide the Create Page Menu
     $('#create_page_content').hide();
@@ -107,9 +108,9 @@ function _createVideo() {
     // HTML String for Blanks Page
     var head_HTML = '<h1>Create your video!</h1>';
 
-    // HTML Strings for "Preview Statement" section
+    // HTML Strings for "Preview Video" section
     var preview_HTML = [];
-    preview_HTML.push('<p>Preview statement...</p>');
+    preview_HTML.push('<p>Preview video...</p>');
     preview_HTML.push('<div id="preview_container">');
     preview_HTML.push("<iframe width=\"560\" height=\"315\" id='youtube-video' src=\"about:blank\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>");
     preview_HTML.push('</div>');
