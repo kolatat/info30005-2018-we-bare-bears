@@ -183,8 +183,10 @@ function populateWorld(world) {
     for (var i = 0; i < world.rubbish.length; i++) {
         displayRubbish(world, world.rubbish[i]);
         //showRubbishInWorld(world.rubbish[i]);
+        rubbishList.push(world.rubbish[i]);
     }
 
+    console.log(rubbishList);
 }
 
 function saveWorld() {
@@ -247,7 +249,7 @@ function showInWorld(obj) {
 
 function worldEdited() {
     // call this when u modify world state
-    $('button.save-btn').show();
+    editWorld();
 }
 
 function editWorld() {
@@ -259,6 +261,7 @@ function editWorld() {
 
     $('.overlay').css({"display":"none"});
     $('.delete-img').css("visibility", "visible");
+
 
 }
 
@@ -335,7 +338,7 @@ function displayRubbish(world, rubbish) {
     objDiv.style.left = rubbish.x;
     objDiv.innerHTML = "<img src='/assets/images/rubbish/" + rubbish.name + "/" + rubbish.name + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
-    document.body.appendChild(objDiv);
+    $('#world-container').append(objDiv);
     rubbishList.push(rubbish);
 }
 

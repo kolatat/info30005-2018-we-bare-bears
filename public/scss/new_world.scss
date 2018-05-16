@@ -57,7 +57,7 @@
   }
   position: absolute;
   bottom: 50px;
-  z-index: 9;
+  z-index: 100;   // Let this be above overlay layer; can move rubbish without "Edit"
   draggable: true;
 }
 
@@ -90,7 +90,8 @@
     width: 100px;
   }
   position: absolute;
-  z-index: 9;
+  z-index: 99;   /* Let this be above overlay layer; can detect collision with rubbish without "Edit"
+                    Let value be less than rubbish-to-move so that it doesn't block the rubbish */
 }
 
 img.shop_item {
