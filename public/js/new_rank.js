@@ -94,7 +94,9 @@ function openProfile(friend) {
     profileHTML += "<span class='score'>" + friend.wallet + "</span>";
 
     if (friend.isFriend == 0) {
-        profileHTML += "<button id='visit-world' class='left-green-button' onclick='displayWorld(" + friend.fbId + ")'>Visit World</button>";
+
+        profileHTML += "<button id='visit-world' class='left-green-button' " +
+            "onclick='displayWorld(" + friend.fbId + ",\"" + friend.name + "\")'>Visit World</button>";
     }
     else if (friend.isFriend == 1) {
         var functionName = "acceptRequest(" + friend.fbId + ")";
@@ -178,9 +180,10 @@ function friendsDialogCallback(res) {
     loadRank();
 }
 
-function displayWorld(fbId) {
+function displayWorld(fbId, friendName) {
+
     const overlay = $('#overlay');
-    const popup = $('#pop-up');
+    const popup = $('#world-pop-up');
     overlay.show();
     popup.show();
     popup.html('');
@@ -190,8 +193,23 @@ function displayWorld(fbId) {
         id: 'world-img',
         src: '/assets/images/world/background.png'
     });
+
+    // Get first part of name
+    var name = friendName.split(" ")[0];
+    var text = $("<h1>" + name + "'s World</h1>");
+
     cont.append(img);
+    cont.append(text);
     popup.append(cont);
+
+    console.log(popup.height);
+    console.log(popup.width);
+
+    // Reposition the popup so that it is in center of screen
+    popup.css({
+        'margin-top': -(popup.height()/2),
+        'margin-left': -(popup.width()/2)
+    });
 
     const realX = 1122, realY = 626;
     // execute image loading and world data loading in parallel
@@ -205,6 +223,8 @@ function displayWorld(fbId) {
         }
     });
     overlay.click(closeWorld);
+
+
 }
 
 function displayWorldItem(cont, mx, my, item) {
@@ -236,8 +256,13 @@ function displayWorldItem(cont, mx, my, item) {
 
 function closeWorld() {
     const overlay = $('#overlay');
-    const popup = $('#pop-up');
+    const popup = $('#world-pop-up');
+
+    // Clear modified inline styles when popup is closed
+    popup.attr('style', '');
+
     overlay.off('click');
     overlay.hide();
     popup.hide();
+
 }

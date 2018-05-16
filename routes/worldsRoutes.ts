@@ -15,7 +15,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
     router.get('/:uid', (req, res) => {
         // check perm, user only allowed to get own or friends' world
         var owner = req.params.uid;
-        if (req.user.fbId != owner && !req.user.friends.list.indexOf(owner)) {
+        if (req.user.fbId != owner && req.user.friends.list.indexOf(owner) < 0) {
             sendError(res, 'Forbidden', null, 403);
             return;
         }
@@ -28,10 +28,12 @@ export function initRouter(router: WbbRouter): WbbRouter {
                 items: [],
                 rubbish: []
             },
+            /* Commenting out so that lastDump is not always being updated
             $currentDate: {
                 lastDump: {$type: 'date'},
                 genesis: {$type: 'date'}
             }
+            */
         }, {
             new: true,
             upsert: true
@@ -69,7 +71,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }, {
             $set: updateSet
         }));
-    })
+    });
 
     return router;
 }

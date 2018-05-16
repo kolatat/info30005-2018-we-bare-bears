@@ -73,7 +73,7 @@ body {
 }
 
 /* Styling the Popup window that contains the user profile */
-#pop-up {
+#pop-up, #world-pop-up {
   display: none;
   position: fixed;
   left: 50%; //left and top here position top left page
@@ -88,8 +88,13 @@ body {
   border-style: dotted; //Dotted border
   border-color: $color-beige; //Change border colour
   z-index: 100000; //Set z-index to 1 more than that of the overlay so the popup is over the overlay
-
 }
+
+#world-pop-up{
+  width: max-content;
+}
+
+
 
 #friends-content {
   text-align: center;
@@ -125,4 +130,12 @@ body {
   width: min-content;
   height: min-content;
   z-index: 100009;
+}
+
+#world-container{
+
+}
+
+#world-img{
+  border-radius: 25px;
 }
