@@ -1,4 +1,3 @@
-
 /* Let users add more input fields */
 function addField(input_field_wrapper) {
 
@@ -50,7 +49,6 @@ function addField(input_field_wrapper) {
     }
 
 }
-
 
 
 /* Let users remove an input field */
@@ -142,12 +140,12 @@ function submitQuestion(event) {
         var new_question;
 
         var input_fields_wrap = document.getElementsByClassName("input_fields_wrap")[0];
-        if(input_fields_wrap.id === "input_fields_mult"){
+        if (input_fields_wrap.id === "input_fields_mult") {
 
             var answer_options = [];
 
             // Starting index from 1 to ignore the "Add fields" button
-            for(var i=1; i<input_fields_wrap.children.length; i++){
+            for (var i = 1; i < input_fields_wrap.children.length; i++) {
                 var option_div = input_fields_wrap.children[i];
                 var option_value = form["options-" + option_div.id].value;
                 answer_options.push(option_value);
@@ -170,12 +168,12 @@ function submitQuestion(event) {
             var msg_container = document.getElementById("msg_insert");
             msg_container.innerHTML = previewMultQues(new_question);
 
-        } else if(input_fields_wrap.id === "input_fields_blanks"){
+        } else if (input_fields_wrap.id === "input_fields_blanks") {
 
             var fill_blanks = [];
             var answers = [];
 
-            for(var i=1; i<input_fields_wrap.children.length; i++){
+            for (var i = 1; i < input_fields_wrap.children.length; i++) {
                 var value_div = input_fields_wrap.children[i];
                 var value_type = form["type-" + value_div.id].value;
                 var value = form["options-" + value_div.id].value;
@@ -186,7 +184,7 @@ function submitQuestion(event) {
                 };
 
                 fill_blanks.push(fill_blank_obj);
-                if(value_type === "blank"){
+                if (value_type === "blank") {
                     answers.push(value);
                 }
             }
@@ -194,6 +192,20 @@ function submitQuestion(event) {
             new_question = {
                 fill_blanks: fill_blanks,
                 answers: answers,
+                type: form.className,
+                difficulty: Number(form["difficulty"].value),
+                points: Number(form["points"].value)
+            };
+
+            // Preview the question to user before POST-ing to database
+            toggleMessageWindow();
+            var msg_container = document.getElementById("msg_insert");
+            var preview_text = document.getElementById("preview_container").innerHTML;
+            msg_container.innerHTML = previewBlanks(new_question, preview_text);
+        } else if (input_fields_wrap.id === "input_fields_video") {
+
+            new_question = {
+                vid: form["vid"].value,
                 type: form.className,
                 difficulty: Number(form["difficulty"].value),
                 points: Number(form["points"].value)
@@ -221,14 +233,16 @@ function submitQuestion(event) {
                 var msg_container = document.getElementById("msg_insert");
                 msg_container.innerHTML = "<p>Question successfully entered into database!</p>";
                 msg_container.innerHTML += "<button id='close_msg'>Close</button>";
-                document.getElementById("close_msg").addEventListener("click", function(){
+                document.getElementById("close_msg").addEventListener("click", function () {
+                    $('#create_page_content').show();
                     toggleMessageWindow();
                     togglePageWindow();
                     showPage("create_page");
                 });
 
             }).catch(function (err) {
-                console.log('error: ', err);
+                console.log('error: ', err.responseJSON);
+                alert(err.responseJSON.originalMessage);
                 // console.log('text: ', text);
                 // console.log('xhr: ', xhr);
                 console.log("there is a problem with your request, please check ajax request");
@@ -272,12 +286,12 @@ function previewMultQues(ques_details) {
 
 
     return preview_HTML + ques_HTML + options_HTML + correct_HTML + dif_HTML +
-        points_HTML + back_button_HTML + submit_button_HTML ;
+        points_HTML + back_button_HTML + submit_button_HTML;
 
 }
 
 
-function previewBlanks(ques_details, preview){
+function previewBlanks(ques_details, preview) {
     // Preview Header
     var preview_HTML = '<h1>Preview Question</h1>';
 

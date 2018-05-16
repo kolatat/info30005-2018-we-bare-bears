@@ -1,8 +1,7 @@
-
 /* Display interface for creating a Multiple Choice question */
-function _createMult(){
+function _createMult() {
     // Hide the Create Page Menu
-    document.getElementById("create_page_content").setAttribute("display", "none");
+    $('#create_page_content').hide();
 
     // Get the container element that will contain the quiz
     var create_container = document.getElementById("create_container");
@@ -47,10 +46,9 @@ function _createMult(){
 
 
 /* Display interface for creating a Fill-in-the-Blanks type question */
-function _createBlanks(){
-
+function _createBlanks() {
     // Hide the Create Page Menu
-    document.getElementById("create_page_content").setAttribute("display", "none");
+    $('#create_page_content').hide();
 
     // Get the container element that will contain the quiz
     var create_container = document.getElementById("create_container");
@@ -96,6 +94,43 @@ function _createBlanks(){
 
     // Final display of create container
     create_container.innerHTML = head_HTML + preview_HTML.join(" ") + form_HTML.join(" ");
+}
 
+function _createVideo() {
+    // Hide the Create Page Menu
+    $('#create_page_content').hide();
 
+    // Get the container element that will contain the quiz
+    var create_container = $('#create_container');
+    create_container.html('');  // Reset the container element for each use
+
+    // HTML String for Blanks Page
+    var head_HTML = '<h1>Create your video!</h1>';
+
+    // HTML Strings for "Preview Statement" section
+    var preview_HTML = [];
+    preview_HTML.push('<p>Preview statement...</p>');
+    preview_HTML.push('<div id="preview_container">');
+    preview_HTML.push("<iframe width=\"560\" height=\"315\" id='youtube-video' src=\"about:blank\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>");
+    preview_HTML.push('</div>');
+
+    // HTML String for form element to input details
+    var form_HTML = [];
+    form_HTML.push('<form id="createQuestion" class="youtube-video" onsubmit="submitQuestion(event)">');
+    form_HTML.push('<div id="input_fields_video" class="input_fields_wrap">');
+    form_HTML.push('<label>https://www.youtube.com/watch?v=</label><input type="text" name="vid" required="required" oninput="$(\'#youtube-video\').attr(\'src\',\'https://www.youtube.com/embed/\'+this.value)"></label>');
+    form_HTML.push('</div>');
+
+    //HTML String for input of some extra information
+    form_HTML.push('<p class="container-text">Difficulty Level: </p>');
+    form_HTML.push('<input type="number" name="difficulty" required>');
+    form_HTML.push('<p class="container-text">Score points: </p>');
+    form_HTML.push('<input type="number" name="points" required>');
+
+    // Complete the form element HTML string
+    form_HTML.push('<button type="submit">Submit!</button>');
+    form_HTML.push('</form>');
+
+    // Final display of create container
+    create_container.html(head_HTML + preview_HTML.join(" ") + form_HTML.join(" "));
 }

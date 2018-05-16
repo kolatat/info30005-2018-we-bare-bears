@@ -15,7 +15,7 @@ const Log = debug('wbb:model:question');
 export function initRouter(router: WbbRouter): WbbRouter {
     function validateInputQuestion(question: any): Question {
         requireInput(question.type, "question.type not specified");
-        if (question.type == "youtbue-video") {
+        if (question.type == "youtube-video") {
             question = validateVideoQuestion(question);
         } else if (question.type == "fill-in-the-blanks") {
             question = validateFillBlanksQuestion(question);
