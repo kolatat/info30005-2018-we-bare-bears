@@ -261,6 +261,7 @@ function checkDumpSession(world) {
     for (var i = 0; i < world.rubbish.length; i++) {
         var type_ind = world.rubbish[i].type;
         // rubbish is pree dirty in there now HA GET iT??
+        // no :(
         // so might not contain .type
         if (!type_ind) continue;
         displayRubbish(world, world.rubbish[i]);
@@ -282,6 +283,7 @@ function produceRubbish(world, amount) {
         var rubbish_types = ['landfill', 'paper', 'glass', 'metal', 'plastic'];
         createRubbish(world, rubbish_types[type_ind]);
     }
+    console.log("Dump!!");
     Recyclabears.worlds.updateWorld(world.owner, world);
 }
 
