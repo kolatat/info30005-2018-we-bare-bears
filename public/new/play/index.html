@@ -32,15 +32,17 @@
     </div>
 
     <div>
-        <button class='page_buttons' onclick='showPage("play_page");_generateQuizQuestions();' disabled="true">
-            <img class="flag-img" src="/assets/images/png/flag-green.png">
+        <button class="page_buttons" onclick='showPage("play_page");_generateQuizQuestions();' disabled="true"
+                onmouseover="hoverImage('play');" onmouseout="defaultImage();">
+            <img id="play-flag" class="flag-img" src="/assets/images/play/play_main.png">
         </button>
 
     </div>
 
     <div>
-        <button class='page_buttons' onclick='showPage("create_page")' disabled="true">
-            <img class="flag-img" src="/assets/images/png/flag-red.png">
+        <button class="page_buttons" onclick='showPage("create_page")' disabled="true"
+                onmouseover="hoverImage('create');" onmouseout="defaultImage();">
+            <img id="create-flag" class="flag-img" src="/assets/images/play/create_main.png">
         </button>
 
     </div>

@@ -19,7 +19,7 @@ h1{
   margin: 5px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 200px);
+  grid-template-rows: repeat(3, max-content);
   grid-gap: 10px;
   grid-auto-flow: row;
 
@@ -42,7 +42,7 @@ h1{
   //float: left;
   //position: relative;
   min-width: 50px;
-  width: 150px;
+  width: 40vw;
   height: auto;
 }
 
@@ -159,6 +159,12 @@ button:disabled{
     grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
+
+  .flag-img{
+    width: 80vw;
+    height: auto;
+  }
+
 }
 /* More adjustments on smaller screens */
 @media screen and (max-device-width: 500px), screen and (max-device-height: 500px){
