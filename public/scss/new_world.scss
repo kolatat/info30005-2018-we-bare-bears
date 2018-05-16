@@ -37,6 +37,7 @@
   font-family: $averia-libre;
   font-size: 18px;
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+  z-index: 100; // Let this be above overlay layer
   &:hover {
     background-color: cornflowerblue;
     box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
@@ -98,3 +99,16 @@ img.shop_item {
 }
 
 
+/* Styling the overlay covering the whole screen to prevent users from moving items */
+.overlay {
+  //display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+//  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  z-index:50;   //Let overlay be below edit button
+  overflow:hidden;
+
+}
