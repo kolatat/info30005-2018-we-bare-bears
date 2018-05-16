@@ -201,6 +201,11 @@ function displayWorld(fbId, friendName) {
     cont.append(img);
     cont.append(text);
     popup.append(cont);
+
+    console.log(popup.height);
+    console.log(popup.width);
+
+    // Reposition the popup so that it is in center of screen
     popup.css({
         'margin-top': -(popup.height()/2),
         'margin-left': -(popup.width()/2)
