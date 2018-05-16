@@ -182,8 +182,6 @@ function populateWorld(world) {
 
     for (var i = 0; i < world.rubbish.length; i++) {
         displayRubbish(world, world.rubbish[i]);
-        //showRubbishInWorld(world.rubbish[i]);
-        rubbishList.push(world.rubbish[i]);
     }
 
     console.log(rubbishList);
@@ -266,6 +264,7 @@ function editWorld() {
 }
 
 function checkDumpSession(world) {
+    console.log(world);
     var currDateLessThanHr = new Date("2018-05-15T12:30:00+10:00");
     var currDateTwoHrs = new Date("2018-05-15T14:00:00+10:00");
     var currDateEightHrs = new Date("2018-05-15T20:00:00+10:00");
@@ -280,7 +279,7 @@ function checkDumpSession(world) {
     // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
     //var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
     // var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
-    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 15;
+    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 1;
 
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
@@ -288,18 +287,28 @@ function checkDumpSession(world) {
     console.log("time diff " + diff);
     console.log("adding rubbish " + rubbishAmt);
 
+
     for (var i = 0; i < world.rubbish.length; i++) {
         var type_ind = world.rubbish[i].type;
         // rubbish is pree dirty in there now HA GET iT??
         // no :(
         // so might not contain .type
         if (!type_ind) continue;
+        // when will this be true?
         displayRubbish(world, world.rubbish[i]);
     }
 
     // if negative rubbishAmt from log function, then not enough time has passed
     if (rubbishAmt <= 0) {
         return;
+    }
+
+    // If world already has too much rubbish, stop producing more
+    // But still send an update (to update lastDump) ?
+    // P/s cleaning up x50 rubbish is NOT FUN rip
+    if(world.rubbish.length >= 20){
+        rubbishAmt = 0;
+        console.log("World is super dirty, no more rubbish to be added for now");
     }
 
     produceRubbish(world, rubbishAmt);
@@ -314,16 +323,20 @@ function produceRubbish(world, amount) {
         createRubbish(world, rubbish_types[type_ind]);
     }
     console.log("Dump!!");
+    console.log("Current world:");
+    console.log(world);
     Recyclabears.worlds.updateWorld(world.owner, world);
 }
 
 function createRubbish(world, type) {
     var objDiv = document.createElement("div");
+    objDiv.id = "rubbish-" + nextRubbishIndex;
+    nextRubbishIndex++;
     objDiv.setAttribute("class", "rubbish-to-move " + type);
     objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
     objDiv.innerHTML = "<img src='/assets/images/rubbish/" + type + "/" + type + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
+    $('#world-container').append(objDiv);
     world.rubbish.push({
         name: type,
         x: objDiv.style.left,
@@ -334,40 +347,20 @@ function createRubbish(world, type) {
 function displayRubbish(world, rubbish) {
     // console.log(rubbish);
     var objDiv = document.createElement("div");
+    objDiv.id = "rubbish-" + nextRubbishIndex;
+    nextRubbishIndex++;
     objDiv.classList.add("rubbish-to-move", rubbish.name);
     objDiv.style.left = rubbish.x;
     objDiv.innerHTML = "<img src='/assets/images/rubbish/" + rubbish.name + "/" + rubbish.name + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
     $('#world-container').append(objDiv);
-    rubbishList.push(rubbish);
+
+    // New object, and not just referencing
+    var rubbish_obj = $.extend({}, rubbish);
+    rubbish_obj.id = objDiv.id;
+    rubbishList.push(rubbish_obj);
 }
 
-function showRubbishInWorld(rubbishObj) {
-    var sf = getScaleFactors();
-    var size = (120 * sf.mx) + 'px';
-    var gObj = {
-        x: worldSize[0] / 2,
-        y: worldSize[1] / 2,
-        div: $('<div/>', {
-            'class': 'rubbish-to-move'
-        }),
-        redraw: function () {
-            var sf = getScaleFactors();
-            gObj.div.css('left', (sf.x0 + gObj.x * sf.mx) + 'px');
-            gObj.div.css('top', (gObj.y * sf.my) + 'px');
-        }
-    };
-    Object.assign(gObj, rubbishObj); // copies and replace gObj with whats in rubbishObj
-
-    var objImg = $('<img/>', {
-        src: '/assets/images/rubbish/' + rubbishObj.name + '/' + rubbishObj.name + Math.floor(Math.random() * 3) + '.png',
-        width: size
-    });
-    gObj.div.append(objImg);
-    dragElement(gObj);
-    gObj.redraw();
-    $('#world-container').append(gObj.div);
-}
 
 /*************************************************************************/
 /********************** FUNCTIONS FOR THE INVENTORY **********************/
@@ -454,6 +447,8 @@ function getScaleFactors() {
 
 var itemList = [];
 var rubbishList = [];
+// Attach as id to the DOM element to allow referencing to rubbishList when needed
+var nextRubbishIndex = 0;
 
 function showInWorldEditable(obj, edit=true) {
     var sf = getScaleFactors();
@@ -605,33 +600,63 @@ function checkCollision(dom, bins) {
     for (var i = 0; i < bins.length; i++) {
         if (collide(dom, bins[i])) {
             console.log("collide");
-            dom.remove();
-            rubbishList.remove()
-            console.log("Rubbish List");
+            console.log(dom);
             console.log(rubbishList);
 
-            /*Recyclabears.worlds.updateWorld('me', {
-                rubbish: rubbishList
-            });
+            var obj_id_to_remove = dom.id;  // second class of rubbish items is their rubbish type
+
+            if(removed_index = indexOfRubbishList(obj_id_to_remove) >= 0){
+                console.log("Removing..." + removed_index);
+                rubbishList.splice(removed_index, 1);
+                console.log("Updated! Rubbish List");
+                console.log(rubbishList);
 
 
-            Recyclabears.worlds.updateWorld('me', {
-                items: updateList
-            }).then(function () {
-                saveBtn.text('Saved');
-
-                function restore() {
-                    saveBtn.text('Save');
-                    saveBtn.prop('disabled', false);
-                    saveBtn.hide();
+                var updateList = [];
+                for(var i = 0; i < rubbishList.length; i++){
+                    updateList[i] = {
+                        name: rubbishList[i].name,
+                        x: rubbishList[i].x,
+                        y: rubbishList[i].y
+                    }
                 }
+                console.log("Update List!");
+                console.log(updateList);
 
-                setTimeout(restore, 1000);
-            });*/
+                Recyclabears.worlds.updateWorld('me', {
+                    rubbish: updateList
+                }).then(function(){
+                    console.log("Removed rubbish!");
+                });
 
+                Recyclabears.users.updateWallet("add", 1);
+
+
+
+            } else {
+                console.log("Error! Object not found");
+            }
+
+
+
+            dom.remove();
 
         }
     }
+}
+
+
+function indexOfRubbishList(findObjId){
+
+    for(var i = 0; i < rubbishList.length; i++){
+        if(findObjId !== rubbishList[i].id)
+            continue;
+
+        return i;
+    }
+
+    // -1 indicates object not found in rubbishList
+    return -1;
 }
 
 function collide(dom, obj) {
@@ -654,8 +679,8 @@ function collide(dom, obj) {
 }
 
 function overlap(point, obj) {
-    console.log("point " + point);
-    console.log("obj " + obj);
+   // console.log("point " + point);
+    //console.log("obj " + obj);
     // obj = coords as follows [left, right, top, bottom]
     if (obj[0] <= point[0] && point[0] <= obj[1] &&
         obj[2] <= point[1] && point[1] <= obj[3]) {
