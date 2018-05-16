@@ -71,7 +71,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }, {
             $set: updateSet
         }));
-    })
+    });
 
     return router;
 }

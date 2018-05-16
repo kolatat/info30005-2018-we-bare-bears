@@ -167,6 +167,7 @@ wbbInit(worldPageInit);
 /*************************************************************************/
 
 function populateWorld(world) {
+    console.log("HELLO WORLD!!!!");
     // TODO populate world based on rubbish in world.rubbish array
     for (var item in worldItems) {
         // console.log(JSON.stringify(worldItems[item]));
@@ -178,6 +179,13 @@ function populateWorld(world) {
         obj.y = parseFloat(obj.y);
         showInWorldEditable(obj, false);
     }
+
+    for (var i = 0; i < world.rubbish.length; i++) {
+        console.log(world.rubbish[i]);
+
+        displayRubbish(world, world.rubbish[i]);
+    }
+
 }
 
 function saveWorld() {
@@ -249,8 +257,9 @@ function checkDumpSession(world) {
     // var diff = (currDateLessThanHr - lastDumpSession)/1000/60/60;
     // var diff = (currDateTwoHrs - lastDumpSession)/1000/60/60;
     // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
-    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
+    //var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
     // var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
+    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 15;
 
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
@@ -304,11 +313,12 @@ function createRubbish(world, type) {
 function displayRubbish(world, rubbish) {
     // console.log(rubbish);
     var objDiv = document.createElement("div");
-    objDiv.classList.add("rubbish-to-move", rubbish.type);
+    objDiv.classList.add("rubbish-to-move", rubbish.name);
     objDiv.style.left = rubbish.x;
-    objDiv.innerHTML = "<img src='/assets/images/rubbish/" + rubbish.type + "/" + rubbish.type + Math.floor(Math.random() * 3) + ".png'>";
+    objDiv.innerHTML = "<img src='/assets/images/rubbish/" + rubbish.name + "/" + rubbish.name + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
     document.body.appendChild(objDiv);
+    rubbishList.push(rubbish);
 }
 
 /*************************************************************************/
@@ -395,6 +405,7 @@ function getScaleFactors() {
 }
 
 var itemList = [];
+var rubbishList = [];
 
 function showInWorldEditable(obj, edit=true) {
     var sf = getScaleFactors();
@@ -546,6 +557,30 @@ function checkCollision(dom, bins) {
         if (collide(dom, bins[i])) {
             console.log("collide");
             dom.remove();
+            rubbishList.remove()
+            console.log("Rubbish List");
+            console.log(rubbishList);
+
+            /*Recyclabears.worlds.updateWorld('me', {
+                rubbish: rubbishList
+            });
+
+
+            Recyclabears.worlds.updateWorld('me', {
+                items: updateList
+            }).then(function () {
+                saveBtn.text('Saved');
+
+                function restore() {
+                    saveBtn.text('Save');
+                    saveBtn.prop('disabled', false);
+                    saveBtn.hide();
+                }
+
+                setTimeout(restore, 1000);
+            });*/
+
+
         }
     }
 }
