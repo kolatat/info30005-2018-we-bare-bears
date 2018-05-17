@@ -55,14 +55,13 @@ function showPage(page_to_show) {
 }
 
 
-/* For Fill-in-the-blanks type questions: Remember the indices for order placement of answer choices */
+/* For Fill-in-the-blanks type questions:
+   Keep track of assigned order placement of answer choices */
 var blanks_indices = [];
 
 /* For Fill-in-the-blanks type questions: Get the next position to be assigned to an answer option */
 function getNextIndex(){
 
-    console.log("In getNextIndex() function - Before adding");
-    console.log(blanks_indices);
     // Base case for arrays with 0 or 1 items
     if(blanks_indices.length === 0){
         blanks_indices.push(0);
@@ -138,6 +137,7 @@ function assignIndex(button) {
     button.setAttribute("onclick", "removeIndex(this)");
     var preview_text = document.getElementById("blanks-" + cur_index);
     preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML + " ";
+
 }
 
 
@@ -145,6 +145,10 @@ function assignIndex(button) {
 function checkBlanks() {
     var choices_container = document.getElementById("fill_buttons");
     var choice_buttons = choices_container.children;
+
+   /* answers array will store an object consisting of :
+      - index: the assigned position (of answer option) and
+      - value: the answer option value */
     var answers = [];
 
     for (var i = 0; i < choice_buttons.length; i++) {
@@ -161,11 +165,34 @@ function checkBlanks() {
             return;
         }
 
-        var assigned_position = Number(position_string) - 1;
-        answers.splice(assigned_position, 0, value);
+        var assigned_position_index = Number(position_string.innerHTML) - 1;
+        answers.push({
+            index: assigned_position_index,
+            value: value
+        })
     }
 
-    var ans_obj = quiz.guessAnswer(answers);
+    // Sort the answers array based on index key
+    answers.sort(function (a,b){
+        const indexA = a.index;
+        const indexB = b.index;
+        var comparison = 0;
+        if (indexA > indexB) {
+            comparison = 1;
+        } else if (indexA < indexB) {
+            comparison = -1;
+        }
+        return comparison;
+    });
+
+    /* Create new string array containing just the answer option values
+       based on the assigned positions by user */
+    var submit_answer = [];
+    for(var x = 0; x < answers.length; x++){
+        submit_answer.push(answers[x].value);
+    }
+
+    var ans_obj = quiz.guessAnswer(submit_answer);
     showAnswer(ans_obj);
 }
 
