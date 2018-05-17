@@ -13,7 +13,6 @@ function populate() {
         });
     }
 
-
     else {
 
         // Display question based on the type
@@ -118,7 +117,12 @@ function _displayVideo(video_details) {
 
     // HTML Strings for Video Page
     var head_HTML = "<h1>Let's Watch!</h1>";
-    var ques_HTML = '<p>' + video_details.question + '</p>';
+    var ques_HTML = "";
+
+    // Some videos may have a title
+    if(video_details.question){
+        ques_HTML = '<p>' + video_details.question + '</p>';
+    }
 
     // HTML String for Iframe Element containing the video
     var iframe_HTML = '<iframe width="420" height="345" src=' + full_url + '></iframe>';
