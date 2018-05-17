@@ -55,23 +55,26 @@
 <div class="overlay" id="overlay_base">
 </div>
 <div class="popup" id="popup_base">
-    <div id="play_page" style="display: none">
+    <div id="play_page">
         <div id="quiz_container">
         </div>
+
+        <!-- Footer to show progress of quiz -->
+        <footer>
+            <hr>
+            <p id="footer_text"></p>
+        </footer>
 
         <!-- Temporary buttons to test the pages -->
         <div class="toggle_buttons">
             <button onclick="togglePageWindow()">Close</button>
         </div>
 
-        <footer>
-            <hr style="margin-top: 50px">
-            <p id="footer_text"></p>
-        </footer>
+
     </div>
 
 
-    <div id="create_page" style="display: none">
+    <div id="create_page">
         <div id="create_page_content">
             <h1>Create your quiz</h1>
             <button id="create_mult" onclick="_createMult()">Multiple Choice</button>
@@ -92,7 +95,7 @@
     </div>
     <div class="popup" id="popup_message">
 
-        <p id="msg_insert"></p>
+        <div id="msg_insert"></div>
     </div>
 
 </div>

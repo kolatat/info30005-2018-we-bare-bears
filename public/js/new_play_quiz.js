@@ -114,10 +114,12 @@ function showAnswer(answer_object) {
     else if (answer_object.type === "blanks") {
         quesResultHTML += "<p>Correct Statement:</p>";
         for (var i = 0; i < answer_object.question.length; i++) {
-            quesResultHTML += "<pre class='fill-blanks' ";
             if (answer_object.question[i].type === "fill") {
+                quesResultHTML += "<pre class='fill-blanks fill' ";
                 quesResultHTML += ">" + answer_object.question[i].value + " </pre>";
             } else {
+
+                quesResultHTML += "<pre class='fill-blanks blanks' ";
                 quesResultHTML += "style='text-decoration: underline'> " + answer_object.question[i].value + " </pre>";
             }
         }
@@ -194,8 +196,10 @@ function _displayMult(ques_details) {
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
     // HTML Strings for MCQ Page
-    var head_HTML = '<h1>Multiple Choice Quiz!</h1>';
-    var ques_HTML = '<p>' + ques_details.question + '</p>';
+    var head_HTML = '<div id="quiz_header"><h1>Multiple Choice Quiz!</h1></div>';
+    var quiz_container_HTML = '<div id="quiz_content">';
+    var ques_container_HTML = '<div id="ques_content">';
+    var ques_HTML = '<h3>' + ques_details.question + '</h3>';
 
     // Prepare the set of answer options and shuffling them (randomize order of options)
     var options = ques_details.choice.concat(ques_details.answer);
@@ -211,9 +215,10 @@ function _displayMult(ques_details) {
         );
     }
     var ans_container_HTML = '<div id="options_container">' + ans_options_HTML.join(" ") + '</div>';
+    quiz_container_HTML += ques_container_HTML + ques_HTML + ans_container_HTML + '</div></div>';
 
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
+    quiz_container.innerHTML = head_HTML + quiz_container_HTML;
 }
 
 
@@ -225,18 +230,22 @@ function _displayBlanks(ques_details) {
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
     // HTML Strings for Fill in the Blanks Page
-    var head_HTML = '<h1>Fill in the Blanks!</h1>';
-    var statement_HTML = '<div>';
+    var head_HTML = '<div id="quiz_header"><h1>Fill in the Blanks!</h1></div>';
+    var quiz_container_HTML = '<div id="quiz_content">';
+    var ques_container_HTML = '<div id="ques_content" class="ques_fitb">';
+    var statement_HTML = '<div id="preview_statement">';
     var blanks_index = 0;
     var choice_options = [];
-
+    // HTML Strings for Video Page
+    var head_HTML = "<div id='quiz_header'><h1>Let's Watch!</h1></div>";
+    var ques_HTML = "";
     // HTML Strings for the statement
     for (var i = 0; i < ques_details.question.length; i++) {
 
         if (ques_details.question[i].type === "fill") {
-            statement_HTML += '<pre class="fill-blanks">' + ques_details.question[i].value + '</pre>';
+            statement_HTML += '<pre class="fill-blanks fill">' + ques_details.question[i].value + '</pre>';
         } else {
-            statement_HTML += '<pre id="blanks-' + blanks_index + '" class="fill-blanks"> ________________ </pre>';
+            statement_HTML += '<pre id="blanks-' + blanks_index + '" class="fill-blanks blanks"> ________________ </pre>';
             choice_options.push(ques_details.question[i].value);
             blanks_index++;
         }
@@ -245,19 +254,22 @@ function _displayBlanks(ques_details) {
 
     // Shuffle option choices and HTML Strings for button options
     shuffle(choice_options);
-    var choices_HTML = '<div id="fill_buttons">';
+    var choices_HTML = '<div id="fitb_container" class="fitb_container">';
     for(var j = 0; j< choice_options.length; j++){
         choices_HTML += '<button onclick="assignIndex(this)"><p class="value">' + choice_options[j] + '</p></button>';
     }
     choices_HTML += '</div>';
 
-    var submit_HTML = '<button onclick="checkBlanks()">Submit</button>'
+    var submit_HTML = '<button class="submit-btn" onclick="checkBlanks()">Submit</button>'
 
     // Clear the indices array for future blanks question use
     blanks_indices = [];
 
+    ques_container_HTML += statement_HTML + choices_HTML + submit_HTML;
+    quiz_container_HTML += ques_container_HTML + "</div></div";
+
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML + submit_HTML;
+    quiz_container.innerHTML = head_HTML + quiz_container_HTML;
 }
 
 
@@ -272,21 +284,27 @@ function _displayVideo(video_details) {
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
     // HTML Strings for Video Page
-    var head_HTML = "<h1>Let's Watch!</h1>";
+    var head_HTML = "<div id='quiz_header'><h1>Let's Watch!</h1></div>";
+    var quiz_container_HTML = '<div id="quiz_content">';
+    var ques_container_HTML = '<div id="ques_content">';
     var ques_HTML = "";
 
     // Some videos may have a title
     if(video_details.question){
-        ques_HTML = '<p>' + video_details.question + '</p>';
+        ques_HTML = '<h3>' + video_details.question + '</h3>';
     }
 
     // HTML String for Iframe Element containing the video
     var iframe_HTML = '<iframe width="420" height="345" src=' + full_url + '></iframe>';
 
-    var proceed_button_HTML = '<div><button onclick="proceedVideo()">Next</button></div>';
+    // HTML String to proceed to next question
+    var proceed_button_HTML = '<div id="options_container"><button onclick="proceedVideo()">Next</button></div>';
+
+    // Complete the quiz container
+    quiz_container_HTML += ques_container_HTML + ques_HTML + iframe_HTML + proceed_button_HTML + '</div></div>';
 
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + ques_HTML + iframe_HTML + proceed_button_HTML;
+    quiz_container.innerHTML = head_HTML + quiz_container_HTML;
 }
 
 
@@ -373,7 +391,7 @@ function assignIndex(button) {
 
 /* Check if the question has been answered correctly */
 function checkBlanks() {
-    var choices_container = document.getElementById("fill_buttons");
+    var choices_container = document.getElementById("fitb_container");
     var choice_buttons = choices_container.children;
 
     /* answers array will store an object consisting of :

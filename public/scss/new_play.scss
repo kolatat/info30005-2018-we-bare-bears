@@ -28,14 +28,7 @@ h1{
     justify-content: center;
   }
 
-  /*
-  button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: max-content;
-  }
-  */
+
 }
 
 .flag-img{
@@ -47,33 +40,87 @@ h1{
 }
 
 #play_page{
+  display: none;
 
   #quiz_container{
-    
     overflow: auto;
-  }
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
 
-  #options_container{
-    display: grid;
-    justify-content: center;
-    grid-template-columns: max-content max-content;
-    grid-template-rows: auto;
-    margin: 1vw;
-
-    button{
-      display: flex;
-      font-size: 1em;
-      width: 100%;
+    #quiz_content{
+      display: grid;
+      justify-content: center;
       align-items: center;
-      justify-content: space-evenly;
-      grid-gap: 10px;
+      height: 100%;
+
+      #ques_content.ques_fitb{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+
+      #preview_statement{
+        border: 5px groove $color-beige;
+        width: 70vw;
+      }
+
+      #options_container{
+        display: grid;
+        justify-content: center;
+        grid-template-columns: max-content;
+        grid-template-rows: auto;
+        margin: 1vw;
+      }
+
+      #fitb_container{
+
+        display: flex;
+        p{
+          margin: 0;
+        }
+      }
+
+      button{
+        font-size: 1em;
+        width: 100%;
+        margin-bottom: 5px;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: $color-green;
+      }
+      button:hover{
+        background-color: seashell;
+        box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+        box-shadow: 0px 0px 5px wheat;
+      }
+      .submit-btn{
+        width: 50%;
+        background-color: seashell;
+      }
+      .submit-btn:hover{
+        background-color: $color-green;
+        box-shadow: 0px 0px 5px darkgreen;
+      }
 
     }
+
+
+
   }
+
+  footer > hr{
+    margin-top: 50px;
+  }
+
+
 }
 
 
 #create_page{
+  display: none;
   #create_container{
     max-height: 70vh;
     overflow: auto;
@@ -86,8 +133,7 @@ h1{
 }
 
 #msg_insert{
-  max-height: 45vh;
-  max-width: 45vw;
+  margin: 1vw;
   overflow: auto;
   -webkit-margin-before:0em;
   -webkit-margin-after:0em;
@@ -96,6 +142,11 @@ h1{
 /* Making pre elements stay on one line -- Mainly for "fill in the blanks" page */
 pre.fill-blanks{
   display: inline-block;
+  font-family: $raleway;
+}
+
+pre.blanks{
+  background-color: $color-green;
 }
 
 button:disabled{
@@ -194,9 +245,17 @@ button:disabled{
 
     #msg_insert{
       max-height: 75vh;
-      max-width: 75vw;
       overflow: auto;
     }
+  }
+
+  // Make preview container for FITB question wider
+  #preview_statement{
+    width: 90vw;
+  }
+
+  .submit-btn{
+    width: 90%
   }
 
 
