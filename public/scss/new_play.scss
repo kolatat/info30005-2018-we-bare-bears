@@ -70,6 +70,30 @@ h1{
 
     }
   }
+
+  #items_container{
+    display: grid;
+    margin: 50px;
+    grid-column-gap: 100px;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 20px;
+
+    button{
+      font-size: 1.2em;
+      padding: 10px;
+    }
+
+    button.left-item{
+      grid-column-start: 1;
+    }
+
+    button.right-item{
+      grid-column-start: 2;
+    }
+    button.selected{
+      background-color: $color-yellow;
+    }
+  }
 }
 
 

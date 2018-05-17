@@ -386,8 +386,8 @@ function _displayMatching(ques_details){
     var items_HTML = [];
     for (var i = 0; i < left_items.length; i++) {
         // Button elements for each item
-        items_HTML.push('<button id="btn-l-' + i + '" class="left-item" onclick="pairUp(this)">' + left_items[i] + '</button>');
-        items_HTML.push('<button id="btn-r-' + i + '" class="right-item" onclick="pairUp(this)">' + right_items[i] + '</button>');
+        items_HTML.push('<button id="left-' + i + '" class="left-item" onclick="pairUp(this)">' + left_items[i] + '</button>');
+        items_HTML.push('<button id="right-' + i + '" class="right-item" onclick="pairUp(this)">' + right_items[i] + '</button>');
     }
     var items_container_HTML = '<div id="items_container">' + items_HTML.join(" ") + '</div>';
 
@@ -552,42 +552,71 @@ function showError(msg){
 /*************************************************************************/
 
 function pairUp(button){
-
     var ques_obj = quiz.getQuestionIndex();
     var item_selected = button.innerHTML;
-    var ind_in_prev_selected = ques_obj.user_answers.indexOf(item_selected);
+    var ind_in_answers = getIndex(item_selected, ques_obj.user_answers);
 
     // if item_selected was already previously selected, remove it and its pair (if there is) from the selected items
-    if(ind_in_prev_selected >= 0){
-        if(ind_in_prev_selected % 2 == 0){
-            if(ind_in_prev_selected + 1 < ques_obj.user_answers.length)
-                ques_obj.user_answers.splice(ind_in_prev_selected + 1, 1);
-            ques_obj.user_answers.splice(ind_in_prev_selected, 1);
+    if(ind_in_answers >= 0){
+        ques_obj.colours_left.push(document.getElementById(ques_obj.user_answers[ind_in_answers][1]).style.backgroundColor);
+        if(ind_in_answers % 2 == 0){
+            if(ind_in_answers + 1 < ques_obj.user_answers.length){
+                removeSelection(ind_in_answers + 1, ques_obj);
+            }
+            removeSelection(ind_in_answers, ques_obj);
         }
         else{
-            ques_obj.user_answers.splice(ind_in_prev_selected, 1);
-            ques_obj.user_answers.splice(ind_in_prev_selected - 1, 1);
+            removeSelection(ind_in_answers, ques_obj);
+            removeSelection(ind_in_answers - 1, ques_obj);
         }
-
     }
     // else, item is not yet selected and should be pushed to selected items
     else{
-        ques_obj.user_answers.push(item_selected);
+        // if adding to even length array, new pair is started so new colour
+        if(ques_obj.user_answers.length % 2 == 0){
+            button.style.backgroundColor = ques_obj.colours_left.pop();
+        }
+        // else, get last colour of the previously selected item
+        else{
+            var prev_id = ques_obj.user_answers[ques_obj.user_answers.length - 1][1];
+            button.style.backgroundColor = document.getElementById(prev_id).style.backgroundColor
+        }
+        button.classList.add("selected");
+        ques_obj.user_answers.push([item_selected, button.id]);
     }
     console.log("user answers " + ques_obj.user_answers);
+    console.log("colours " + ques_obj.colours_left);
 };
+
+function removeSelection(index, ques_obj){
+    document.getElementById(ques_obj.user_answers[index][1]).classList.remove("selected");
+    document.getElementById(ques_obj.user_answers[index][1]).style.backgroundColor = "white";
+    ques_obj.user_answers.splice(index, 1);
+
+}
+
+function getIndex(item_selected, user_answers){
+    for(var i = 0; i < user_answers.length; i++){
+        // console.log("user answer i " + user_answers[])
+        if(user_answers[i][0] == item_selected){
+            return i;
+        }
+    }
+    return -1;
+
+}
 
 /* Checks if user has matched all items and if so, passes to the quiz to check correctness of matches */
 function checkPairs(){
     var ques_obj = quiz.getQuestionIndex();
-    var user_ans_dict = createUserAnswerDict(ques_obj);
-    console.log("user_ans_dict ", user_ans_dict);
-    console.log("size ", Object.keys(user_ans_dict).length);
-
-    if (Object.keys(user_ans_dict).length < (ques_obj.pairs.length * 2)){
+    if(ques_obj.user_answers.length < (ques_obj.pairs.length * 2)){
         showError("Not all items have been matched.");
         return;
     }
+
+    var user_ans_dict = createUserAnswerDict(ques_obj);
+    console.log("user_ans_dict ", user_ans_dict);
+    console.log("size ", Object.keys(user_ans_dict).length);
 
     var ans_obj = quiz.guessAnswer(user_ans_dict);
     console.log("answer obj " + JSON.stringify(ans_obj));
@@ -598,8 +627,8 @@ function checkPairs(){
 function createUserAnswerDict(ques_obj) {
     var user_ans_dict = {};
     for (var i = 0; i < ques_obj.user_answers.length; i += 2) {
-        user_ans_dict[ques_obj.user_answers[i]] = ques_obj.user_answers[i + 1];
-        user_ans_dict[ques_obj.user_answers[i + 1]] = ques_obj.user_answers[i];
+        user_ans_dict[ques_obj.user_answers[i][0]] = ques_obj.user_answers[i + 1][0];
+        user_ans_dict[ques_obj.user_answers[i + 1][0]] = ques_obj.user_answers[i][0];
     }
     return user_ans_dict;
 };
@@ -732,6 +761,7 @@ function Matching_Question(ques_obj){
     this.points = Number(ques_obj.points);
     this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
     this.user_answers = [];
+    this.colours_left = ["#F77C3E", "#FABA66", "#FCE185", "#A2CCA5"] // orange, beige, white, green from master.scss
 }
 
 Matching_Question.prototype.shuffleItems = function(side){
