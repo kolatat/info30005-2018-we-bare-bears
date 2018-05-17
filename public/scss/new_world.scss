@@ -10,6 +10,14 @@
   width: 100%;
 }
 
+/* Adaptation for the container to go below header when in this range */
+@media screen and (max-width: 1100px) and (min-width: 720px){
+  #container {
+    top: $header-height*2;
+  }
+}
+
+
 #world-container {
   background-color: #4CAF50;
   img#world-img {
@@ -26,7 +34,7 @@
 
 .save-btn {
   position: absolute;
-  top: $header-height+5px;
+  top: 5px;
   left: 5px;
   padding: 5px 15px;
   border-radius: 10px;

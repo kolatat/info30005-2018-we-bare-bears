@@ -1,6 +1,7 @@
 window.onresize = onResize;
 
 const worldSize = [1122, 626];
+const scrollbarOffset = 17;
 
 function onResize() {
     //var items_container = document.getElementById("items-container");
@@ -15,6 +16,14 @@ function onResize() {
 
     // too difficult lets just turn a blind eye on resizing
     // rip resize
+
+    // Resize the overlay that covers the world-container when not in Edit mode
+    var $overlay = $('.overlay');
+    var $worldContainer = $('#world-container');
+    $overlay.width($worldContainer.width());
+    $overlay.height($worldContainer.height() - scrollbarOffset);
+    $overlay.css({"top": $('#container').css("top")});
+
 }
 
 /*************************************************************************/
@@ -162,7 +171,13 @@ var worldItems = [
 var lastDumpSession = new Date("2018-05-15T12:00:00+10:00");
 
 function worldPageInit() {
+
     $('.save-btn').prop('disabled', false);
+    var $overlay = $('.overlay');
+    var $worldContainer = $('#world-container');
+    $overlay.width($worldContainer.width());
+    $overlay.height($worldContainer.height() - scrollbarOffset);
+    $overlay.css({"top": $('#container').css("top")});
     populateItemMenu('tab_all');
     Recyclabears.worlds.getWorld().then(function (world) {
         populateWorld(world);
@@ -525,7 +540,7 @@ function showInWorldEditable(obj, edit=true) {
     gObj.redraw();
     $('#world-container').append(gObj.div);
     itemList.push(gObj);
-   // if (edit) worldEdited();
+    if (edit) worldEdited();
     return;
 
     var objDiv = document.createElement("div");
