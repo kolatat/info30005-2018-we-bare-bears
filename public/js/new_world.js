@@ -214,6 +214,11 @@ function populateWorld(world) {
 }
 
 function saveWorld() {
+
+    var saveBtn = $('.save-btn');
+    saveBtn.text('Saving...');
+    saveBtn.prop('disabled', true);
+
     // sanitize
     var updateList = [];
     for (var i = 0; i < itemList.length; i++) {
@@ -228,14 +233,15 @@ function saveWorld() {
         updateList.push(copy);
     }
     //console.log(updateList);
-    var saveBtn = $('.save-btn');
-    saveBtn.text('Saving...');
-    saveBtn.prop('disabled', true);
 
-
-    Recyclabears.worlds.updateWorld('me', {
-        items: updateList
-    }).then(function () {
+    // If array empty, send "empty" string and update the user's world items to empty array
+    var updateObj;
+    if(updateList.length === 0){
+        updateObj = { items: "empty" };
+    } else {
+        updateObj = { items: updateList };
+    }
+    Recyclabears.worlds.updateWorld('me', updateObj ).then(function () {
         saveBtn.text('Saved');
 
         function restore() {
@@ -396,6 +402,7 @@ function displayRubbish(world, rubbish) {
 
 /* Get the index in rubbishList array of rubbish to be removed */
 function indexOfRubbishList(findObjId){
+
     for(var i = 0; i < rubbishList.length; i++){
         if(findObjId !== rubbishList[i].id)
             continue;
@@ -651,7 +658,8 @@ function checkCollision(dom, bins) {
         if (collide(dom, bins[i])) {
             console.log("collide");
 
-            var obj_id_to_remove = dom.id;  // second class of rubbish items is their rubbish type
+            // DOM id used as identifier for finding position in rubbishList array
+            var obj_id_to_remove = dom.id;
             var removed_index = indexOfRubbishList(obj_id_to_remove);
             console.log("Found index: " + removed_index);
 
@@ -660,23 +668,36 @@ function checkCollision(dom, bins) {
                 console.log("Updated: Rubbish List");
                 console.log(rubbishList);
 
-                // Send an updated rubbish list to database
-                var updateList = [];
-                for(var i = 0; i < rubbishList.length; i++){
-                    updateList[i] = {
-                        name: rubbishList[i].name,
-                        x: rubbishList[i].x,
-                        y: rubbishList[i].y
+
+                // sanitize rubbish list
+                var updateRubbishList = [];
+                for (var i = 0; i < rubbishList.length; i++) {
+                    var rubbish = rubbishList[i];
+                    var copy = {};
+                    for (var k in rubbish) {
+                        // put your list of keys to ignore here
+                        if (["id"].indexOf(k) < 0) {
+                            copy[k] = rubbish[k];
+                        }
                     }
+                    updateRubbishList.push(copy);
                 }
 
-                Recyclabears.worlds.updateWorld('me', {
-                    rubbish: updateList
-                }).then(function(){
+
+                // If array empty, send "empty" string and update the user's world rubbish to empty array
+                var send_obj;
+                if(updateRubbishList.length === 0){
+                    send_obj = { rubbish: "empty" };
+                } else {
+                    send_obj = { rubbish: updateRubbishList };
+                }
+
+                Recyclabears.worlds.updateWorld('me',send_obj).then(function(){
                     console.log("Removed rubbish!");
                 }).catch (function(error){
                     console.log(error);
                 });
+
 
                 // Update wallet
                 Recyclabears.users.updateWallet("add", 1);

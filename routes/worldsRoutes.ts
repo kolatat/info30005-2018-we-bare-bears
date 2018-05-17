@@ -50,16 +50,28 @@ export function initRouter(router: WbbRouter): WbbRouter {
             return;
         }
         var updateSet: any = {};
+
+
         //Log(req.body);
         if (req.body.items) {
-            updateSet.items = req.body.items;
+            if(req.body.items === "empty"){
+                // goodbye sunflowers..
+                updateSet.items = [];
+            } else {
+                updateSet.items = req.body.items;
+            }
         }
         if (req.body.rubbish) {
-            updateSet.rubbish = req.body.rubbish;
+            if(req.body.rubbish === "empty"){
+                updateSet.rubbish = [];
+            } else {
+                updateSet.rubbish = req.body.rubbish;
+            }
         }
         if (req.body.lastDump) {
             updateSet.lastDump = new Date();
         }
+
         //Log(updateSet);
         if (updateSet == {}) {
             res.sendStatus(200);
