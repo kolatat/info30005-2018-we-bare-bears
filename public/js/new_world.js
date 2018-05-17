@@ -313,7 +313,6 @@ function checkDumpSession(world) {
     // var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
     var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
 
-    diff = 0;
 
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
