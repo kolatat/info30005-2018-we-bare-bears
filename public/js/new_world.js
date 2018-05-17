@@ -146,12 +146,23 @@ var worldItems = [
         description: "A bin that looks like it is made for disposing glass.",
         position_x: "800px",
         position_y: "550px"
+    },
+    {
+        name: "Black Bin",
+        type: "bin",
+        bin_type: "landfill-bin",
+        price: 10,
+        image: "/assets/images/items/black_bin.png",
+        description: "A bin that looks like it is made for disposing landfill rubbish.",
+        position_x: "1000px",
+        position_y: "550px"
     }
 ];
 
 var lastDumpSession = new Date("2018-05-15T12:00:00+10:00");
 
 function worldPageInit() {
+    $('.save-btn').prop('disabled', false);
     populateItemMenu('tab_all');
     Recyclabears.worlds.getWorld().then(function (world) {
         populateWorld(world);
@@ -237,7 +248,7 @@ function showInWorld(obj) {
     objDiv.style.left = obj.position_x;
     objDiv.style.top = obj.position_y;
 
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
+    $('#world-container').append(objDiv);
 }
 
 /*************************************************************************/
@@ -279,7 +290,9 @@ function checkDumpSession(world) {
     // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
     //var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
     // var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
-    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 1;
+    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
+
+    diff = 0;
 
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
@@ -305,7 +318,7 @@ function checkDumpSession(world) {
 
     // If world already has too much rubbish, stop producing more
     // But still send an update (to update lastDump) ?
-    // P/s cleaning up x50 rubbish is NOT FUN rip
+    // P/s cleaning up x50 rubbish is not fun -- but i'm richer nao
     if(world.rubbish.length >= 20){
         rubbishAmt = 0;
         console.log("World is super dirty, no more rubbish to be added for now");
@@ -342,10 +355,15 @@ function createRubbish(world, type) {
         x: objDiv.style.left,
         y: 69
     });
+    rubbishList.push({
+        name: type,
+        x: objDiv.style.left,
+        y: 69,
+        id: objDiv.id
+    });
 }
 
 function displayRubbish(world, rubbish) {
-    // console.log(rubbish);
     var objDiv = document.createElement("div");
     objDiv.id = "rubbish-" + nextRubbishIndex;
     nextRubbishIndex++;
@@ -355,12 +373,23 @@ function displayRubbish(world, rubbish) {
     dragElement(objDiv);
     $('#world-container').append(objDiv);
 
-    // New object, and not just referencing
+    // New object, not just referencing
     var rubbish_obj = $.extend({}, rubbish);
     rubbish_obj.id = objDiv.id;
     rubbishList.push(rubbish_obj);
 }
 
+/* Get the index in rubbishList array of rubbish to be removed */
+function indexOfRubbishList(findObjId){
+    for(var i = 0; i < rubbishList.length; i++){
+        if(findObjId !== rubbishList[i].id)
+            continue;
+
+        return i;
+    }
+    // -1 indicates object not found in rubbishList
+    return -1;
+}
 
 /*************************************************************************/
 /********************** FUNCTIONS FOR THE INVENTORY **********************/
@@ -445,7 +474,12 @@ function getScaleFactors() {
     }
 }
 
+/* Store objects with original item data from db */
 var itemList = [];
+
+/* Store objects with original rubbish data from db,
+   along with an extra property, id
+   (for referencing purposes when removing rubbish) */
 var rubbishList = [];
 // Attach as id to the DOM element to allow referencing to rubbishList when needed
 var nextRubbishIndex = 0;
@@ -507,6 +541,7 @@ function deleteDiv(obj) {
     console.log(obj.id);
     obj.remove();
 }
+
 
 /*************************************************************************/
 /****************** FUNCTIONS FOR DRAG AND DROP ELEMENTS *****************/
@@ -600,18 +635,17 @@ function checkCollision(dom, bins) {
     for (var i = 0; i < bins.length; i++) {
         if (collide(dom, bins[i])) {
             console.log("collide");
-            console.log(dom);
-            console.log(rubbishList);
 
             var obj_id_to_remove = dom.id;  // second class of rubbish items is their rubbish type
+            var removed_index = indexOfRubbishList(obj_id_to_remove);
+            console.log("Found index: " + removed_index);
 
-            if(removed_index = indexOfRubbishList(obj_id_to_remove) >= 0){
-                console.log("Removing..." + removed_index);
+            if(removed_index >= 0){
                 rubbishList.splice(removed_index, 1);
-                console.log("Updated! Rubbish List");
+                console.log("Updated: Rubbish List");
                 console.log(rubbishList);
 
-
+                // Send an updated rubbish list to database
                 var updateList = [];
                 for(var i = 0; i < rubbishList.length; i++){
                     updateList[i] = {
@@ -620,44 +654,28 @@ function checkCollision(dom, bins) {
                         y: rubbishList[i].y
                     }
                 }
-                console.log("Update List!");
-                console.log(updateList);
 
                 Recyclabears.worlds.updateWorld('me', {
                     rubbish: updateList
                 }).then(function(){
                     console.log("Removed rubbish!");
+                }).catch (function(error){
+                    console.log(error);
                 });
 
+                // Update wallet
                 Recyclabears.users.updateWallet("add", 1);
 
-
-
             } else {
-                console.log("Error! Object not found");
+                console.log('ERROR cannot delete non-existent rubbish!');
             }
 
-
-
+            // Remove the object from view
             dom.remove();
-
         }
     }
 }
 
-
-function indexOfRubbishList(findObjId){
-
-    for(var i = 0; i < rubbishList.length; i++){
-        if(findObjId !== rubbishList[i].id)
-            continue;
-
-        return i;
-    }
-
-    // -1 indicates object not found in rubbishList
-    return -1;
-}
 
 function collide(dom, obj) {
     var dom_top_left = [parseInt(dom.style.left, 10), parseInt(dom.style.top, 10)];
