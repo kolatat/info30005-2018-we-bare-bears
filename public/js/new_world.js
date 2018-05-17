@@ -1,6 +1,7 @@
 window.onresize = onResize;
 
 const worldSize = [1122, 626];
+const scrollbarOffset = 17;
 
 function onResize() {
     //var items_container = document.getElementById("items-container");
@@ -15,6 +16,14 @@ function onResize() {
 
     // too difficult lets just turn a blind eye on resizing
     // rip resize
+
+    // Resize the overlay that covers the world-container when not in Edit mode
+    var $overlay = $('.overlay');
+    var $worldContainer = $('#world-container');
+    $overlay.width($worldContainer.width());
+    $overlay.height($worldContainer.height() - scrollbarOffset);
+    $overlay.css({"top": $('#container').css("top")});
+
 }
 
 /*************************************************************************/
@@ -146,12 +155,29 @@ var worldItems = [
         description: "A bin that looks like it is made for disposing glass.",
         position_x: "800px",
         position_y: "550px"
+    },
+    {
+        name: "Black Bin",
+        type: "bin",
+        bin_type: "landfill-bin",
+        price: 10,
+        image: "/assets/images/items/black_bin.png",
+        description: "A bin that looks like it is made for disposing landfill rubbish.",
+        position_x: "1000px",
+        position_y: "550px"
     }
 ];
 
 var lastDumpSession = new Date("2018-05-15T12:00:00+10:00");
 
 function worldPageInit() {
+
+    $('.save-btn').prop('disabled', false);
+    var $overlay = $('.overlay');
+    var $worldContainer = $('#world-container');
+    $overlay.width($worldContainer.width());
+    $overlay.height($worldContainer.height() - scrollbarOffset);
+    $overlay.css({"top": $('#container').css("top")});
     populateItemMenu('tab_all');
     Recyclabears.worlds.getWorld().then(function (world) {
         populateWorld(world);
@@ -181,14 +207,18 @@ function populateWorld(world) {
     }
 
     for (var i = 0; i < world.rubbish.length; i++) {
-        console.log(world.rubbish[i]);
-
         displayRubbish(world, world.rubbish[i]);
     }
 
+    console.log(rubbishList);
 }
 
 function saveWorld() {
+
+    var saveBtn = $('.save-btn');
+    saveBtn.text('Saving...');
+    saveBtn.prop('disabled', true);
+
     // sanitize
     var updateList = [];
     for (var i = 0; i < itemList.length; i++) {
@@ -203,18 +233,26 @@ function saveWorld() {
         updateList.push(copy);
     }
     //console.log(updateList);
-    var saveBtn = $('.save-btn');
-    saveBtn.text('Saving...');
-    saveBtn.prop('disabled', true);
-    Recyclabears.worlds.updateWorld('me', {
-        items: updateList
-    }).then(function () {
+
+    // If array empty, send "empty" string and update the user's world items to empty array
+    var updateObj;
+    if(updateList.length === 0){
+        updateObj = { items: "empty" };
+    } else {
+        updateObj = { items: updateList };
+    }
+    Recyclabears.worlds.updateWorld('me', updateObj ).then(function () {
         saveBtn.text('Saved');
 
         function restore() {
-            saveBtn.text('Save');
+           // saveBtn.text('Save');
+            saveBtn.text('Edit');
             saveBtn.prop('disabled', false);
-            saveBtn.hide();
+            saveBtn.attr('onclick', "editWorld()");
+           // saveBtn.hide();
+
+            $('.overlay').css({"display":"block"});
+            $('.delete-img').css("visibility", "hidden");
         }
 
         setTimeout(restore, 1000);
@@ -231,7 +269,7 @@ function showInWorld(obj) {
     objDiv.style.left = obj.position_x;
     objDiv.style.top = obj.position_y;
 
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
+    $('#world-container').append(objDiv);
 }
 
 /*************************************************************************/
@@ -241,10 +279,24 @@ function showInWorld(obj) {
 
 function worldEdited() {
     // call this when u modify world state
-    $('button.save-btn').show();
+    editWorld();
+}
+
+function editWorld() {
+    console.log("Edit World clicked");
+    var saveBtn = $('.save-btn');
+    saveBtn.text("Save");
+    saveBtn.attr("onclick", "saveWorld()");
+
+
+    $('.overlay').css({"display":"none"});
+    $('.delete-img').css("visibility", "visible");
+
+
 }
 
 function checkDumpSession(world) {
+    console.log(world);
     var currDateLessThanHr = new Date("2018-05-15T12:30:00+10:00");
     var currDateTwoHrs = new Date("2018-05-15T14:00:00+10:00");
     var currDateEightHrs = new Date("2018-05-15T20:00:00+10:00");
@@ -259,7 +311,8 @@ function checkDumpSession(world) {
     // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
     //var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
     // var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
-    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 15;
+    var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
+
 
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
@@ -267,18 +320,28 @@ function checkDumpSession(world) {
     console.log("time diff " + diff);
     console.log("adding rubbish " + rubbishAmt);
 
+
     for (var i = 0; i < world.rubbish.length; i++) {
         var type_ind = world.rubbish[i].type;
         // rubbish is pree dirty in there now HA GET iT??
         // no :(
         // so might not contain .type
         if (!type_ind) continue;
+        // when will this be true?
         displayRubbish(world, world.rubbish[i]);
     }
 
     // if negative rubbishAmt from log function, then not enough time has passed
     if (rubbishAmt <= 0) {
         return;
+    }
+
+    // If world already has too much rubbish, stop producing more
+    // But still send an update (to update lastDump) ?
+    // P/s cleaning up x50 rubbish is not fun -- but i'm richer nao
+    if(world.rubbish.length >= 20){
+        rubbishAmt = 0;
+        console.log("World is super dirty, no more rubbish to be added for now");
     }
 
     produceRubbish(world, rubbishAmt);
@@ -293,32 +356,60 @@ function produceRubbish(world, amount) {
         createRubbish(world, rubbish_types[type_ind]);
     }
     console.log("Dump!!");
+    console.log("Current world:");
+    console.log(world);
     Recyclabears.worlds.updateWorld(world.owner, world);
 }
 
 function createRubbish(world, type) {
     var objDiv = document.createElement("div");
+    objDiv.id = "rubbish-" + nextRubbishIndex;
+    nextRubbishIndex++;
     objDiv.setAttribute("class", "rubbish-to-move " + type);
     objDiv.style.left = Math.floor(Math.random() * 1000) + "px";
     objDiv.innerHTML = "<img src='/assets/images/rubbish/" + type + "/" + type + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
+    $('#world-container').append(objDiv);
     world.rubbish.push({
         name: type,
         x: objDiv.style.left,
         y: 69
     });
+    rubbishList.push({
+        name: type,
+        x: objDiv.style.left,
+        y: 69,
+        id: objDiv.id
+    });
 }
 
 function displayRubbish(world, rubbish) {
-    // console.log(rubbish);
     var objDiv = document.createElement("div");
+    objDiv.id = "rubbish-" + nextRubbishIndex;
+    nextRubbishIndex++;
     objDiv.classList.add("rubbish-to-move", rubbish.name);
     objDiv.style.left = rubbish.x;
     objDiv.innerHTML = "<img src='/assets/images/rubbish/" + rubbish.name + "/" + rubbish.name + Math.floor(Math.random() * 3) + ".png'>";
     dragElement(objDiv);
-    document.body.appendChild(objDiv);
-    rubbishList.push(rubbish);
+    $('#world-container').append(objDiv);
+
+    // New object, not just referencing
+    var rubbish_obj = $.extend({}, rubbish);
+    rubbish_obj.id = objDiv.id;
+    rubbishList.push(rubbish_obj);
+}
+
+/* Get the index in rubbishList array of rubbish to be removed */
+function indexOfRubbishList(findObjId){
+
+    for(var i = 0; i < rubbishList.length; i++){
+        if(findObjId !== rubbishList[i].id)
+            continue;
+
+        return i;
+    }
+    // -1 indicates object not found in rubbishList
+    return -1;
 }
 
 /*************************************************************************/
@@ -404,8 +495,15 @@ function getScaleFactors() {
     }
 }
 
+/* Store objects with original item data from db */
 var itemList = [];
+
+/* Store objects with original rubbish data from db,
+   along with an extra property, id
+   (for referencing purposes when removing rubbish) */
 var rubbishList = [];
+// Attach as id to the DOM element to allow referencing to rubbishList when needed
+var nextRubbishIndex = 0;
 
 function showInWorldEditable(obj, edit=true) {
     var sf = getScaleFactors();
@@ -426,14 +524,15 @@ function showInWorldEditable(obj, edit=true) {
     var delImg = $('<img/>', {
         src: '/assets/images/world/delete2.png',
         'class': 'delete-img',
-        width: size
+        width: size,
+        'style': 'visibility:hidden'
     });
     delImg.click(function () {
         gObj.div.remove();
         var i = itemList.indexOf(gObj);
         if (i >= 0) {
             itemList.splice(i, 1);
-            worldEdited();
+            //worldEdited();
         } else {
             console.log('ERROR cannot delete non-existent object');
         }
@@ -464,6 +563,7 @@ function deleteDiv(obj) {
     obj.remove();
 }
 
+
 /*************************************************************************/
 /****************** FUNCTIONS FOR DRAG AND DROP ELEMENTS *****************/
 
@@ -487,7 +587,7 @@ function dragElement2(obj) {
         cx = e.clientX;
         cy = e.clientY;
         obj.redraw();
-        worldEdited();
+       // worldEdited();
     }
 
     function closeDrag(e) {
@@ -556,34 +656,61 @@ function checkCollision(dom, bins) {
     for (var i = 0; i < bins.length; i++) {
         if (collide(dom, bins[i])) {
             console.log("collide");
-            dom.remove();
-            rubbishList.remove()
-            console.log("Rubbish List");
-            console.log(rubbishList);
 
-            /*Recyclabears.worlds.updateWorld('me', {
-                rubbish: rubbishList
-            });
+            // DOM id used as identifier for finding position in rubbishList array
+            var obj_id_to_remove = dom.id;
+            var removed_index = indexOfRubbishList(obj_id_to_remove);
+            console.log("Found index: " + removed_index);
+
+            if(removed_index >= 0){
+                rubbishList.splice(removed_index, 1);
+                console.log("Updated: Rubbish List");
+                console.log(rubbishList);
 
 
-            Recyclabears.worlds.updateWorld('me', {
-                items: updateList
-            }).then(function () {
-                saveBtn.text('Saved');
-
-                function restore() {
-                    saveBtn.text('Save');
-                    saveBtn.prop('disabled', false);
-                    saveBtn.hide();
+                // sanitize rubbish list
+                var updateRubbishList = [];
+                for (var i = 0; i < rubbishList.length; i++) {
+                    var rubbish = rubbishList[i];
+                    var copy = {};
+                    for (var k in rubbish) {
+                        // put your list of keys to ignore here
+                        if (["id"].indexOf(k) < 0) {
+                            copy[k] = rubbish[k];
+                        }
+                    }
+                    updateRubbishList.push(copy);
                 }
 
-                setTimeout(restore, 1000);
-            });*/
+
+                // If array empty, send "empty" string and update the user's world rubbish to empty array
+                var send_obj;
+                if(updateRubbishList.length === 0){
+                    send_obj = { rubbish: "empty" };
+                } else {
+                    send_obj = { rubbish: updateRubbishList };
+                }
+
+                Recyclabears.worlds.updateWorld('me',send_obj).then(function(){
+                    console.log("Removed rubbish!");
+                }).catch (function(error){
+                    console.log(error);
+                });
 
 
+                // Update wallet
+                Recyclabears.users.updateWallet("add", 1);
+
+            } else {
+                console.log('ERROR cannot delete non-existent rubbish!');
+            }
+
+            // Remove the object from view
+            dom.remove();
         }
     }
 }
+
 
 function collide(dom, obj) {
     var dom_top_left = [parseInt(dom.style.left, 10), parseInt(dom.style.top, 10)];
@@ -605,8 +732,8 @@ function collide(dom, obj) {
 }
 
 function overlap(point, obj) {
-    console.log("point " + point);
-    console.log("obj " + obj);
+   // console.log("point " + point);
+    //console.log("obj " + obj);
     // obj = coords as follows [left, right, top, bottom]
     if (obj[0] <= point[0] && point[0] <= obj[1] &&
         obj[2] <= point[1] && point[1] <= obj[3]) {

@@ -93,6 +93,13 @@ var testItemList = [
         price: 27,
         image: "/assets/images/items/turtle.png",
         description: "Save me from plastic bags!"
+    },
+    {
+        name: "Black Bin",
+        type: "bin",
+        price: 10,
+        image: "/assets/images/items/black_bin.png",
+        description: "A bin that looks like it is made for disposing landfill rubbish."
     }
 
 ];
