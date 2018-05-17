@@ -1,4 +1,7 @@
+import * as mongo from 'mongodb'
+
 export interface Item {
+    _id: mongo.ObjectID;
     display: string;
     name: string;
     type: string;

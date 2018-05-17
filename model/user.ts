@@ -1,4 +1,7 @@
+import * as mongo from 'mongodb'
+
 export interface User {
+    _id: mongo.ObjectID;
     fbId: string;
     friends: UserFriends;
     name: string;

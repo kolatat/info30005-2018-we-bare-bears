@@ -1,6 +1,6 @@
 import * as Q from 'q'
 import * as mongodb from 'mongodb'
-import {Collection, Db, MongoClient} from 'mongodb'
+import {Collection, Db, MongoClient, MongoClientOptions} from 'mongodb'
 import * as debug from 'debug'
 import * as NodeCache from 'node-cache'
 import {User} from "./user";
@@ -24,7 +24,10 @@ export class MongoStore {
     public connect(): Q.Promise<void> {
         Log('connecting to mongo database...');
         var deferred = Q.defer<void>();
-        mongodb.MongoClient.connect(this.uri, (err, conn: MongoClient) => {
+        // TODO mongo has a promise-based interface so use it maybe?
+        mongodb.MongoClient.connect(this.uri, <MongoClientOptions>{
+            useNewUrlParser: true
+        }, (err, conn: MongoClient) => {
             if (err) {
                 Log('error connecting: ' + err.message);
                 deferred.reject(err);

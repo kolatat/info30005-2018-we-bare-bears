@@ -102,3 +102,19 @@ export class WbbRouter {
     }
 
 }
+
+
+export function requireInput(field, errMsg: string) {
+    if (isNullOrUndefined(field)) {
+        throw new ValidationError(errMsg, 400);
+    }
+}
+
+export function requireArray(field, errMsg: string) {
+    if (!Array.isArray(field)) {
+        throw new ValidationError(errMsg, 400);
+    }
+}
+
+export class ValidationError extends WbbError {
+}

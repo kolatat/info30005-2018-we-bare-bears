@@ -1,14 +1,45 @@
 import * as debug from 'debug';
 import {ObjectID} from 'mongodb';
 import {isNullOrUndefined} from "util";
-import {sendError, WbbError, WbbRouter} from "../utils";
+import {requireInput, sendError, ValidationError, WbbError, WbbRouter} from "../utils";
+import {
+    FillBlanksQuestion,
+    MultipleChoiceQuestion,
+    Question, validateFillBlanksQuestion, validateMultipleChoiceQuestion,
+    validateVideoQuestion,
+    VideoQuestion
+} from "../model/question";
 
 const Log = debug('wbb:model:question');
 
 export function initRouter(router: WbbRouter): WbbRouter {
+    function validateInputQuestion(question: any): Question {
+        requireInput(question.type, "question.type not specified");
+        if (question.type == "youtube-video") {
+            question = validateVideoQuestion(question);
+        } else if (question.type == "fill-in-the-blanks") {
+            question = validateFillBlanksQuestion(question);
+        } else if (question.type == "multiple-choice") {
+            question = validateMultipleChoiceQuestion(question);
+        } else {
+            throw new ValidationError(`Invalid question.type '${question.type}'`, 400);
+        }
+        return question;
+    }
+
     router.post('/', (req, res) => {
-        // TODO validate input
-        var question = req.body;
+        var question: Question = <Question>req.body;
+        try {
+            question = validateInputQuestion(question);
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                sendError(res, "Validation Error", err);
+            } else {
+                sendError(res, "Uncaught generic error", err);
+            }
+            return;
+        }
+
         question['created'] = new Date();
         question['createdBy'] = req.user.fbId;
         res.sendPromise(router.mongo('questions').insertOne(question).then(r => {
@@ -43,12 +74,23 @@ export function initRouter(router: WbbRouter): WbbRouter {
         try {
             objID = ObjectID.createFromHexString(req.params.qid);
         } catch (e) {
-            sendError(res, "Bad request", e, 400);
+            sendError(res, "Bad request - hint: it's the object ID", e, 404);
+            return;
+        }
+        var question: Question = <Question>req.body;
+        try {
+            question = validateInputQuestion(question);
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                sendError(res, "Validation Error", err);
+            } else {
+                sendError(res, "Uncaught generic error", err);
+            }
             return;
         }
         res.sendPromise(router.mongo("questions").replaceOne({
             _id: objID
-        }, req.body).then(r => {
+        }, question).then(r => {
             return {result: r};
         }));
     });
