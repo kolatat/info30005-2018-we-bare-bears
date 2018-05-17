@@ -10,50 +10,122 @@ var quiz;
 function _generateQuizQuestions() {
 
     // Allow users to choose only between 1-5 questions
-    var num_questions = parseInt(prompt("How many questions would you like to answer? (1 - 5)"));
-    if (num_questions > 0 && num_questions <= 5) {
-        alert("Starting quiz with " + num_questions + " questions!");
-        _startQuiz(num_questions);
-    } else {
-        var quiz_container = document.getElementById("quiz_container");
-        quiz_container.innerHTML =
-            "Sorry! Please enter a valid integer between 1 and 5";
-    }
+    // var num_questions = parseInt(prompt("How many questions would you like to answer? (1 - 5)"));
+    // if (num_questions > 0 && num_questions <= 5) {
+    //     alert("Starting quiz with " + num_questions + " questions!");
+    //     _startQuiz(num_questions);
+    // } else {
+    //     var quiz_container = document.getElementById("quiz_container");
+    //     quiz_container.innerHTML =
+    //         "Sorry! Please enter a valid integer between 1 and 5";
+    // }
+    _startQuiz(1);
 }
 
 /* Start the Quiz */
 function _startQuiz(num_ques) {
 
-    Recyclabears.questions.getRandomQuestion(num_ques).then(function(data){
-        var questions = data.docs;
-        var question_list = [];
-        var numQues = 0;
-        var numVid = 0;
+    // "{"docs":[
+    //      {"_id":"5af527c2e763b33fd8f6fef3",
+    //       "fill_blanks":[
+    //              {"type":"fill","value":"Glass made from"},
+    //              {"type":"blank","value":"recycled materials"},
+    //              {"type":"fill","value":"requires only"},
+    //              {"type":"blank","value":"40%"},
+    //              {"type":"fill","value":"of the energy needed to make glass from"},
+    //              {"type":"blank","value":"sand"}],
+    //       "answers":["recycled materials","40%","sand"],
+    //       "type":"fill-in-the-blanks",
+    //       "difficulty":"3",
+    //       "points":"2",
+    //       "created":"2018-05-11T05:18:58.947Z",
+    //       "createdBy":"1669233943192205"}]
+    // }"
 
-        // Create new Question object based on the question type
-        for(var i = 0; i < questions.length; i++){
-            if (questions[i].type === "multiple-choice") {
-                var new_ques = new Mult_Question(questions[i]);
-                question_list.push(new_ques);
-                numQues++;
-            } else if(questions[i].type === "fill-in-the-blanks"){
-                var new_blanks = new Blanks_Question(questions[i]);
-                question_list.push(new_blanks);
-                numQues++;
-            } else if (questions[i].type === "youtube-video") {
-                var new_vid = new Video(questions[i]);
-                question_list.push(new_vid);
-                numVid++;
-            }
+    //     this.question = ques_obj.fill_blanks;
+    //     this.answer = ques_obj.answers;
+    //     this.id = ques_obj.id;
+    //     this.points = Number(ques_obj.points);
+    //     this.difficulty = Number(ques_obj.difficulty);
+    var questions = [{
+        "type": "pair-matching",
+        "id": "1",
+        "points": "2",
+        "difficulty": "2",
+        "pairs": [
+            ["Cardboard", "pizza box"],
+            ["Landfill", "apple core"],
+            ["Glass", "empty jar of pasta sauce"],
+            ["Plastic", "water bottle"]
+        ],
         }
+    ];
+    var question_list = [];
+    var numQues = 0;
+    var numVid = 0;
 
-        // Create new Quiz object for current round of quizzes
-        quiz = new Quiz(question_list, numQues, numVid);
+    // Create new Question object based on the question type
+    for(var i = 0; i < questions.length; i++){
+        if (questions[i].type === "multiple-choice") {
+            var new_ques = new Mult_Question(questions[i]);
+            question_list.push(new_ques);
+            numQues++;
+        } else if(questions[i].type === "fill-in-the-blanks"){
+            var new_blanks = new Blanks_Question(questions[i]);
+            question_list.push(new_blanks);
+            numQues++;
+        } else if (questions[i].type === "youtube-video") {
+            var new_vid = new Video(questions[i]);
+            question_list.push(new_vid);
+            numVid++;
+        } else if (questions[i].type === "pair-matching") {
+            var new_matching = new Matching_Question(questions[i]);
+            question_list.push(new_matching);
+            numQues++;
+        }
+    }
 
-        // Display the quiz
-        populate();
-        return 'done';
-    });
+    // Create new Quiz object for current round of quizzes
+    quiz = new Quiz(question_list, numQues, numVid);
+
+    // Display the quiz
+    populate();
+    return 'done';
+
+    // Recyclabears.questions.getRandomQuestion(num_ques).then(function(data){
+    //     var questions = data.docs;
+    //     var question_list = [];
+    //     var numQues = 0;
+    //     var numVid = 0;
+    //
+    //     // Create new Question object based on the question type
+    //     for(var i = 0; i < questions.length; i++){
+    //         if (questions[i].type === "multiple-choice") {
+    //             var new_ques = new Mult_Question(questions[i]);
+    //             question_list.push(new_ques);
+    //             numQues++;
+    //         } else if(questions[i].type === "fill-in-the-blanks"){
+    //             var new_blanks = new Blanks_Question(questions[i]);
+    //             question_list.push(new_blanks);
+    //             numQues++;
+    //         } else if (questions[i].type === "youtube-video") {
+    //             var new_vid = new Video(questions[i]);
+    //             question_list.push(new_vid);
+    //             numVid++;
+    //         } else if (questions[i].type === "pair-matching") {
+    //             var new_matching = new Matching_Question(questions[i]);
+    //             question_list.push(new_matching);
+    //             numQues++;
+    //         }
+    //     }
+    //
+    //     // Create new Quiz object for current round of quizzes
+    //     quiz = new Quiz(question_list, numQues, numVid);
+    //
+    //     // Display the quiz
+    //     populate();
+    //     return 'done';
+    // });
 }
 
 /* Populate the page with a question Object */
@@ -80,6 +152,8 @@ function populate() {
             _displayBlanks(ques_obj);
         } else if (ques_obj instanceof Video) {
             _displayVideo(ques_obj);
+        } else if (ques_obj instanceof Matching_Question) {
+            _displayMatching(ques_obj);
         }
 
         // Update footer text to show quiz progress
@@ -289,6 +363,33 @@ function _displayVideo(video_details) {
     quiz_container.innerHTML = head_HTML + ques_HTML + iframe_HTML + proceed_button_HTML;
 }
 
+function _displayMatching(ques_details){
+
+    // Get the container element that will contain the quiz
+    var quiz_container = document.getElementById("quiz_container");
+    quiz_container.innerHTML = "";  // Reset the container element for each use
+
+    // HTML Strings for MCQ Page
+    var head_HTML = '<h1>Match the related words!</h1>';
+
+    // Shuffle items to match
+    var left_items = ques_details.shuffleItems("left");
+    var right_items = ques_details.shuffleItems("right");
+
+    // HTML Strings containing items to match
+    var items_HTML = [];
+    for (var i = 0; i < left_items.length; i++) {
+        // Button elements for each item
+        items_HTML.push('<button id="btn-l-' + i + '" class="left-item" onclick="pairUp(this)">' + left_items[i] + '</button>');
+        items_HTML.push('<button id="btn-r-' + i + '" class="right-item" onclick="pairUp(this)">' + right_items[i] + '</button>');
+    }
+    var items_container_HTML = '<div id="items_container">' + items_HTML.join(" ") + '</div>';
+
+    // Final display of quiz container
+    quiz_container.innerHTML = head_HTML + items_container_HTML;
+
+}
+
 
 /*************************************************************************/
 // Helper Functions for Fill-in-the-blanks type question
@@ -438,6 +539,42 @@ function showError(){
     msg_container.innerHTML = errorHTML;
 }
 
+/*************************************************************************/
+// Helper Functions for Pair Matching type question
+/*************************************************************************/
+function pairUp(button){
+    //btn-l-' + i + '" class="left-item"
+
+    var ques_obj = quiz.getQuestionIndex();
+    var item_selected = button.innerHTML;
+    var ind_in_prev_selected = ques_obj.user_answers.indexOf(item_selected);
+
+    // if item_selected was already previously selected, remove it and its pair (if there is) from the selected items
+    if(ind_in_prev_selected >= 0){
+        if(ind_in_prev_selected % 2 == 0){
+            if(ind_in_prev_selected + 1 < ques_obj.user_answers.length)
+                ques_obj.user_answers.splice(ind_in_prev_selected + 1, 1);
+            ques_obj.user_answers.splice(ind_in_prev_selected, 1);
+        }
+        else{
+            ques_obj.user_answers.splice(ind_in_prev_selected, 1);
+            ques_obj.user_answers.splice(ind_in_prev_selected - 1, 1);
+        }
+
+    }
+    // else, item is not yet selected and should be pushed to selected items
+    else{
+        ques_obj.user_answers.push(item_selected);
+    }
+    console.log("user answers " + ques_obj.user_answers);
+
+    // var cur_index = getNextIndex();
+    // var assign_num = cur_index + 1;
+    // button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + assign_num + '</span>)</p>';
+    // button.setAttribute("onclick", "removeIndex(this)");
+    // var preview_text = document.getElementById("blanks-" + cur_index);
+    // preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML + " ";
+}
 
 /*************************************************************************/
 // QUIZ OBJECT
@@ -554,3 +691,30 @@ function Video(ques_obj){
     this.points = Number(ques_obj.points);
     this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
 }
+
+/*************************************************************************/
+// MATCHING OBJECT
+/*************************************************************************/
+
+/* Matching Object Constructor */
+function Matching_Question(ques_obj){
+    this.pairs = ques_obj.pairs;
+    this.id = ques_obj.id;
+    this.points = Number(ques_obj.points);
+    this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
+    this.user_answers = [];
+}
+
+Matching_Question.prototype.shuffleItems = function(side){
+    var index = 0;
+    if (side == 'right'){
+        index = 1;
+    }
+
+    var array = [];
+    for(var i = 0; i < this.pairs.length; i++){
+        array.push(this.pairs[i][index]);
+    }
+    array = shuffle(array);
+    return array;
+};
