@@ -196,6 +196,12 @@ function showAnswer(answer_object) {
             }
         }
     }
+    else if (answer_object.type === "pair-matching") {
+        quesResultHTML += "<p>Correct Pairs:</p>";
+        for (var i = 0; i < answer_object.pairs.length; i++) {
+            quesResultHTML += "<p>" + answer_object.pairs[i][0] + ", " + answer_object.pairs[i][1]+ "</p>";
+        }
+    }
 
     // Add a button to allow the user to progress to next part of quiz
     quesResultHTML += "<button onclick='toggleMessageWindow();populate();'>Next</button>";
@@ -385,8 +391,10 @@ function _displayMatching(ques_details){
     }
     var items_container_HTML = '<div id="items_container">' + items_HTML.join(" ") + '</div>';
 
+    var submit_HTML = '<button onclick="checkPairs()">Submit</button>'
+
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + items_container_HTML;
+    quiz_container.innerHTML = head_HTML + items_container_HTML + submit_HTML;
 
 }
 
@@ -490,7 +498,7 @@ function checkBlanks() {
 
         // An answer option has not been assigned a position, show error message
         if (!position_string) {
-            showError();
+            showError('Please ensure all blanks have been filled!');
             return;
         }
         var assigned_position_index = Number(position_string.innerHTML) - 1;
@@ -526,9 +534,9 @@ function checkBlanks() {
 }
 
 /* Display an Error message if the not all blanks have been assigned */
-function showError(){
+function showError(msg){
     var errorHTML = "<h1>Error!</h1>";
-    errorHTML += "Please ensure all blanks have been filled!";
+    errorHTML += msg;
 
     // Add a button to allow the user to progress to next part of quiz
     errorHTML += "<button onclick='toggleMessageWindow();'>Close</button>";
@@ -542,8 +550,8 @@ function showError(){
 /*************************************************************************/
 // Helper Functions for Pair Matching type question
 /*************************************************************************/
+
 function pairUp(button){
-    //btn-l-' + i + '" class="left-item"
 
     var ques_obj = quiz.getQuestionIndex();
     var item_selected = button.innerHTML;
@@ -567,14 +575,35 @@ function pairUp(button){
         ques_obj.user_answers.push(item_selected);
     }
     console.log("user answers " + ques_obj.user_answers);
+};
 
-    // var cur_index = getNextIndex();
-    // var assign_num = cur_index + 1;
-    // button.innerHTML += '<p class="assigned_container">(<span class="assigned_order">' + assign_num + '</span>)</p>';
-    // button.setAttribute("onclick", "removeIndex(this)");
-    // var preview_text = document.getElementById("blanks-" + cur_index);
-    // preview_text.innerHTML = " " + button.getElementsByClassName("value")[0].innerHTML + " ";
-}
+/* Checks if user has matched all items and if so, passes to the quiz to check correctness of matches */
+function checkPairs(){
+    var ques_obj = quiz.getQuestionIndex();
+    var user_ans_dict = createUserAnswerDict(ques_obj);
+    console.log("user_ans_dict ", user_ans_dict);
+    console.log("size ", Object.keys(user_ans_dict).length);
+
+    if (Object.keys(user_ans_dict).length < (ques_obj.pairs.length * 2)){
+        showError("Not all items have been matched.");
+        return;
+    }
+
+    var ans_obj = quiz.guessAnswer(user_ans_dict);
+    console.log("answer obj " + JSON.stringify(ans_obj));
+    showAnswer(ans_obj);
+};
+
+/* Creates a two-way key value pair for every pair of the user's answers */
+function createUserAnswerDict(ques_obj) {
+    var user_ans_dict = {};
+    for (var i = 0; i < ques_obj.user_answers.length; i += 2) {
+        user_ans_dict[ques_obj.user_answers[i]] = ques_obj.user_answers[i + 1];
+        user_ans_dict[ques_obj.user_answers[i + 1]] = ques_obj.user_answers[i];
+    }
+    return user_ans_dict;
+};
+
 
 /*************************************************************************/
 // QUIZ OBJECT
@@ -717,4 +746,20 @@ Matching_Question.prototype.shuffleItems = function(side){
     }
     array = shuffle(array);
     return array;
+};
+
+Matching_Question.prototype.getCorrectAnswer = function(user_ans_dict) {
+    var correct = true;
+    for (var i = 0; i < this.pairs.length; i++) {
+        var answer = this.pairs[i];
+        if (user_ans_dict[answer[0]] != answer[1]) {
+            correct = false;
+            break;
+        }
+    }
+    return {
+        pairs: this.pairs,
+        correct: correct,
+        type: "pair-matching"
+    };
 };
