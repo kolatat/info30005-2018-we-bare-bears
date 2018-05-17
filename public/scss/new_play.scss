@@ -81,6 +81,7 @@ h1{
     button{
       font-size: 1.2em;
       padding: 10px;
+      border-radius: 10px;
     }
 
     button.left-item{
@@ -90,12 +91,21 @@ h1{
     button.right-item{
       grid-column-start: 2;
     }
-    button.selected{
-      background-color: $color-yellow;
-    }
   }
 }
 
+p.correct-pair{
+  color: $color-green;
+}
+
+span.incorrect-pair{
+  color: $color-orange;
+}
+
+span.answer-small-print{
+  font-size: 0.9em;
+  line-height: initial;
+}
 
 #create_page{
   #create_container{

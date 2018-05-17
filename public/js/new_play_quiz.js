@@ -197,9 +197,21 @@ function showAnswer(answer_object) {
         }
     }
     else if (answer_object.type === "pair-matching") {
-        quesResultHTML += "<p>Correct Pairs:</p>";
-        for (var i = 0; i < answer_object.pairs.length; i++) {
-            quesResultHTML += "<p>" + answer_object.pairs[i][0] + ", " + answer_object.pairs[i][1]+ "</p>";
+        if(answer_object.correct_pairs.length > 0){
+            quesResultHTML += "<p>Correct Pairs:</p>";
+            for (var i = 0; i < answer_object.correct_pairs.length; i++) {
+                quesResultHTML += "<p class='correct-pair'>" + answer_object.correct_pairs[i][0] + ", " +
+                    answer_object.correct_pairs[i][1]+ "</p>";
+            }
+        }
+        if(answer_object.incorrect_pairs.length > 0){
+            quesResultHTML += "<p>Incorrect Pairs:</p>";
+            for (var i = 0; i < answer_object.incorrect_pairs.length; i++) {
+                quesResultHTML += "<p> <span class='incorrect-pair'>" + answer_object.incorrect_answers[i][0] + ", " +
+                    answer_object.incorrect_answers[i][1]+ "<br></span>";
+                quesResultHTML += "<span class='answer-small-print'>Correct answer: " + answer_object.incorrect_pairs[i][0] + ", " +
+                    answer_object.incorrect_pairs[i][1]+ "</span></p>";
+            }
         }
     }
 
@@ -558,7 +570,7 @@ function pairUp(button){
 
     // if item_selected was already previously selected, remove it and its pair (if there is) from the selected items
     if(ind_in_answers >= 0){
-        ques_obj.colours_left.push(document.getElementById(ques_obj.user_answers[ind_in_answers][1]).style.backgroundColor);
+        ques_obj.colours_left.push(button.style.backgroundColor);
         if(ind_in_answers % 2 == 0){
             if(ind_in_answers + 1 < ques_obj.user_answers.length){
                 removeSelection(ind_in_answers + 1, ques_obj);
@@ -581,7 +593,8 @@ function pairUp(button){
             var prev_id = ques_obj.user_answers[ques_obj.user_answers.length - 1][1];
             button.style.backgroundColor = document.getElementById(prev_id).style.backgroundColor
         }
-        button.classList.add("selected");
+
+        button.style.color = "white";
         ques_obj.user_answers.push([item_selected, button.id]);
     }
     console.log("user answers " + ques_obj.user_answers);
@@ -589,8 +602,8 @@ function pairUp(button){
 };
 
 function removeSelection(index, ques_obj){
-    document.getElementById(ques_obj.user_answers[index][1]).classList.remove("selected");
     document.getElementById(ques_obj.user_answers[index][1]).style.backgroundColor = "white";
+    document.getElementById(ques_obj.user_answers[index][1]).style.color = "black";
     ques_obj.user_answers.splice(index, 1);
 
 }
@@ -761,7 +774,7 @@ function Matching_Question(ques_obj){
     this.points = Number(ques_obj.points);
     this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
     this.user_answers = [];
-    this.colours_left = ["#F77C3E", "#FABA66", "#FCE185", "#A2CCA5"] // orange, beige, white, green from master.scss
+    this.colours_left = ["#F77C3E", "#FABA66", "#50232E", "#A2CCA5"] // orange, beige, brown, green from master.scss
 }
 
 Matching_Question.prototype.shuffleItems = function(side){
@@ -780,16 +793,29 @@ Matching_Question.prototype.shuffleItems = function(side){
 
 Matching_Question.prototype.getCorrectAnswer = function(user_ans_dict) {
     var correct = true;
+    var incorrect_pairs = [];
+    var incorrect_answers = [];
+    var correct_pairs = [];
+
     for (var i = 0; i < this.pairs.length; i++) {
         var answer = this.pairs[i];
         if (user_ans_dict[answer[0]] != answer[1]) {
             correct = false;
-            break;
+            incorrect_answers.push([answer[0], user_ans_dict[answer[0]]]);
+            incorrect_pairs.push(answer);
+            console.log("incorrect ans " + incorrect_answers);
+            console.log("inc pairs " + incorrect_pairs);
+        }
+        else{
+            correct_pairs.push(answer);
         }
     }
     return {
         pairs: this.pairs,
         correct: correct,
+        incorrect_answers: incorrect_answers,
+        incorrect_pairs: incorrect_pairs,
+        correct_pairs: correct_pairs,
         type: "pair-matching"
     };
 };
