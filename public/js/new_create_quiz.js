@@ -42,6 +42,7 @@ function addField(input_field_wrapper) {
 
     }
 
+    // TODO modify max input for MCQ to 3~4  (for "kids")
     // If there are less than the max amount of inputs allowed, then add the input field
     if (input_field_wrapper.childElementCount <= max_input) {
         input_field_wrapper.appendChild(input_field_html);

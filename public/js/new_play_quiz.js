@@ -59,7 +59,16 @@ function _startQuiz(num_ques) {
             ["Glass", "empty jar of pasta sauce"],
             ["Plastic", "water bottle"]
         ]
-    }];
+    },
+        {"fill_blanks" : [ { "type" : "fill", "value" : "Glass made from" }, { "type" : "blank", "value" : "recycled materials" }, { "type" : "fill", "value" : "requires only" }, { "type" : "blank", "value" : "40%" }, { "type" : "fill", "value" : "of the energy needed to make glass from" }, { "type" : "blank", "value" : "sand" } ], "answers" : [ "recycled materials", "40%", "sand" ], "type" : "fill-in-the-blanks", "difficulty" : "3", "points" : "2"},
+        {"question" : "Which of the following is not a benefit of recycling?", "type" : "multiple-choice", "answers" : { "correct" : "Speed up the extinction of turtles", "other" : [ "Decrease amount of rubbish sent to landfill", "Improve economy by encouraging innovation", "Save precious resources", "Reduce air and water pollution" ] }, "difficulty" : "2", "points" : "1"},
+        {"vid" : "kLtRi-w7AUE", "type" : "youtube-video", "difficulty" : "3", "points" : "2"},
+        {"fill_blanks" : [ { "type" : "fill", "value" : "A green bin is for" }, { "type" : "blank", "value" : "glass" }, { "type" : "fill", "value" : ", a blue bin is for" }, { "type" : "blank", "value" : "metal" }, { "type" : "fill", "value" : ", a" }, { "type" : "blank", "value" : "yellow" }, { "type" : "fill", "value" : "bin is for paper, and a " }, { "type" : "blank", "value" : "red" }, { "type" : "fill", "value" : "bin is for plastics." } ], "answers" : [ "glass", "metal", "yellow", "red" ], "type" : "fill-in-the-blanks", "difficulty" : "10", "points" : "10"},
+        {"question" : "Can I recycle empty milk bottles?", "type" : "multiple-choice", "answers" : { "correct" : "Yes, and no need to wash!", "other" : [ "Yes, but wash before!", "No, let's throw them away.", "I don't know.", "It depends on the weather." ] }, "difficulty" : "2", "points" : "1"},
+        {"vid" : "BaFpv03hq-4", "type" : "youtube-video", "difficulty" : "2", "points" : "2"}
+
+    ];
+
     var question_list = [];
     var numQues = 0;
     var numVid = 0;
