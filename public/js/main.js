@@ -218,5 +218,10 @@ var Recyclabears = {
         updateWorld: function (fbId='me', update) {
             return Recyclabears.__apiCall('PUT', '/api/worlds/' + fbId, update);
         }
+    },
+    items: {
+        getShopItems: function  () {
+            return Recyclabears.__apiCall('GET', '/api/items/shop/');
+        }
     }
 };
