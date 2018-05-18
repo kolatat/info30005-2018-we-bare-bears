@@ -3,7 +3,7 @@
 
 
 body{
-  background: linear-gradient(to bottom, $color-yellow 0%, $color-green 100%);
+  background: linear-gradient(to bottom, white 0%, $color-yellow 150%);
   background-repeat: no-repeat;
   height: 100%;
   background-attachment: fixed;
@@ -39,29 +39,30 @@ h1{
   height: auto;
 }
 
-#play_page, #create_page{
+#play_page, #create_page {
   display: none;
 
-  #create_page_content{
+  #create_page_content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
 
-  #quiz_container, #create_container{
+  #quiz_container, #create_container {
     overflow: auto;
     height: 80vh;
     display: grid;
     grid-template-rows: max-content;
 
-    #quiz_content{
-      display: grid;/*
-      justify-content: center;*/
+    #quiz_content {
+      display: grid;
+      /*
+            justify-content: center;*/
       align-items: center;
       height: 100%;
 
-      #ques_content.ques_fitb{
+      #ques_content.ques_fitb {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -69,12 +70,12 @@ h1{
         align-items: center;
       }
 
-      #preview_statement{
+      #preview_statement {
         border: 5px groove $color-beige;
         width: 70vw;
       }
 
-      #options_container{
+      #options_container {
         display: grid;
         justify-content: center;
         grid-template-columns: max-content;
@@ -82,15 +83,14 @@ h1{
         margin: 1vw;
       }
 
-      #fitb_container{
-
+      #fitb_container {
         display: flex;
-        p{
+        p {
           margin: 0;
         }
       }
 
-      button{
+      button {
         font-size: 1em;
         width: 100%;
         margin-bottom: 5px;
@@ -98,29 +98,68 @@ h1{
         border-radius: 10px;
         background-color: $color-green;
       }
-      button:hover{
+      button:hover {
         background-color: seashell;
         box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
         box-shadow: 0px 0px 5px wheat;
       }
-      .submit-btn{
+      .submit-btn {
         width: max-content;
         background-color: seashell;
       }
-      .submit-btn:hover{
+      .submit-btn:hover {
         background-color: $color-green;
         box-shadow: 0px 0px 5px darkgreen;
       }
 
+
+      #items_container {
+        display: grid;
+        margin: 50px;
+        grid-column-gap: 100px;
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: 20px;
+
+        button {
+          background-color: #EEEEEE;
+          font-size: 1.2em;
+          padding: 10px;
+          border-radius: 10px;
+        }
+
+        button.left-item {
+          grid-column-start: 1;
+        }
+
+        button.right-item {
+          grid-column-start: 2;
+        }
+      }
+
+
     }
-
   }
-
-  footer > hr{
-    margin: 0;
-  }
-
 }
+
+
+p.correct-pair{
+  color: $color-green;
+}
+
+span.incorrect-pair{
+  color: $color-orange;
+}
+
+span.answer-small-print{
+  font-size: 0.9em;
+  line-height: initial;
+}
+
+
+footer > hr{
+  margin: 0;
+}
+
 
 .proceed-btn{
   padding: 10px;
