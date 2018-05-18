@@ -13,6 +13,7 @@ function togglePageWindow() {
         popup.style.display = "none";
         document.getElementById("quiz_container").innerHTML = "";
         document.getElementById("create_container").innerHTML = "";
+        document.getElementById("footer_text").innerHTML = "";
     }
 }
 
@@ -64,6 +65,14 @@ function enablePlayPage(){
         page_buttons[i].disabled = false;
     }
 
+    // Change innerHTML depending on screen size at start
+    if (window.matchMedia("(max-width: 500px)").matches || window.matchMedia("(max-height: 500px)").matches) {
+        $('#close_btn_txt').html("Close");
+    } else {
+        console.log("Start: default");
+        $('#close_btn_txt').html("X");
+    }
+
 }
 wbbInit(enablePlayPage);
 
@@ -92,5 +101,16 @@ $('html').bind('keypress', function(e)
 });
 
 
+/* Change the innerHTML content of the close popup depending on screen size (popup size) */
+$(window).resize(function (){
 
+    // Change innerHTML when screen smaller than 500px in width and height
+    if (window.matchMedia("(max-width: 500px)").matches || window.matchMedia("(max-height: 500px)").matches) {
+        $('#close_btn_txt').html("Close");
+    } else {
+        $('#close_btn_txt').html("X");
+    }
+
+
+});
 

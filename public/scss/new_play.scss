@@ -39,18 +39,25 @@ h1{
   height: auto;
 }
 
-#play_page{
+#play_page, #create_page{
   display: none;
 
-  #quiz_container{
+  #create_page_content{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #quiz_container, #create_container{
     overflow: auto;
-    height: 70vh;
-    display: flex;
-    flex-direction: column;
+    height: 80vh;
+    display: grid;
+    grid-template-rows: max-content;
 
     #quiz_content{
-      display: grid;
-      justify-content: center;
+      display: grid;/*
+      justify-content: center;*/
       align-items: center;
       height: 100%;
 
@@ -97,7 +104,7 @@ h1{
         box-shadow: 0px 0px 5px wheat;
       }
       .submit-btn{
-        width: 50%;
+        width: max-content;
         background-color: seashell;
       }
       .submit-btn:hover{
@@ -107,33 +114,31 @@ h1{
 
     }
 
-
-
   }
 
   footer > hr{
-    margin-top: 50px;
-  }
-
-
-}
-
-
-#create_page{
-  display: none;
-  #create_container{
-    max-height: 70vh;
-    overflow: auto;
-
-    // Forms containing the details of question to be created
-    #createQuestion{
-    }
+    margin: 0;
   }
 
 }
+
+.proceed-btn{
+  padding: 10px;
+  border-radius: 10px;
+  background-color: seashell;
+}
+.proceed-btn:hover{
+  background-color: $color-green;
+  box-shadow: 0px 0px 5px darkgreen;
+ }
+
 
 #msg_insert{
-  margin: 1vw;
+  position:absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   overflow: auto;
   -webkit-margin-before:0em;
   -webkit-margin-after:0em;
@@ -151,6 +156,24 @@ pre.blanks{
 
 button:disabled{
   background-color: #768591;
+}
+
+/* Styling the button that closes the popup window */
+#close_popup_btn{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 20px;
+  border: 5px ridge cornsilk;
+  background-color: darksalmon;
+  p {
+    margin: 0 ;
+    font-size: 2em;
+  }
+}
+#close_popup_btn:hover{
+  background-color: #FE868C;
+  box-shadow: 0px 0px 5px #ffb9c8;
 }
 
 /* Styling the overlay covering the whole screen to prevent users from clicking layer below */
@@ -182,7 +205,6 @@ button:disabled{
   border-style: dotted; //Dotted border
   border-color: $color-beige; //Change border colour
   z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
-
 }
 
 /* Styling the secondary overlay to be less transparent */
@@ -200,6 +222,22 @@ button:disabled{
   z-index: 100002;
   margin-right: 0;
   align-content: center;
+
+  #msg_insert{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p, pre {
+      margin: 0 0 15px 0;
+    }
+
+    button{
+      width: max-content;
+    }
+
+  }
+
 }
 
 
@@ -256,6 +294,23 @@ button:disabled{
 
   .submit-btn{
     width: 90%
+  }
+
+  /* Styling the button that closes the popup window;
+     On small screens, place button at bottom of page*/
+  #close_popup_btn{
+    position: relative;
+    border-radius: 20px;
+    border: 5px ridge cornsilk;
+    background-color: darksalmon;
+    p {
+      margin: 0 ;
+      font-size: 2em;
+    }
+  }
+  #close_popup_btn:hover{
+    background-color: #FE868C;
+    box-shadow: 0px 0px 5px #ffb9c8;
   }
 
 

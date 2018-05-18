@@ -17,7 +17,7 @@ function _generateQuizQuestions() {
     } else {
         var quiz_container = document.getElementById("quiz_container");
         quiz_container.innerHTML =
-            "Sorry! Please enter a valid integer between 1 and 5";
+            "<h2>Sorry! Please enter a valid integer between 1 and 5</h2>";
     }
 }
 
@@ -107,26 +107,27 @@ function showAnswer(answer_object) {
 
     // Show question and correct answer for an MCQ-type question
     if (answer_object.type === "mult") {
-        quesResultHTML += "<p>Question: <em>" + answer_object.question + "</em></p>";
-        quesResultHTML += "<p>Correct answer:  <em>" + answer_object.answer + "</em></p>";
+        quesResultHTML += "<p><strong>Question: </strong><em>" + answer_object.question + "</em></p>";
+        quesResultHTML += "<p><strong>Correct answer: </strong><em>" + answer_object.answer + "</em></p>";
     }
     // Show correct statement for fill-in-the-blanks type question
     else if (answer_object.type === "blanks") {
-        quesResultHTML += "<p>Correct Statement:</p>";
+        quesResultHTML += "<h3>Correct Statement:</h3>";
+        quesResultHTML += "<div id='fill_blanks_complete'>"
         for (var i = 0; i < answer_object.question.length; i++) {
             if (answer_object.question[i].type === "fill") {
                 quesResultHTML += "<pre class='fill-blanks fill' ";
                 quesResultHTML += ">" + answer_object.question[i].value + " </pre>";
             } else {
-
                 quesResultHTML += "<pre class='fill-blanks blanks' ";
                 quesResultHTML += "style='text-decoration: underline'> " + answer_object.question[i].value + " </pre>";
             }
         }
     }
+    quesResultHTML += "</div>";
 
     // Add a button to allow the user to progress to next part of quiz
-    quesResultHTML += "<button onclick='toggleMessageWindow();populate();'>Next</button>";
+    quesResultHTML += "<button class='proceed-btn' onclick='toggleMessageWindow();populate();'>Next</button>";
 
     // Display the result of this question
     toggleMessageWindow();
@@ -159,7 +160,7 @@ function showScores() {
             "<span>" + quiz.totalHoney + "</span>" +
             "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
         "</div><br>";
-    gameOverHTML += "<button id='close_msg_window' onclick='toggleMessageWindow();togglePageWindow();'>Close Message Window</button>";
+    gameOverHTML += "<button class='proceed-btn' id='close_msg_window' onclick='toggleMessageWindow();togglePageWindow();'>Close</button>";
 
     // Display the result of quiz
     toggleMessageWindow();
@@ -298,7 +299,7 @@ function _displayVideo(video_details) {
     var iframe_HTML = '<iframe width="420" height="345" src=' + full_url + '></iframe>';
 
     // HTML String to proceed to next question
-    var proceed_button_HTML = '<div id="options_container"><button onclick="proceedVideo()">Next</button></div>';
+    var proceed_button_HTML = '<div id="options_container"><button class="submit-btn" onclick="proceedVideo()">Next</button></div>';
 
     // Complete the quiz container
     quiz_container_HTML += ques_container_HTML + ques_HTML + iframe_HTML + proceed_button_HTML + '</div></div>';

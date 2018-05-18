@@ -30,9 +30,8 @@ function toggleNavMenu() {
 // Check size of window for handling of navigation element styles
 $(window).resize(function () {
 
+    // Clear inline styles when window is resized beyond 720px or maximised
     if (!window.matchMedia("(max-width: 720px)").matches || screen.width === window.innerWidth) {
-
-        // Clear inline styles when window is resized beyond 720px or maximised
         $('#navigation').attr('style', '');
     }
 
