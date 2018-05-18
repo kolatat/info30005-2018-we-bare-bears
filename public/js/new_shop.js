@@ -39,6 +39,7 @@ function populateShopMenu(show_type) {
         Recyclabears.items.getShopItems().then(function(data){
 
             items = data.docs;
+            stored = 1;
             console.log(items);
             for (var i = 0; i < items.length; i++){
                 new_item_HTML =
