@@ -194,7 +194,7 @@ wbbInit(worldPageInit);
 
 function populateWorld(world) {
     console.log("HELLO WORLD!!!!");
-    // TODO populate world based on rubbish in world.rubbish array
+
     for (var item in worldItems) {
         // console.log(JSON.stringify(worldItems[item]));
         showInWorld(worldItems[item]);
@@ -297,39 +297,15 @@ function editWorld() {
 
 function checkDumpSession(world) {
     console.log(world);
-    var currDateLessThanHr = new Date("2018-05-15T12:30:00+10:00");
-    var currDateTwoHrs = new Date("2018-05-15T14:00:00+10:00");
-    var currDateEightHrs = new Date("2018-05-15T20:00:00+10:00");
-    var currDate24Hrs = new Date("2018-05-16T12:00:00+10:00");
-    var currDate3Mos = new Date("2018-08-15T12:00:00+10:00");
 
-    lastDumpSession = new Date(world.lastDump);
-
+    var lastDumpSession = new Date(world.lastDump);
     // convert diff from msecs to secs (1000), secs to min (60), min to hrs (60)
-    // var diff = (currDateLessThanHr - lastDumpSession)/1000/60/60;
-    // var diff = (currDateTwoHrs - lastDumpSession)/1000/60/60;
-    // var diff = (currDateEightHrs - lastDumpSession)/1000/60/60;
-    //var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
-    // var diff = (currDate3Mos - lastDumpSession)/1000/60/60;
     var diff = (new Date() - lastDumpSession) / 1000 / 60 / 60;
-
-
     // calculate rubbish amount, logarithmically increasing with time difference
     var rubbishAmt = Math.floor(Math.log2(diff)) * 2;
 
     console.log("time diff " + diff);
     console.log("adding rubbish " + rubbishAmt);
-
-
-    for (var i = 0; i < world.rubbish.length; i++) {
-        var type_ind = world.rubbish[i].type;
-        // rubbish is pree dirty in there now HA GET iT??
-        // no :(
-        // so might not contain .type
-        if (!type_ind) continue;
-        // when will this be true?
-        displayRubbish(world, world.rubbish[i]);
-    }
 
     // if negative rubbishAmt from log function, then not enough time has passed
     if (rubbishAmt <= 0) {
@@ -337,7 +313,6 @@ function checkDumpSession(world) {
     }
 
     // If world already has too much rubbish, stop producing more
-    // But still send an update (to update lastDump) ?
     // P/s cleaning up x50 rubbish is not fun -- but i'm richer nao
     if(world.rubbish.length >= 20){
         rubbishAmt = 0;
@@ -345,7 +320,6 @@ function checkDumpSession(world) {
     }
 
     produceRubbish(world, rubbishAmt);
-    lastDumpSession = new Date();
 }
 
 function produceRubbish(world, amount) {

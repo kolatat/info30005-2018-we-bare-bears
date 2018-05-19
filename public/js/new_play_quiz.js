@@ -8,7 +8,7 @@ var quiz;
 
 /* Get input from user on number of questions to populate the quiz */
 function _generateQuizQuestions() {
-
+/*
     // Allow users to choose only between 1-5 questions
     var num_questions = parseInt(prompt("How many questions would you like to answer? (1 - 5)"));
     if (num_questions > 0 && num_questions <= 5) {
@@ -17,43 +17,124 @@ function _generateQuizQuestions() {
     } else {
         var quiz_container = document.getElementById("quiz_container");
         quiz_container.innerHTML =
-            "Sorry! Please enter a valid integer between 1 and 5";
+            "<h2>Sorry! Please enter a valid integer between 1 and 5</h2>";
     }
+    */
+    _startQuiz(1);
 }
 
 /* Start the Quiz */
 function _startQuiz(num_ques) {
 
-    Recyclabears.questions.getRandomQuestion(num_ques).then(function(data){
-        var questions = data.docs;
-        var question_list = [];
-        var numQues = 0;
-        var numVid = 0;
+    // "{"docs":[
+    //      {"_id":"5af527c2e763b33fd8f6fef3",
+    //       "fill_blanks":[
+    //              {"type":"fill","value":"Glass made from"},
+    //              {"type":"blank","value":"recycled materials"},
+    //              {"type":"fill","value":"requires only"},
+    //              {"type":"blank","value":"40%"},
+    //              {"type":"fill","value":"of the energy needed to make glass from"},
+    //              {"type":"blank","value":"sand"}],
+    //       "answers":["recycled materials","40%","sand"],
+    //       "type":"fill-in-the-blanks",
+    //       "difficulty":"3",
+    //       "points":"2",
+    //       "created":"2018-05-11T05:18:58.947Z",
+    //       "createdBy":"1669233943192205"}]
+    // }"
 
-        // Create new Question object based on the question type
-        for(var i = 0; i < questions.length; i++){
-            if (questions[i].type === "multiple-choice") {
-                var new_ques = new Mult_Question(questions[i]);
-                question_list.push(new_ques);
-                numQues++;
-            } else if(questions[i].type === "fill-in-the-blanks"){
-                var new_blanks = new Blanks_Question(questions[i]);
-                question_list.push(new_blanks);
-                numQues++;
-            } else if (questions[i].type === "youtube-video") {
-                var new_vid = new Video(questions[i]);
-                question_list.push(new_vid);
-                numVid++;
-            }
+    //     this.question = ques_obj.fill_blanks;
+    //     this.answer = ques_obj.answers;
+    //     this.id = ques_obj.id;
+    //     this.points = Number(ques_obj.points);
+    //     this.difficulty = Number(ques_obj.difficulty);
+    var questions = [{
+        "type": "pair-matching",
+        "id": "1",
+        "points": "2",
+        "difficulty": "2",
+        "pairs": [
+            ["Cardboard", "pizza box"],
+            ["Landfill", "apple core"],
+            ["Glass", "empty jar of pasta sauce"],
+            ["Plastic", "water bottle"]
+        ]
+    },
+        {"fill_blanks" : [ { "type" : "fill", "value" : "Glass made from" }, { "type" : "blank", "value" : "recycled materials" }, { "type" : "fill", "value" : "requires only" }, { "type" : "blank", "value" : "40%" }, { "type" : "fill", "value" : "of the energy needed to make glass from" }, { "type" : "blank", "value" : "sand" } ], "answers" : [ "recycled materials", "40%", "sand" ], "type" : "fill-in-the-blanks", "difficulty" : "3", "points" : "2"},
+        {"question" : "Which of the following is not a benefit of recycling?", "type" : "multiple-choice", "answers" : { "correct" : "Speed up the extinction of turtles", "other" : [ "Decrease amount of rubbish sent to landfill", "Improve economy by encouraging innovation", "Save precious resources", "Reduce air and water pollution" ] }, "difficulty" : "2", "points" : "1"},
+        {"vid" : "kLtRi-w7AUE", "type" : "youtube-video", "difficulty" : "3", "points" : "2"},
+        {"fill_blanks" : [ { "type" : "fill", "value" : "A green bin is for" }, { "type" : "blank", "value" : "glass" }, { "type" : "fill", "value" : ", a blue bin is for" }, { "type" : "blank", "value" : "metal" }, { "type" : "fill", "value" : ", a" }, { "type" : "blank", "value" : "yellow" }, { "type" : "fill", "value" : "bin is for paper, and a " }, { "type" : "blank", "value" : "red" }, { "type" : "fill", "value" : "bin is for plastics." } ], "answers" : [ "glass", "metal", "yellow", "red" ], "type" : "fill-in-the-blanks", "difficulty" : "10", "points" : "10"},
+        {"question" : "Can I recycle empty milk bottles?", "type" : "multiple-choice", "answers" : { "correct" : "Yes, and no need to wash!", "other" : [ "Yes, but wash before!", "No, let's throw them away.", "I don't know.", "It depends on the weather." ] }, "difficulty" : "2", "points" : "1"},
+        {"vid" : "BaFpv03hq-4", "type" : "youtube-video", "difficulty" : "2", "points" : "2"}
+
+    ];
+
+    var question_list = [];
+    var numQues = 0;
+    var numVid = 0;
+
+    // Create new Question object based on the question type
+    for(var i = 0; i < questions.length; i++){
+        if (questions[i].type === "multiple-choice") {
+            var new_ques = new Mult_Question(questions[i]);
+            question_list.push(new_ques);
+            numQues++;
+        } else if(questions[i].type === "fill-in-the-blanks"){
+            var new_blanks = new Blanks_Question(questions[i]);
+            question_list.push(new_blanks);
+            numQues++;
+        } else if (questions[i].type === "youtube-video") {
+            var new_vid = new Video(questions[i]);
+            question_list.push(new_vid);
+            numVid++;
+        } else if (questions[i].type === "pair-matching") {
+            var new_matching = new Matching_Question(questions[i]);
+            question_list.push(new_matching);
+            numQues++;
         }
+    }
 
-        // Create new Quiz object for current round of quizzes
-        quiz = new Quiz(question_list, numQues, numVid);
+    // Create new Quiz object for current round of quizzes
+    quiz = new Quiz(question_list, numQues, numVid);
 
-        // Display the quiz
-        populate();
-        return 'done';
-    });
+    // Display the quiz
+    populate();
+    return 'done';
+
+    // Recyclabears.questions.getRandomQuestion(num_ques).then(function(data){
+    //     var questions = data.docs;
+    //     var question_list = [];
+    //     var numQues = 0;
+    //     var numVid = 0;
+    //
+    //     // Create new Question object based on the question type
+    //     for(var i = 0; i < questions.length; i++){
+    //         if (questions[i].type === "multiple-choice") {
+    //             var new_ques = new Mult_Question(questions[i]);
+    //             question_list.push(new_ques);
+    //             numQues++;
+    //         } else if(questions[i].type === "fill-in-the-blanks"){
+    //             var new_blanks = new Blanks_Question(questions[i]);
+    //             question_list.push(new_blanks);
+    //             numQues++;
+    //         } else if (questions[i].type === "youtube-video") {
+    //             var new_vid = new Video(questions[i]);
+    //             question_list.push(new_vid);
+    //             numVid++;
+    //         } else if (questions[i].type === "pair-matching") {
+    //             var new_matching = new Matching_Question(questions[i]);
+    //             question_list.push(new_matching);
+    //             numQues++;
+    //         }
+    //     }
+    //
+    //     // Create new Quiz object for current round of quizzes
+    //     quiz = new Quiz(question_list, numQues, numVid);
+    //
+    //     // Display the quiz
+    //     populate();
+    //     return 'done';
+    // });
 }
 
 /* Populate the page with a question Object */
@@ -80,6 +161,8 @@ function populate() {
             _displayBlanks(ques_obj);
         } else if (ques_obj instanceof Video) {
             _displayVideo(ques_obj);
+        } else if (ques_obj instanceof Matching_Question) {
+            _displayMatching(ques_obj);
         }
 
         // Update footer text to show quiz progress
@@ -107,24 +190,47 @@ function showAnswer(answer_object) {
 
     // Show question and correct answer for an MCQ-type question
     if (answer_object.type === "mult") {
-        quesResultHTML += "<p>Question: <em>" + answer_object.question + "</em></p>";
-        quesResultHTML += "<p>Correct answer:  <em>" + answer_object.answer + "</em></p>";
+        quesResultHTML += "<p><strong>Question: </strong><em>" + answer_object.question + "</em></p>";
+        quesResultHTML += "<p><strong>Correct answer: </strong><em>" + answer_object.answer + "</em></p>";
     }
     // Show correct statement for fill-in-the-blanks type question
     else if (answer_object.type === "blanks") {
-        quesResultHTML += "<p>Correct Statement:</p>";
+        quesResultHTML += "<h3>Correct Statement:</h3>";
+        quesResultHTML += "<div id='fill_blanks_complete'>"
         for (var i = 0; i < answer_object.question.length; i++) {
-            quesResultHTML += "<pre class='fill-blanks' ";
             if (answer_object.question[i].type === "fill") {
+                quesResultHTML += "<pre class='fill-blanks fill' ";
                 quesResultHTML += ">" + answer_object.question[i].value + " </pre>";
             } else {
+                quesResultHTML += "<pre class='fill-blanks blanks' ";
                 quesResultHTML += "style='text-decoration: underline'> " + answer_object.question[i].value + " </pre>";
             }
         }
     }
+    // Show correct statement for pair-matching type question
+    else if (answer_object.type === "pair-matching") {
+        if(answer_object.correct_pairs.length > 0){
+            quesResultHTML += "<p>Correct Pairs:</p>";
+            for (var i = 0; i < answer_object.correct_pairs.length; i++) {
+                quesResultHTML += "<p class='correct-pair'>" + answer_object.correct_pairs[i][0] + ", " +
+                    answer_object.correct_pairs[i][1]+ "</p>";
+            }
+        }
+        if(answer_object.incorrect_pairs.length > 0){
+            quesResultHTML += "<p>Incorrect Pairs:</p>";
+            for (var i = 0; i < answer_object.incorrect_pairs.length; i++) {
+                quesResultHTML += "<p> <span class='incorrect-pair'>" + answer_object.incorrect_answers[i][0] + ", " +
+                    answer_object.incorrect_answers[i][1]+ "<br></span>";
+                quesResultHTML += "<span class='answer-small-print'>Correct answer: " + answer_object.incorrect_pairs[i][0] + ", " +
+                    answer_object.incorrect_pairs[i][1]+ "</span></p>";
+            }
+        }
+    }
+
+    quesResultHTML += "</div>";
 
     // Add a button to allow the user to progress to next part of quiz
-    quesResultHTML += "<button onclick='toggleMessageWindow();populate();'>Next</button>";
+    quesResultHTML += "<button class='proceed-btn' onclick='toggleMessageWindow();populate();'>Next</button>";
 
     // Display the result of this question
     toggleMessageWindow();
@@ -157,7 +263,7 @@ function showScores() {
             "<span>" + quiz.totalHoney + "</span>" +
             "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
         "</div><br>";
-    gameOverHTML += "<button id='close_msg_window' onclick='toggleMessageWindow();togglePageWindow();'>Close Message Window</button>";
+    gameOverHTML += "<button class='proceed-btn' id='close_msg_window' onclick='toggleMessageWindow();togglePageWindow();'>Close</button>";
 
     // Display the result of quiz
     toggleMessageWindow();
@@ -194,8 +300,10 @@ function _displayMult(ques_details) {
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
     // HTML Strings for MCQ Page
-    var head_HTML = '<h1>Multiple Choice Quiz!</h1>';
-    var ques_HTML = '<p>' + ques_details.question + '</p>';
+    var head_HTML = '<div id="quiz_header"><h1>Multiple Choice Quiz!</h1></div>';
+    var quiz_container_HTML = '<div id="quiz_content">';
+    var ques_container_HTML = '<div id="ques_content">';
+    var ques_HTML = '<h3>' + ques_details.question + '</h3>';
 
     // Prepare the set of answer options and shuffling them (randomize order of options)
     var options = ques_details.choice.concat(ques_details.answer);
@@ -211,9 +319,10 @@ function _displayMult(ques_details) {
         );
     }
     var ans_container_HTML = '<div id="options_container">' + ans_options_HTML.join(" ") + '</div>';
+    quiz_container_HTML += ques_container_HTML + ques_HTML + ans_container_HTML + '</div></div>';
 
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + ques_HTML + ans_container_HTML;
+    quiz_container.innerHTML = head_HTML + quiz_container_HTML;
 }
 
 
@@ -225,18 +334,22 @@ function _displayBlanks(ques_details) {
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
     // HTML Strings for Fill in the Blanks Page
-    var head_HTML = '<h1>Fill in the Blanks!</h1>';
-    var statement_HTML = '<div>';
+    var head_HTML = '<div id="quiz_header"><h1>Fill in the Blanks!</h1></div>';
+    var quiz_container_HTML = '<div id="quiz_content">';
+    var ques_container_HTML = '<div id="ques_content" class="ques_fitb">';
+    var statement_HTML = '<div id="preview_statement">';
     var blanks_index = 0;
     var choice_options = [];
-
+    // HTML Strings for Video Page
+    var head_HTML = "<div id='quiz_header'><h1>Let's Watch!</h1></div>";
+    var ques_HTML = "";
     // HTML Strings for the statement
     for (var i = 0; i < ques_details.question.length; i++) {
 
         if (ques_details.question[i].type === "fill") {
-            statement_HTML += '<pre class="fill-blanks">' + ques_details.question[i].value + '</pre>';
+            statement_HTML += '<pre class="fill-blanks fill">' + ques_details.question[i].value + '</pre>';
         } else {
-            statement_HTML += '<pre id="blanks-' + blanks_index + '" class="fill-blanks"> ________________ </pre>';
+            statement_HTML += '<pre id="blanks-' + blanks_index + '" class="fill-blanks blanks"> ________________ </pre>';
             choice_options.push(ques_details.question[i].value);
             blanks_index++;
         }
@@ -245,19 +358,22 @@ function _displayBlanks(ques_details) {
 
     // Shuffle option choices and HTML Strings for button options
     shuffle(choice_options);
-    var choices_HTML = '<div id="fill_buttons">';
+    var choices_HTML = '<div id="fitb_container" class="fitb_container">';
     for(var j = 0; j< choice_options.length; j++){
         choices_HTML += '<button onclick="assignIndex(this)"><p class="value">' + choice_options[j] + '</p></button>';
     }
     choices_HTML += '</div>';
 
-    var submit_HTML = '<button onclick="checkBlanks()">Submit</button>'
+    var submit_HTML = '<button class="submit-btn" onclick="checkBlanks()">Submit</button>'
 
     // Clear the indices array for future blanks question use
     blanks_indices = [];
 
+    ques_container_HTML += statement_HTML + choices_HTML + submit_HTML;
+    quiz_container_HTML += ques_container_HTML + "</div></div";
+
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + statement_HTML + choices_HTML + submit_HTML;
+    quiz_container.innerHTML = head_HTML + quiz_container_HTML;
 }
 
 
@@ -272,21 +388,60 @@ function _displayVideo(video_details) {
     quiz_container.innerHTML = "";  // Reset the container element for each use
 
     // HTML Strings for Video Page
-    var head_HTML = "<h1>Let's Watch!</h1>";
+    var head_HTML = "<div id='quiz_header'><h1>Let's Watch!</h1></div>";
+    var quiz_container_HTML = '<div id="quiz_content">';
+    var ques_container_HTML = '<div id="ques_content">';
     var ques_HTML = "";
 
     // Some videos may have a title
     if(video_details.question){
-        ques_HTML = '<p>' + video_details.question + '</p>';
+        ques_HTML = '<h3>' + video_details.question + '</h3>';
     }
 
     // HTML String for Iframe Element containing the video
     var iframe_HTML = '<iframe width="420" height="345" src=' + full_url + '></iframe>';
 
-    var proceed_button_HTML = '<div><button onclick="proceedVideo()">Next</button></div>';
+    // HTML String to proceed to next question
+    var proceed_button_HTML = '<div id="options_container"><button class="submit-btn" onclick="proceedVideo()">Next</button></div>';
+
+    // Complete the quiz container
+    quiz_container_HTML += ques_container_HTML + ques_HTML + iframe_HTML + proceed_button_HTML + '</div></div>';
 
     // Final display of quiz container
-    quiz_container.innerHTML = head_HTML + ques_HTML + iframe_HTML + proceed_button_HTML;
+    quiz_container.innerHTML = head_HTML + quiz_container_HTML;
+}
+
+function _displayMatching(ques_details){
+
+    // Get the container element that will contain the quiz
+    var quiz_container = document.getElementById("quiz_container");
+    quiz_container.innerHTML = "";  // Reset the container element for each use
+
+
+    // HTML Strings for MCQ Page
+    var head_HTML = '<div id="quiz_header"><h1>Match the related words!</h1></div>';
+    var quiz_container_HTML = '<div id="quiz_content">';
+    var ques_container_HTML = '<div id="ques_content">';
+
+    // Shuffle items to match
+    var left_items = ques_details.shuffleItems("left");
+    var right_items = ques_details.shuffleItems("right");
+
+    // HTML Strings containing items to match
+    var items_HTML = [];
+    for (var i = 0; i < left_items.length; i++) {
+        // Button elements for each item
+        items_HTML.push('<button id="left-' + i + '" class="left-item" onclick="pairUp(this)">' + left_items[i] + '</button>');
+        items_HTML.push('<button id="right-' + i + '" class="right-item" onclick="pairUp(this)">' + right_items[i] + '</button>');
+    }
+    var items_container_HTML = '<div id="items_container">' + items_HTML.join(" ") + '</div>';
+    var submit_HTML = '<button class="submit-btn" onclick="checkPairs()">Submit</button>'
+
+    quiz_container_HTML += ques_container_HTML + items_container_HTML + submit_HTML + '</div></div>';
+
+    // Final display of quiz container
+    quiz_container.innerHTML = head_HTML + quiz_container_HTML;
+
 }
 
 
@@ -373,7 +528,7 @@ function assignIndex(button) {
 
 /* Check if the question has been answered correctly */
 function checkBlanks() {
-    var choices_container = document.getElementById("fill_buttons");
+    var choices_container = document.getElementById("fitb_container");
     var choice_buttons = choices_container.children;
 
     /* answers array will store an object consisting of :
@@ -389,7 +544,7 @@ function checkBlanks() {
 
         // An answer option has not been assigned a position, show error message
         if (!position_string) {
-            showError();
+            showError('Please ensure all blanks have been filled!');
             return;
         }
         var assigned_position_index = Number(position_string.innerHTML) - 1;
@@ -425,9 +580,9 @@ function checkBlanks() {
 }
 
 /* Display an Error message if the not all blanks have been assigned */
-function showError(){
+function showError(msg){
     var errorHTML = "<h1>Error!</h1>";
-    errorHTML += "Please ensure all blanks have been filled!";
+    errorHTML += msg;
 
     // Add a button to allow the user to progress to next part of quiz
     errorHTML += "<button onclick='toggleMessageWindow();'>Close</button>";
@@ -437,6 +592,93 @@ function showError(){
     var msg_container = document.getElementById("msg_insert");
     msg_container.innerHTML = errorHTML;
 }
+
+/*************************************************************************/
+// Helper Functions for Pair Matching type question
+/*************************************************************************/
+
+function pairUp(button){
+    var ques_obj = quiz.getQuestionIndex();
+    var item_selected = button.innerHTML;
+    var ind_in_answers = getIndex(item_selected, ques_obj.user_answers);
+
+    // if item_selected was already previously selected, remove it and its pair (if there is) from the selected items
+    if(ind_in_answers >= 0){
+        ques_obj.colours_left.push(button.style.backgroundColor);
+        if(ind_in_answers % 2 == 0){
+            if(ind_in_answers + 1 < ques_obj.user_answers.length){
+                removeSelection(ind_in_answers + 1, ques_obj);
+            }
+            removeSelection(ind_in_answers, ques_obj);
+        }
+        else{
+            removeSelection(ind_in_answers, ques_obj);
+            removeSelection(ind_in_answers - 1, ques_obj);
+        }
+    }
+    // else, item is not yet selected and should be pushed to selected items
+    else{
+        // if adding to even length array, new pair is started so new colour
+        if(ques_obj.user_answers.length % 2 == 0){
+            button.style.backgroundColor = ques_obj.colours_left.pop();
+        }
+        // else, get last colour of the previously selected item
+        else{
+            var prev_id = ques_obj.user_answers[ques_obj.user_answers.length - 1][1];
+            button.style.backgroundColor = document.getElementById(prev_id).style.backgroundColor
+        }
+
+        button.style.color = "white";
+        ques_obj.user_answers.push([item_selected, button.id]);
+    }
+    console.log("user answers " + ques_obj.user_answers);
+    console.log("colours " + ques_obj.colours_left);
+};
+
+function removeSelection(index, ques_obj){
+    document.getElementById(ques_obj.user_answers[index][1]).style.backgroundColor = "white";
+    document.getElementById(ques_obj.user_answers[index][1]).style.color = "black";
+    ques_obj.user_answers.splice(index, 1);
+
+}
+
+function getIndex(item_selected, user_answers){
+    for(var i = 0; i < user_answers.length; i++){
+        // console.log("user answer i " + user_answers[])
+        if(user_answers[i][0] == item_selected){
+            return i;
+        }
+    }
+    return -1;
+
+}
+
+/* Checks if user has matched all items and if so, passes to the quiz to check correctness of matches */
+function checkPairs(){
+    var ques_obj = quiz.getQuestionIndex();
+    if(ques_obj.user_answers.length < (ques_obj.pairs.length * 2)){
+        showError("Not all items have been matched.");
+        return;
+    }
+
+    var user_ans_dict = createUserAnswerDict(ques_obj);
+    console.log("user_ans_dict ", user_ans_dict);
+    console.log("size ", Object.keys(user_ans_dict).length);
+
+    var ans_obj = quiz.guessAnswer(user_ans_dict);
+    console.log("answer obj " + JSON.stringify(ans_obj));
+    showAnswer(ans_obj);
+};
+
+/* Creates a two-way key value pair for every pair of the user's answers */
+function createUserAnswerDict(ques_obj) {
+    var user_ans_dict = {};
+    for (var i = 0; i < ques_obj.user_answers.length; i += 2) {
+        user_ans_dict[ques_obj.user_answers[i][0]] = ques_obj.user_answers[i + 1][0];
+        user_ans_dict[ques_obj.user_answers[i + 1][0]] = ques_obj.user_answers[i][0];
+    }
+    return user_ans_dict;
+};
 
 
 /*************************************************************************/
@@ -554,3 +796,60 @@ function Video(ques_obj){
     this.points = Number(ques_obj.points);
     this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
 }
+
+/*************************************************************************/
+// MATCHING OBJECT
+/*************************************************************************/
+
+/* Matching Object Constructor */
+function Matching_Question(ques_obj){
+    this.pairs = ques_obj.pairs;
+    this.id = ques_obj.id;
+    this.points = Number(ques_obj.points);
+    this.difficulty = Number(ques_obj.difficulty);  // For storing score (?)
+    this.user_answers = [];
+    this.colours_left = ["#F77C3E", "#FABA66", "#50232E", "#A2CCA5"] // orange, beige, brown, green from master.scss
+}
+
+Matching_Question.prototype.shuffleItems = function(side){
+    var index = 0;
+    if (side == 'right'){
+        index = 1;
+    }
+
+    var array = [];
+    for(var i = 0; i < this.pairs.length; i++){
+        array.push(this.pairs[i][index]);
+    }
+    array = shuffle(array);
+    return array;
+};
+
+Matching_Question.prototype.getCorrectAnswer = function(user_ans_dict) {
+    var correct = true;
+    var incorrect_pairs = [];
+    var incorrect_answers = [];
+    var correct_pairs = [];
+
+    for (var i = 0; i < this.pairs.length; i++) {
+        var answer = this.pairs[i];
+        if (user_ans_dict[answer[0]] != answer[1]) {
+            correct = false;
+            incorrect_answers.push([answer[0], user_ans_dict[answer[0]]]);
+            incorrect_pairs.push(answer);
+            console.log("incorrect ans " + incorrect_answers);
+            console.log("inc pairs " + incorrect_pairs);
+        }
+        else{
+            correct_pairs.push(answer);
+        }
+    }
+    return {
+        pairs: this.pairs,
+        correct: correct,
+        incorrect_answers: incorrect_answers,
+        incorrect_pairs: incorrect_pairs,
+        correct_pairs: correct_pairs,
+        type: "pair-matching"
+    };
+};

@@ -42,6 +42,7 @@ function addField(input_field_wrapper) {
 
     }
 
+    // TODO modify max input for MCQ to 3~4  (for "kids")
     // If there are less than the max amount of inputs allowed, then add the input field
     if (input_field_wrapper.childElementCount <= max_input) {
         input_field_wrapper.appendChild(input_field_html);
@@ -82,7 +83,7 @@ function previewText(input_field) {
     var input_id = input_field.parentNode.id;   // Get the id of parent div of input field
     var span_id = input_id + "-preview";    // Id of target span element
     var span_elem = document.getElementById(span_id);
-    span_elem.innerHTML = input_field.value + " ";    // Modify the content of the target span element
+    span_elem.innerHTML = " " + input_field.value + " ";    // Modify the content of the target span element
 }
 
 /* Modify the preview of input (underline/no underline --- for Create Blanks page */
@@ -329,7 +330,8 @@ function _createMult() {
     create_container.innerHTML = "";  // Reset the container element for each use
 
     // HTML Strings for MCQ Page
-    var head_HTML = '<h1>Create your multiple choice question!</h1>';
+    var head_HTML = '<div id="create_header"><h1>Create your multiple choice question!</h1></div>';
+    var create_content_HTML = '<div id="create_content">';
 
     // HTML String for form element to input question details
     var form_HTML = [];
@@ -358,8 +360,10 @@ function _createMult() {
     form_HTML.push('<button type="submit">Submit!</button>');
     form_HTML.push('</form>');
 
+    create_content_HTML += form_HTML.join(" ");
+
     // Final display of create container
-    create_container.innerHTML = head_HTML + form_HTML.join(" ");
+    create_container.innerHTML = head_HTML + create_content_HTML;
 }
 
 /* Display interface for creating a Fill-in-the-Blanks type question */
