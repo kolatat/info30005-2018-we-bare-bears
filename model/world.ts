@@ -10,6 +10,7 @@ export interface World {
 
 interface Item {
     name: string;
+    image: string;  // path to image
     x: number;
     y: number;
 };

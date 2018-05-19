@@ -28,7 +28,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
                 items: [],
                 rubbish: []
             },
-            /* Commenting out so that lastDump is not always being updated
+
+            /* Commenting this out to prevent
             $currentDate: {
                 lastDump: {$type: 'date'},
                 genesis: {$type: 'date'}
