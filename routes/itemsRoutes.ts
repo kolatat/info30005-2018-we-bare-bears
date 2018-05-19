@@ -8,10 +8,10 @@ const Log = debug('wbb:model:items');
 
 export function initRouter(router: WbbRouter): WbbRouter {
 
-    function getItemById(iid): Promise<Item> {
+    function getItemByName(name): Promise<Item> {
         return new Promise((resolve, reject) => {
            router.mongo('items').findOne({
-               _id: iid
+               name: name
            }, (err, dat) => {
                if (err) {
                    Log(err);
@@ -28,11 +28,12 @@ export function initRouter(router: WbbRouter): WbbRouter {
     router.get('/shop', (req, res) => {
         res.sendPromise(router.mongo('items').find(
             {}).toArray().then(doc => {
-
-                // Returning an object (?) that contains an array of items
+                // Returning an object (?) that contains an array of all items in db
                 return {docs: doc};
         }));
     });
+
+
 
 
 

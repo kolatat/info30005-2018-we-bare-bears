@@ -19,4 +19,5 @@ interface UserFriends {
 interface UserItem {
     name: string;
     quantity: number;
+    image: string;  // path to image
 }

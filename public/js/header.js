@@ -42,7 +42,7 @@ $(window).resize(function () {
 
 
 /* Updates the strings that should show the user's waller amount */
-updatePrice = function () {
+updateHoney = function () {
     Recyclabears.users.me().then(function (data) {
         var user_name = data.name;
         var honey_amount = data.wallet;
@@ -68,7 +68,7 @@ updatePrice = function () {
     });
 };
 
-wbbInit(updatePrice);
+wbbInit(updateHoney);
 
 function updateProfilePicture() {
     $('img#user_dp').attr('src', Recyclabears.users.getUserDpUrl());

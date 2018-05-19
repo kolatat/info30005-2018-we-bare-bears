@@ -29,10 +29,12 @@ export function initRouter(router: WbbRouter): WbbRouter {
                 rubbish: []
             },
 
+            /* Commenting this out to prevent
             $currentDate: {
                 lastDump: {$type: 'date'},
                 genesis: {$type: 'date'}
             }
+            */
         }, {
             new: true,
             upsert: true

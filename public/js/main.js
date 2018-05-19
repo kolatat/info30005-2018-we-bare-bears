@@ -165,8 +165,11 @@ var Recyclabears = {
             });
         },
         updateInventory: function (newInv) {
+
             if (Array.isArray(newInv)) {
-                return Recyclabears.__apiCall('PUT', '/me/inventory', newInv);
+                return Recyclabears.__apiCall('PUT', '/me/inventory', {
+                    inventory: newInv
+                });
             } else {
                 console.log('WARNING Recyclabears.users.updateInventory expects Array, ' + typeof(newInv) + ' given.');
             }
@@ -222,6 +225,10 @@ var Recyclabears = {
     items: {
         getShopItems: function  () {
             return Recyclabears.__apiCall('GET', '/api/items/shop/');
+        },
+        testPath: function () {
+            return Recyclabears.__apiCall('GET', '/api/items/shop/buy');
         }
     }
+
 };

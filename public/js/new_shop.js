@@ -17,7 +17,7 @@ function toggleShopWindow() {
 
 
 var items = [];
-var stored = 0;
+var inventory = [];
 
 function populateShopMenu(show_type) {
 
@@ -32,88 +32,57 @@ function populateShopMenu(show_type) {
     var add_item = 0;
     var new_item_HTML = "";
 
+    for (var index = 0; index < items.length; index++) {
 
-    // If first time on page, fetch items from database and save it locally;
-    // Display page with all items (default)
-    if(stored === 0){
-        Recyclabears.items.getShopItems().then(function(data){
+        add_item = 0;
+        new_item_HTML = "";
 
-            items = data.docs;
-            stored = 1;
-            console.log(items);
-            for (var i = 0; i < items.length; i++){
-                new_item_HTML =
-                    "<div>" +
-                    "<button class='item_button' onclick='showDescription(" + JSON.stringify(items[i]) + ")'>" +
-                    "<img src='" + items[i].image + "' class='shop_item' >" +
-                    "<p>Name: <span class='name'>" + items[i].name + "</span></p>" +
-                    "<p class='price_container'>" +
-                    "<span>Cost: </span>" +
-                    "<span class='honey'>" + items[i].price + "</span>" +
-                    "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
-                    "</p>" +
-                    "</button>" +
-                    "</div>";
-                items_container.innerHTML += new_item_HTML;
-            }
-        }).catch(function(err){
-            console.log(err);
-        });
-
-    } else {
-        // If items have been previously fetched from database, iterate over the saved list
-        for (var i = 0; i < items.length; i++) {
-
-            add_item = 0;
-            new_item_HTML = "";
-
-            // Determine whether to show the item
-            if (show_type === "tab_all") {
+        // Determine whether to show the item
+        if (show_type === "tab_all") {
+            add_item = 1;
+        } else if (show_type === "tab_plants") {
+            if (items[index].type === "plant") {
                 add_item = 1;
-            } else if (show_type === "tab_plants") {
-                if (items[i].type === "plant") {
-                    add_item = 1;
-                }
-            } else if (show_type === "tab_animals") {
-                if (items[i].type === "animal") {
-                    add_item = 1;
-                }
-            } else if (show_type === "tab_bins") {
-                if (items[i].type === "bin") {
-                    add_item = 1;
-                }
             }
-
-            // Add the HTML elements for the item if to be shown
-            if (add_item === 1) {
-                new_item_HTML =
-                    "<div>" +
-                    "<button class='item_button' onclick='showDescription(" + JSON.stringify(items[i]) + ")'>" +
-                    "<img src='" + items[i].image + "' class='shop_item' >" +
-                    "<p>Name: <span class='name'>" + items[i].name + "</span></p>" +
-                    "<p class='price_container'>" +
-                    "<span>Cost: </span>" +
-                    "<span class='honey'>" + items[i].price + "</span>" +
-                    "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
-                    "</p>" +
-                    "</button>" +
-                    "</div>";
+        } else if (show_type === "tab_animals") {
+            if (items[index].type === "animal") {
+                add_item = 1;
             }
-            items_container.innerHTML += new_item_HTML;
+        } else if (show_type === "tab_bins") {
+            if (items[index].type === "bin") {
+                add_item = 1;
+            }
         }
 
+        // Add the HTML elements for the item if to be shown
+        if (add_item === 1) {
+            new_item_HTML =
+                "<div>" +
+                "<button class='item_button' onclick='showDescription(" + index + ")'>" +
+                "<img src='" + items[index].image + "' class='shop_item' >" +
+                "<p>Name: <span class='name'>" + items[index].name + "</span></p>" +
+                "<p class='price_container'>" +
+                "<span>Cost: </span>" +
+                "<span class='honey'>" + items[index].price + "</span>" +
+                "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
+                "</p>" +
+                "</button>" +
+                "</div>";
+        }
+        items_container.innerHTML += new_item_HTML;
     }
 
 }
 
 
-function showDescription(item_obj) {
+function showDescription(item_index) {
     //Set a variable to contain the DOM element of the popup
     var popup_status = document.getElementById("popup_base").style.display;
     if (popup_status === "none" || popup_status === "") {
         toggleShopWindow();
     }
 
+    var item_obj = items[item_index];
     var name = item_obj.name;
     var price = item_obj.price;
     var description = item_obj.description;
@@ -133,11 +102,10 @@ function showDescription(item_obj) {
         "<span>Cost: </span>" +
         "<span class='honey'>" + price + "</span>" +
         "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
-        "</p>"
-
+        "</p>";
 
     attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
-    attrib_container.innerHTML += "<button onclick='alert(\"Credit card declined.\")'>Buy Item</button>";
+    attrib_container.innerHTML += "<button onclick='purchaseItem(" + item_index + ")'>Buy Item</button>";
     attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
 }
 
@@ -151,14 +119,99 @@ function changeActive(show_type) {
     document.getElementById(show_type).className = "active";
 }
 
+
 wbbInit(function populateShopMenuHelper() {
-    populateShopMenu('tab_all');
+
+    Recyclabears.items.getShopItems().then(function(data){
+        items = data.docs;
+        populateShopMenu('tab_all');
+    });
+
+    Recyclabears.users.getInventory().then(function(data){
+        inventory = data;
+    });
+
 });
 
 
+
+
+function purchaseItem(item_index) {
+
+    alert("Purchasing!!! " + items[item_index].name);
+    Recyclabears.users.updateWallet("minus", items[item_index].price).then(function () {
+
+        var purchase = items[item_index];
+        var inv_index = -1;
+        // search through the inventory to see if user already has one of the item
+        for(var i = 0; i < inventory.length; i++){
+            if(inventory[i].name === purchase.name){
+                inv_index = i;
+            }
+        }
+
+        if(inv_index === -1){
+            inventory.push({
+                name: purchase.name,
+                quantity: 1,
+                image: purchase.image
+            })
+        } else {
+            inventory[inv_index].quantity++;
+        }
+
+        console.log("Update inv!");
+        console.log(inventory);
+        Recyclabears.users.updateInventory(inventory).then(function (res) {
+            // show popup showing purchase successful
+
+            console.log("Inventory successfully updated!");
+            console.log(res);
+        }).catch(function (err) {
+            console.log(err);
+            console.log("Help?");
+        });
+
+
+        updateHoney();
+
+    }).catch(function (err) {
+        // show popup not enough honey
+        console.log("Insufficient honey");
+        console.log(err);
+    });
+
+}
+
 function testItemAPI() {
 
-    Recyclabears.items.getShopItems().then(function(data){
-        console.log(data);
+    var purchase = items[1];
+    var inv_index = -1;
+
+    // search through the inventory to see if user already has one of the item
+    for(var i = 0; i < inventory.length; i++){
+        if(inventory[i].name === purchase.name){
+            inv_index = i;
+        }
+    }
+
+    if(inv_index === -1){
+        inventory.push({
+            name: purchase.name,
+            quantity: 1,
+            image: purchase.image
+        })
+    } else {
+        inventory[inv_index].quantity++;
+    }
+
+    Recyclabears.users.updateInventory(inventory).then(function (res) {
+        // show popup showing purchase successful
+
+        console.log("Inventory successfully updated!");
+        console.log(res);
+    }).catch(function (err) {
+        console.log(err);
+        console.log("Help?");
     });
 }

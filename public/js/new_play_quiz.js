@@ -66,7 +66,7 @@ function populate() {
 
         // Can only earn honey if user completed the whole quiz
         Recyclabears.users.updateWallet("add", Number(quiz.totalHoney)).then(function () {
-            updatePrice();
+            updateHoney();
         });
     }
 
