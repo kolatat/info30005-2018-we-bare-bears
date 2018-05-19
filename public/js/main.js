@@ -167,9 +167,7 @@ var Recyclabears = {
         updateInventory: function (newInv) {
 
             if (Array.isArray(newInv)) {
-                return Recyclabears.__apiCall('PUT', '/me/inventory', {
-                    inventory: newInv
-                });
+                return Recyclabears.__apiCall('PUT', '/api/users/me/inventory', {inventory: newInv});
             } else {
                 console.log('WARNING Recyclabears.users.updateInventory expects Array, ' + typeof(newInv) + ' given.');
             }

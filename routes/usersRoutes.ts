@@ -271,7 +271,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
     router.put('/me/inventory', (req, res) => {
         // TODO input validation
 
-        // Updates the user's wallet
+        // Updates the user's inventory
         res.sendPromise(router.mongo("users").updateOne({
             fbId: req.user.fbId
         }, {
@@ -279,14 +279,6 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }).then(r => {
             return {result: r};
         }));
-/*
-        res.sendPromise(router.mongo('users').updateOne({
-            fbId: req.user.fbId
-        }, {
-            $set: req.body
-        })).then(r => {
-            return {results: r};
-        })*/
     });
 
     return router;

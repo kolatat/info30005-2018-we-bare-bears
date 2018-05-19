@@ -160,58 +160,21 @@ function purchaseItem(item_index) {
             inventory[inv_index].quantity++;
         }
 
-        console.log("Update inv!");
-        console.log(inventory);
         Recyclabears.users.updateInventory(inventory).then(function (res) {
             // show popup showing purchase successful
 
             console.log("Inventory successfully updated!");
-            console.log(res);
+            alert(purchase.name + " bought!!");
         }).catch(function (err) {
-            console.log(err);
-            console.log("Help?");
+            alert("Purchase failed");
         });
-
 
         updateHoney();
 
     }).catch(function (err) {
         // show popup not enough honey
-        console.log("Insufficient honey");
-        console.log(err);
+        alert("Not enough honey!");
     });
 
 }
 
-function testItemAPI() {
-
-    var purchase = items[1];
-    var inv_index = -1;
-
-    // search through the inventory to see if user already has one of the item
-    for(var i = 0; i < inventory.length; i++){
-        if(inventory[i].name === purchase.name){
-            inv_index = i;
-        }
-    }
-
-    if(inv_index === -1){
-        inventory.push({
-            name: purchase.name,
-            quantity: 1,
-            image: purchase.image
-        })
-    } else {
-        inventory[inv_index].quantity++;
-    }
-
-    Recyclabears.users.updateInventory(inventory).then(function (res) {
-        // show popup showing purchase successful
-
-        console.log("Inventory successfully updated!");
-        console.log(res);
-    }).catch(function (err) {
-        console.log(err);
-        console.log("Help?");
-    });
-}
