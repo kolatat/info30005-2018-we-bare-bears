@@ -1,18 +1,33 @@
 /* Toggle the PopUp Window that displays the quizzes */
 function toggleShopWindow() {
     //Set a variable to contain the DOM element of the overlay
-    // var overlay = document.getElementById("overlay_base");
+     var overlay = document.getElementById("overlay_base");
     //Set a variable to contain the DOM element of the popup
     var popup = document.getElementById("popup_base");
     // Toggle visibility of overlay and popup
     if (popup.style.display === "none" || popup.style.display === "") {
-        //  overlay.style.display = "block";
+          overlay.style.display = "block";
         popup.style.display = "block";
     } else {
-        //  overlay.style.display = "none";
+          overlay.style.display = "none";
         popup.style.display = "none";
         //document.getElementById("popup_base").innerHTML = "";
     }
+
+    const overlay_base = $('#overlay_base');
+    overlay_base.click(toggleShopWindow);
+}
+
+function closeShop(){
+    const overlay = $('#overlay');
+    const popup = $('#world-pop-up');
+
+    // Clear modified inline styles when popup is closed
+    popup.attr('style', '');
+
+    overlay.off('click');
+    overlay.hide();
+    popup.hide();
 }
 
 
@@ -20,6 +35,10 @@ var items = [];
 var inventory = [];
 
 function populateShopMenu(show_type) {
+
+    if($('#popup_base').css("display") === "block"){
+        toggleShopWindow();
+    }
 
     // Get the items_container element of the HTML to add items for display
     var items_container = document.getElementById("items_container");
@@ -100,14 +119,46 @@ function showDescription(item_index) {
     attrib_container.innerHTML +=
         "<p class='price_container'>" +
         "<span>Cost: </span>" +
-        "<span class='honey'>" + price + "</span>" +
+        "<span id='honey_price' class='honey'>" + price + "</span>" +
         "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
         "</p>";
 
     attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
+    attrib_container.innerHTML += "<div class='purchase_detail'><button class='minus' onclick='updateQuantity(this)'>-</button>" +
+                                  "<pre>    <span id='purchase_quantity'>1</span>    </pre>" +
+                                  "<button class='add' onclick='updateQuantity(this)'>+</button></div>";
+
     attrib_container.innerHTML += "<button onclick='purchaseItem(" + item_index + ")'>Buy Item</button>";
-    attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
+    attrib_container.innerHTML += "<div ><button class='close-btn'onclick='toggleShopWindow()'>Close</button></div>"
+
 }
+
+
+function updateQuantity(updateButton){
+
+    var quantity_HTML = $('#purchase_quantity');
+    var price_HTML = $('#honey_price');
+
+    var amount = Number(quantity_HTML.html());
+    var item_price = Number(price_HTML.html())/amount;
+
+    if(updateButton.className === "minus"){
+        console.log("minus");
+        // cannot go below 0
+        if(amount <= 1){
+            return;
+        }
+        amount--;
+    } else if(updateButton.className === "add"){
+        console.log("plus");
+        amount++;
+    }
+
+    item_price *= amount;
+    quantity_HTML.html(amount);
+    price_HTML.html(item_price);
+}
+
 
 function changeActive(show_type) {
     var buttons_container = document.getElementById("tab_buttons");
@@ -134,12 +185,12 @@ wbbInit(function populateShopMenuHelper() {
 });
 
 
-
-
 function purchaseItem(item_index) {
 
     alert("Purchasing!!! " + items[item_index].name);
-    Recyclabears.users.updateWallet("minus", items[item_index].price).then(function () {
+    var quantity = Number($('#purchase_quantity').html());
+    var total_price = items[item_index].price * quantity;
+    Recyclabears.users.updateWallet("minus", total_price).then(function () {
 
         var purchase = items[item_index];
         var inv_index = -1;
@@ -153,19 +204,20 @@ function purchaseItem(item_index) {
         if(inv_index === -1){
             inventory.push({
                 name: purchase.name,
-                quantity: 1,
+                quantity: Number(quantity),
                 image: purchase.image,
                 type: purchase.type
             })
         } else {
-            inventory[inv_index].quantity++;
+            // how to save as number, not string ???
+            var new_quantity = Number(inventory[inv_index].quantity) + quantity;
+            inventory[inv_index].quantity = new_quantity;
         }
 
         Recyclabears.users.updateInventory(inventory).then(function (res) {
-            // show popup showing purchase successful
-
+            // TODO show popup showing purchase successful
             console.log("Inventory successfully updated!");
-            alert(purchase.name + " bought!!");
+            alert(purchase.name + " x" + quantity + " bought!!");
         }).catch(function (err) {
             alert("Purchase failed");
         });
@@ -173,7 +225,7 @@ function purchaseItem(item_index) {
         updateHoney();
 
     }).catch(function (err) {
-        // show popup not enough honey
+        // TODO show popup not enough honey
         alert("Not enough honey!");
     });
 
