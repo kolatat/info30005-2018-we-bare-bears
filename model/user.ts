@@ -20,4 +20,5 @@ interface UserItem {
     name: string;
     quantity: number;
     image: string;  // path to image
+    type: string;   // for classification
 }

@@ -170,6 +170,12 @@ var worldItems = [
 
 var lastDumpSession = new Date("2018-05-15T12:00:00+10:00");
 
+/*************************************************************************/
+/************************ PAGE INITIALIZATION ****************************/
+/*************************************************************************/
+
+var inventory = [];
+
 function worldPageInit() {
 
     $('.save-btn').prop('disabled', false);
@@ -178,10 +184,14 @@ function worldPageInit() {
     $overlay.width($worldContainer.width());
     $overlay.height($worldContainer.height() - scrollbarOffset);
     $overlay.css({"top": $('#container').css("top")});
-    populateItemMenu('tab_all');
     Recyclabears.worlds.getWorld().then(function (world) {
         populateWorld(world);
         checkDumpSession(world);
+    });
+
+    Recyclabears.users.getInventory().then(function(data){
+        inventory = data;
+        populateItemMenu('tab_all');
     });
 }
 
@@ -189,7 +199,6 @@ wbbInit(worldPageInit);
 
 /*************************************************************************/
 /********************* FUNCTIONS FOR POPULATING WORLD ********************/
-
 /*************************************************************************/
 
 function populateWorld(world) {
@@ -414,10 +423,11 @@ function indexOfRubbishList(findObjId){
 
 /*************************************************************************/
 /********************** FUNCTIONS FOR THE INVENTORY **********************/
-
 /*************************************************************************/
 
 function populateItemMenu(show_type) {
+    console.log("Showing inventory");
+    console.log(inventory);
 
     // Get the items_container element of the HTML and remove current items
     var items_container = document.getElementById("items-container");
@@ -429,8 +439,14 @@ function populateItemMenu(show_type) {
     var add_item = 0;
     var new_item_HTML = "";
 
+    // Show a message to indicate to users that there is nothing in inventory
+    if(inventory.length == 0){
+
+        items_container.innerHTML += "<div id='no-item'><p>No items in your inventory yet. Play quizzes and buy items!</p></div>";
+    }
+
     // Loop over items from database and determine whether to display them based on user selection
-    for (var i = 0; i < testItemList.length; i++) {
+    for (var i = 0; i < inventory.length; i++) {
 
         add_item = 0;
         new_item_HTML = "";
@@ -439,31 +455,28 @@ function populateItemMenu(show_type) {
         if (show_type == "tab_all") {
             add_item = 1;
         } else if (show_type === "tab_plants") {
-            if (testItemList[i].type === "plant") {
+            if (inventory[i].type === "plant") {
                 add_item = 1;
             }
         } else if (show_type === "tab_animals") {
-            if (testItemList[i].type === "animal") {
+            if (inventory[i].type === "animal") {
                 add_item = 1;
             }
         } else if (show_type === "tab_bins") {
-            if (testItemList[i].type === "bin") {
+            if (inventory[i].type === "bin") {
                 add_item = 1;
             }
         }
 
         // Add the HTML elements for the item if to be shown
         if (add_item == 1) {
-            var functionName = "showInWorldEditable(" + JSON.stringify(testItemList[i]) + ")";
+            var functionName = "showInWorldEditable(" + JSON.stringify(inventory[i]) + ")";
             new_item_HTML +=
                 "<div class='item'>" +
                 "<button class='item_desc' onclick='" + functionName + "'>" +
-                "<img src='" + testItemList[i].image + "' class='shop_item' >" +
-                "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
-                "<p>Cost: <span class='price'>" + testItemList[i].price + "</span></p>" +
-                "<p style='display: none'>Type: <span class='type'>" + testItemList[i].type + "</span></p>" +
-                "<p style='display: none'>Image Link: <span class='img_link'>" + testItemList[i].image + "</span></p>" +
-                "<p style='display: none'>Desc: <span class='description'>" + testItemList[i].description + "</span></p>"
+                "<img src='" + inventory[i].image + "' class='inv_item' >" +
+                "<p>Name: <span class='name'>" + inventory[i].name + "</span></p>" +
+                "<p>Quantity: <span class='price'>" + inventory[i].quantity + "</span></p>" +
             "</button>" +
             "</div>";
         }

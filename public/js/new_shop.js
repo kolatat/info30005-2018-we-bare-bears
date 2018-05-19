@@ -154,7 +154,8 @@ function purchaseItem(item_index) {
             inventory.push({
                 name: purchase.name,
                 quantity: 1,
-                image: purchase.image
+                image: purchase.image,
+                type: purchase.type
             })
         } else {
             inventory[inv_index].quantity++;
