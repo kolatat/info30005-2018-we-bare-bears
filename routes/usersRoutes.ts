@@ -1,6 +1,7 @@
 import * as debug from 'debug';
-import {WbbRouter} from "../utils";
+import {WbbError, WbbRouter} from "../utils";
 import {User} from "../model/user";
+import {isNullOrUndefined} from "util";
 
 const Log = debug('wbb:model:users');
 
@@ -225,6 +226,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
     /* New router below */
     /* Router for updating wallet value */
     router.put('/me/wallet', (req, res) => {
+
         // delete cache
         router.store.usersCache.del(req.user.fbId);
         let update_wallet = req.user.wallet;
@@ -267,11 +269,11 @@ export function initRouter(router: WbbRouter): WbbRouter {
     });
 
 
-
+    // Updates the user's inventory
     router.put('/me/inventory', (req, res) => {
+
         // TODO input validation
 
-        // Updates the user's inventory
         res.sendPromise(router.mongo("users").updateOne({
             fbId: req.user.fbId
         }, {
@@ -279,6 +281,17 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }).then(r => {
             return {result: r};
         }));
+
+    });
+
+
+    // Get the user's inventory
+    router.get('/me/inventory', (req, res) => {
+
+        res.sendPromise(getUserByFbId(req.user.fbId).then(function(me){
+            res.send(me.inventory);
+        }));
+
     });
 
     return router;

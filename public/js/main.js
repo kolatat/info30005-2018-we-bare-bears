@@ -156,6 +156,9 @@ var Recyclabears = {
             return Recyclabears.__apiCall('GET', '/api/users/' + fbId);
         },
         getInventory: function () {
+            /* This returns a cached inventory i thk ?
+            When user buys something from the shop, the item cannot be seen on World's item menu
+
             return Recyclabears.users.me().then(function (me) {
                 if (me.inventory) {
                     return me.inventory;
@@ -163,6 +166,9 @@ var Recyclabears = {
                     return [];
                 }
             });
+            */
+
+            return Recyclabears.__apiCall('GET', '/api/users/me/inventory');
         },
         updateInventory: function (newInv) {
 

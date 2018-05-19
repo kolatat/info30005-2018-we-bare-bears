@@ -30,91 +30,6 @@ function onResize() {
 /******************************* TEST DATA *******************************/
 /*************************************************************************/
 
-var testItemList = [
-    {
-        name: "Tree",
-        type: "plant",
-        price: 100,
-        image: "/assets/images/items/tree.png",
-        description: "A big tree."
-    },
-    {
-        name: "Penguin",
-        type: "animal",
-        price: 20,
-        image: "/assets/images/items/penguin.png",
-        description: "A cute little penguin."
-    },
-    {
-        name: "Ice Bear",
-        type: "animal",
-        price: 1000,
-        image: "/assets/images/items/ice_bear.png",
-        description: "The strongest and youngest bear."
-    },
-    {
-        name: "Yellow Bin",
-        type: "bin",
-        bin_type: "paper",
-        price: 10,
-        image: "/assets/images/items/yellow_bin.png",
-        description: "A bin that looks like it is made for disposing paper."
-    },
-    {
-        name: "Red Bin",
-        type: "bin",
-        bin_type: "plastic",
-        price: 10,
-        image: "/assets/images/items/red_bin.png",
-        description: "A bin that looks like it is made for disposing plastic."
-    },
-    {
-        name: "Blue Bin",
-        type: "bin",
-        bin_type: "metal",
-        price: 10,
-        image: "/assets/images/items/blue_bin.png",
-        description: "A bin that looks like it is made for disposing metal."
-    },
-    {
-        name: "Green Bin",
-        type: "bin",
-        bin_type: "glass",
-        price: 10,
-        image: "/assets/images/items/green_bin.png",
-        description: "A bin that looks like it is made for disposing glass."
-    },
-    {
-        name: "Panda Bear",
-        type: "animal",
-        price: 1000,
-        image: "/assets/images/items/panda_bear.png",
-        description: "The bear link that holds them all together."
-    },
-    {
-        name: "Sunflower",
-        type: "plant",
-        price: 35,
-        image: "/assets/images/items/sunflower.png",
-        description: "Making your world more lively - one flower at a time."
-    },
-    {
-        name: "Grizzly Bear",
-        type: "animal",
-        price: 1000,
-        image: "/assets/images/items/grizzly_bear.png",
-        description: "The bubbly, hyperactive, loud and talkative bear."
-    },
-    {
-        name: "Turtle",
-        type: "animal",
-        price: 27,
-        image: "/assets/images/items/turtle.png",
-        description: "Save me from plastic bags!"
-    }
-
-];
-
 var worldItems = [
     {
         name: "Yellow Bin",
@@ -470,13 +385,13 @@ function populateItemMenu(show_type) {
 
         // Add the HTML elements for the item if to be shown
         if (add_item == 1) {
-            var functionName = "showInWorldEditable(" + JSON.stringify(inventory[i]) + ")";
+            var functionName = "showInWorldEditable(" + JSON.stringify(inventory[i]) + "); checkItems(\""+inventory[i].name+"\")";
             new_item_HTML +=
                 "<div class='item'>" +
-                "<button class='item_desc' onclick='" + functionName + "'>" +
+                "<button id='inv-btn-" + i + "' class='item_desc' onclick='" + functionName + "'>" +
                 "<img src='" + inventory[i].image + "' class='inv_item' >" +
                 "<p>Name: <span class='name'>" + inventory[i].name + "</span></p>" +
-                "<p>Quantity: <span class='price'>" + inventory[i].quantity + "</span></p>" +
+                "<p>Placed: <span class='placed'>0</span> || Quantity: <span class='price'>" + inventory[i].quantity + "</span></p>" +
             "</button>" +
             "</div>";
         }
@@ -549,10 +464,14 @@ function showInWorldEditable(obj, edit=true) {
         } else {
             console.log('ERROR cannot delete non-existent object');
         }
+        // Updates the numbers in item menu and enable/disable item placement
+        checkItems(gObj.name);
     });
     var objImg = $('<img/>', {
         src: gObj.image,
-        width: size
+        width: size,
+        // used for keeping track of how many items of this type have been placed on world
+        alt: gObj.name
     });
     gObj.div.append(delImg, objImg);
     dragElement2(gObj);
@@ -560,15 +479,7 @@ function showInWorldEditable(obj, edit=true) {
     $('#world-container').append(gObj.div);
     itemList.push(gObj);
     if (edit) worldEdited();
-    return;
 
-    var objDiv = document.createElement("div");
-    objDiv.setAttribute("class", "item-to-move");
-    objDiv.innerHTML = "<img src='/assets/images/world/delete2.png' class='delete-img' onclick='deleteDiv(this.parentNode)'>";
-    objDiv.innerHTML += "<img src='" + obj.image + "'>";
-
-    dragElement(objDiv);
-    document.getElementsByTagName('body')[0].appendChild(objDiv);
 }
 
 function deleteDiv(obj) {
@@ -576,6 +487,33 @@ function deleteDiv(obj) {
     obj.remove();
 }
 
+
+function checkItems(itemName){
+    console.log("In check Items");
+
+    // find how many items of this type has been placed on world
+    var onWorld = $('img[alt="' + itemName + '"]').toArray().length;
+    console.log(onWorld);
+
+    // find the matching item in the inventory list
+    for(var i = 0; i < inventory.length; i++){
+        if(itemName === inventory[i].name){
+            // get the HTML button of this item from item menu
+            var button = $('#inv-btn-' + i);
+
+            // update how many items have been placed
+            $(button).find("span.placed").html(onWorld);
+
+            // check the quantity of item in inventory, and enable/disable accordingly
+            if(onWorld >= inventory[i].quantity){
+                console.log("Over!!");
+               button.attr("disabled", true);
+            } else {
+                button.attr("disabled", false);
+            }
+        }
+    }
+}
 
 /*************************************************************************/
 /****************** FUNCTIONS FOR DRAG AND DROP ELEMENTS *****************/

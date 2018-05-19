@@ -6,16 +6,17 @@ export interface World {
     items: WorldItem[];
     rubbish: WorldRubbish[];
     lastDump: Date;
-}
+};
 
 interface Item {
     name: string;
+    image: string;  // path to image
     x: number;
     y: number;
-}
+};
 
 export interface WorldItem extends Item {
-}
+};
 
 export interface WorldRubbish extends Item {
-}
+};
