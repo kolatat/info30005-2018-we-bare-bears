@@ -99,14 +99,17 @@ function worldPageInit() {
     $overlay.width($worldContainer.width());
     $overlay.height($worldContainer.height() - scrollbarOffset);
     $overlay.css({"top": $('#container').css("top")});
-    Recyclabears.worlds.getWorld().then(function (world) {
-        populateWorld(world);
-        checkDumpSession(world);
-    });
 
+    // Get inventory before populating world for checkItems() to work properly
     Recyclabears.users.getInventory().then(function(data){
         inventory = data;
         populateItemMenu('tab_all');
+
+        Recyclabears.worlds.getWorld().then(function (world) {
+            populateWorld(world);
+            checkDumpSession(world);
+        });
+
     });
 }
 
@@ -119,10 +122,13 @@ wbbInit(worldPageInit);
 function populateWorld(world) {
     console.log("HELLO WORLD!!!!");
 
+    // Display bins [TESTING COLLISION]
     for (var item in worldItems) {
         // console.log(JSON.stringify(worldItems[item]));
         showInWorld(worldItems[item]);
     }
+
+    // Display user placed items
     for (var item in world.items) {
         var obj = world.items[item];
         obj.x = parseFloat(obj.x);
@@ -130,6 +136,12 @@ function populateWorld(world) {
         showInWorldEditable(obj, false);
     }
 
+    // Check how many of each item has been placed on world
+    for(var inv_item in inventory){
+        checkItems(inventory[inv_item].name);
+    }
+
+    // Display rubbish in world
     for (var i = 0; i < world.rubbish.length; i++) {
         displayRubbish(world, world.rubbish[i]);
     }
@@ -461,13 +473,13 @@ function deleteDiv(obj) {
     obj.remove();
 }
 
-
+/* Check how many of the items have been placed on world */
 function checkItems(itemName){
     console.log("In check Items");
 
     // find how many items of this type has been placed on world
     var onWorld = $('img[alt="' + itemName + '"]').toArray().length;
-    console.log(onWorld);
+    console.log(onWorld + "x " + itemName);
 
     // find the matching item in the inventory list
     for(var i = 0; i < inventory.length; i++){
@@ -480,7 +492,6 @@ function checkItems(itemName){
 
             // check the quantity of item in inventory, and enable/disable accordingly
             if(onWorld >= inventory[i].quantity){
-                console.log("Over!!");
                button.attr("disabled", true);
             } else {
                 button.attr("disabled", false);

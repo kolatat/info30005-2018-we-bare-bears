@@ -6,6 +6,7 @@ export interface World {
     items: WorldItem[];
     rubbish: WorldRubbish[];
     lastDump: Date;
+    genesis: Date;
 };
 
 interface Item {
