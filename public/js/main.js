@@ -92,6 +92,10 @@ function statusChangeCallback(response) {
     // console.log(response);
     if (response.status != 'connected') {
         window.location = '/login/';
+
+        // clear cached auth token when not logged in
+        sessionStorage.removeItem('fbAuth');
+        return;
     }
     Recyclabears.__fbAuth = response;
     if (firstTime) {
