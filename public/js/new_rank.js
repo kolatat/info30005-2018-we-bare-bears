@@ -243,8 +243,9 @@ function displayWorld(fbId, friendName) {
     const overlay = $('#overlay');
     const popup = $('#world-pop-up');
     overlay.show();
-    popup.show();
     popup.html('');
+//    popup.show(); // Note: show popup after world obtained
+    // (prevent showing users the "moving world popup" when repositioning
 
     var cont = $('<div/>', {id: 'world-container'});
     var img = $('<img/>', {
@@ -260,28 +261,33 @@ function displayWorld(fbId, friendName) {
     cont.append(text);
     popup.append(cont);
 
-    console.log(popup.height);
-    console.log(popup.width);
-
-    // Reposition the popup so that it is in center of screen
-    popup.css({
-        'margin-top': -(popup.height()/2),
-        'margin-left': -(popup.width()/2)
-    });
-
     const realX = 1122, realY = 626;
     // execute image loading and world data loading in parallel
     Promise.all([new Promise(function (resolve) {
         img.on('load', resolve);
     }), Recyclabears.worlds.getWorld(fbId)]).then(function (res) {
+
+        // Show popup here to prevent users seeing the popup "move"
+        popup.show();
+
         var world = res[1];
         const mx = img.width() / realX, my = img.height() / realY;
         for (var i in world.items) {
             displayWorldItem(cont, mx, my, world.items[i]);
         }
+
+
+
+        /* Reposition the popup so that it is in center of screen
+           Repositioning done after the world has loaded to accurately obtain
+           height and width of popup window */
+        popup.css({
+            'margin-top': -(popup.height()/2),
+            'margin-left': -(popup.width()/2)
+        });
+
     });
     overlay.click(closeWorld);
-
 
 }
 
