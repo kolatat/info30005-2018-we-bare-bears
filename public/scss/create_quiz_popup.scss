@@ -33,8 +33,14 @@
   color: seagreen;
 }
 
-@media screen and (max-device-width: 500px), screen and (max-device-height: 500px){
-  .pairs{
-    width: 80%;
+
+@media screen and (max-width: 500px) {
+
+  #input_fields_match{
+    .pair-div{
+      .pairs{
+        width: 80%;
+      }
+    }
   }
 }

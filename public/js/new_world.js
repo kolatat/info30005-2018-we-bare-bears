@@ -122,11 +122,11 @@ wbbInit(worldPageInit);
 function populateWorld(world) {
     console.log("HELLO WORLD!!!!");
 
-    // Display bins [TESTING COLLISION]
+  /*  // Display bins [TESTING COLLISION]
     for (var item in worldItems) {
         // console.log(JSON.stringify(worldItems[item]));
         showInWorld(worldItems[item]);
-    }
+    }*/
 
     // Display user placed items
     for (var item in world.items) {
@@ -422,11 +422,18 @@ var nextRubbishIndex = 0;
 function showInWorldEditable(obj, edit=true) {
     var sf = getScaleFactors();
     var size = (120 * sf.mx) + 'px';
+
+    var className = "item-to-move";
+    console.log("output obj");
+    console.log(obj);
+    if(obj.type === "bin")
+        className += " " + obj.bin_type;
+
     var gObj = {
         x: worldSize[0] / 2,
         y: worldSize[1] / 2,
         div: $('<div/>', {
-            'class': 'item-to-move'
+            'class': className
         }),
         redraw: function () {
             var sf = getScaleFactors();
@@ -453,6 +460,11 @@ function showInWorldEditable(obj, edit=true) {
         // Updates the numbers in item menu and enable/disable item placement
         checkItems(gObj.name);
     });
+
+    if (obj.type === 'bin') {
+        gObj.div.addClass(obj.bin_type);
+    }
+
     var objImg = $('<img/>', {
         src: gObj.image,
         width: size,
@@ -465,6 +477,7 @@ function showInWorldEditable(obj, edit=true) {
     $('#world-container').append(gObj.div);
     itemList.push(gObj);
     if (edit) worldEdited();
+
 
 }
 
@@ -635,7 +648,9 @@ function checkCollision(dom, bins) {
 
 
                 // Update wallet
-                Recyclabears.users.updateWallet("add", 1);
+                Recyclabears.users.updateWallet("add", 1).then(function(){
+                    updateHoney();
+                });
 
             } else {
                 console.log('ERROR cannot delete non-existent rubbish!');

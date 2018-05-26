@@ -65,6 +65,18 @@ export function validateMatchPairsQuestion(question: any): MatchPairsQuestion {
             throw new ValidationError(`One of the matching pairs, is not a pair!`);
         }
     }
+
+    // Should not have any repeating value
+    var value_set = [];
+    for(let pair in question.pairs){
+        for(let match in question.pairs[pair]){
+            if(value_set.indexOf(question.pairs[pair][match]) >= 0){
+                throw new ValidationError(`Should not have repeat values in any of the pairs`);
+            }
+            value_set.push(question.pairs[pair][match]);
+        }
+    }
+
     return <MatchPairsQuestion>question;
 }
 

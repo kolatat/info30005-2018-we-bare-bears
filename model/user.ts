@@ -21,4 +21,5 @@ interface UserItem {
     quantity: number;
     image: string;  // path to image
     type: string;   // for classification
+    bin_type: string;   // type of bin (if item is a bin)
 }

@@ -250,7 +250,15 @@ function submitQuestion(event) {
                 // Show success message to user
                 var msg_container = document.getElementById("msg_insert");
                 msg_container.innerHTML = "<p>Question successfully entered into database!</p>";
+                msg_container.innerHTML += "<p>You have been rewarded with 10 " +
+                "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>!</p>";
                 msg_container.innerHTML += "<button id='close_msg'>Close</button>";
+
+                // Add reward of 10 honey pots
+                Recyclabears.users.updateWallet("add",10).then(function(){
+                    updateHoney();
+                });
+
                 document.getElementById("close_msg").addEventListener("click", function () {
                     $('#create_page_content').show();
                     toggleMessageWindow();
@@ -267,7 +275,7 @@ function submitQuestion(event) {
 
                 // Show an error message to user
                 var msg_container = document.getElementById("msg_insert");
-                msg_container.innerHTML = "<p>Sorry! Your question could not be created at this time. Please try again later.</p>";
+                msg_container.innerHTML = "<p>Sorry! Your question could not be created at this time.</p><p>Please try rewriting your question or try again later.</p>";
                 msg_container.innerHTML += "<button id='close_msg'>Close</button>";
                 document.getElementById("close_msg").addEventListener("click", function () {
                     $('#create_page_content').show();

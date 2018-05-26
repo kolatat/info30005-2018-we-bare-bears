@@ -202,12 +202,24 @@ function purchaseItem(item_index) {
         }
 
         if(inv_index === -1){
-            inventory.push({
-                name: purchase.name,
-                quantity: Number(quantity),
-                image: purchase.image,
-                type: purchase.type
-            })
+
+            if(purchase.type === "bin"){
+                inventory.push({
+                    name: purchase.name,
+                    quantity: Number(quantity),
+                    image: purchase.image,
+                    type: purchase.type,
+                    bin_type: purchase.bin_type
+                })
+            } else {
+                inventory.push({
+                    name: purchase.name,
+                    quantity: Number(quantity),
+                    image: purchase.image,
+                    type: purchase.type
+                })
+            }
+
         } else {
             // how to save as number, not string ???
             var new_quantity = Number(inventory[inv_index].quantity) + quantity;

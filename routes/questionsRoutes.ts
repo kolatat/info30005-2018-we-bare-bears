@@ -125,7 +125,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
     /* TO DELETE CODE BELOW !! */
     router.get('/testQuery', (req, res) => {
         // what is this?
-        router.mongo('questions').find({}).toArray(function (error, documents) {
+        router.mongo('worlds').find({}).toArray(function (error, documents) {
             if (error) {
                 throw error;
             }

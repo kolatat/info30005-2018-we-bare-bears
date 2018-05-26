@@ -255,7 +255,7 @@ function displayWorld(fbId, friendName) {
 
     // Get first part of name
     var name = friendName.split(" ")[0];
-    var text = $("<h1>" + name + "'s World</h1>");
+    var text = $("<h1 id='world-name'>" + name + "'s World</h1>");
 
     cont.append(img);
     cont.append(text);
@@ -326,7 +326,7 @@ function closeWorld() {
     popup.attr('style', '');
 
     overlay.off('click');
-    overlay.hide();
+ //   overlay.hide();
     popup.hide();
 
 }
