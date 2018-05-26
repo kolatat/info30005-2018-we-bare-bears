@@ -8,7 +8,7 @@ export interface Item {
     price: number;
     image: string;
     description: string
-};
+}
 
 export interface ShopItem extends Item {
 }

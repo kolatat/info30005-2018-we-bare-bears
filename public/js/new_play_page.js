@@ -69,7 +69,6 @@ function enablePlayPage(){
     if (window.matchMedia("(max-width: 500px)").matches || window.matchMedia("(max-height: 500px)").matches) {
         $('#close_btn_txt').html("Close");
     } else {
-        console.log("Start: default");
         $('#close_btn_txt').html("X");
     }
 

@@ -153,8 +153,8 @@ function submitQuestion(event) {
 
             // Create the question object
             new_question = {
-                question: form["question"].value,
                 type: form.className,
+                question: form["question"].value,
                 answers: {
                     correct: form["correct_ans"].value,
                     other: answer_options
@@ -190,9 +190,9 @@ function submitQuestion(event) {
             }
 
             new_question = {
+                type: form.className,
                 fill_blanks: fill_blanks,
                 answers: answers,
-                type: form.className,
                 difficulty: Number(form["difficulty"].value),
                 points: Number(form["points"].value)
             };
@@ -202,11 +202,12 @@ function submitQuestion(event) {
             var msg_container = document.getElementById("msg_insert");
             var preview_text = document.getElementById("preview_container").innerHTML;
             msg_container.innerHTML = previewBlanks(new_question, preview_text);
+
         } else if (input_fields_wrap.id === "input_fields_video") {
 
             new_question = {
-                vid: form["vid"].value,
                 type: form.className,
+                vid: form["vid"].value,
                 difficulty: Number(form["difficulty"].value),
                 points: Number(form["points"].value)
             };
@@ -216,7 +217,28 @@ function submitQuestion(event) {
             var msg_container = document.getElementById("msg_insert");
             var preview_text = document.getElementById("preview_container").innerHTML;
             msg_container.innerHTML = previewBlanks(new_question, preview_text);
+
+        } else if (input_fields_wrap.id === "input_fields_match"){
+
+            new_question = {
+                type: form.className,
+                difficulty: Number(form["difficulty"].value),
+                points: Number(form["points"].value),
+                pairs: [
+                    [form["pair_1_a"].value, form["pair_1_b"].value],
+                    [form["pair_2_a"].value, form["pair_2_b"].value],
+                    [form["pair_3_a"].value, form["pair_3_b"].value],
+                    [form["pair_4_a"].value, form["pair_4_b"].value]
+                ]
+            };
+
+            // Preview the question to user before POST-ing to database
+            toggleMessageWindow();
+            var msg_container = document.getElementById("msg_insert");
+            msg_container.innerHTML = previewMatching(new_question);
+
         }
+
 
         console.log(new_question);
 
@@ -228,7 +250,15 @@ function submitQuestion(event) {
                 // Show success message to user
                 var msg_container = document.getElementById("msg_insert");
                 msg_container.innerHTML = "<p>Question successfully entered into database!</p>";
+                msg_container.innerHTML += "<p>You have been rewarded with 10 " +
+                "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>!</p>";
                 msg_container.innerHTML += "<button id='close_msg'>Close</button>";
+
+                // Add reward of 10 honey pots
+                Recyclabears.users.updateWallet("add",10).then(function(){
+                    updateHoney();
+                });
+
                 document.getElementById("close_msg").addEventListener("click", function () {
                     $('#create_page_content').show();
                     toggleMessageWindow();
@@ -245,7 +275,7 @@ function submitQuestion(event) {
 
                 // Show an error message to user
                 var msg_container = document.getElementById("msg_insert");
-                msg_container.innerHTML = "<p>Sorry! Your question could not be created at this time. Please try again later.</p>";
+                msg_container.innerHTML = "<p>Sorry! Your question could not be created at this time.</p><p>Please try rewriting your question or try again later.</p>";
                 msg_container.innerHTML += "<button id='close_msg'>Close</button>";
                 document.getElementById("close_msg").addEventListener("click", function () {
                     $('#create_page_content').show();
@@ -306,6 +336,8 @@ function previewBlanks(ques_details, preview) {
 
     // Preview Content
     var content_HTML = preview + '<br>';
+    content_HTML += '<p>Difficulty level: ' + ques_details.difficulty + '</p>';
+    content_HTML += '<p>Score points: ' + ques_details.points + '</p>';
 
     // Back button if they changed their mind
     var back_button_HTML = '<button onclick="toggleMessageWindow();">Back</button>';
@@ -314,6 +346,40 @@ function previewBlanks(ques_details, preview) {
     var submit_button_HTML = '<button id="submitDataButton">Submit!</button>';
 
     return preview_HTML + content_HTML + back_button_HTML + submit_button_HTML;
+}
+
+
+function previewMatching(ques_details){
+    // Preview Header
+    var preview_HTML = '<h1>Preview Matching Pairs</h1>';
+
+    // Preview Content
+    var content_HTML = "<div><p>Your four pairs are: ";
+    console.log(ques_details.pairs);
+    for(var pairs = 0; pairs < ques_details.pairs.length; pairs++){
+        content_HTML += "<div><p>[ "
+        for(var match = 0; match < 2; match++){
+            content_HTML += "<span class='prev-pair'>" + ques_details.pairs[pairs][match] + "</span>";
+
+            if(match === 0){
+                content_HTML += " | ";
+            }
+
+        }
+        content_HTML += " ]</p></div>";
+    }
+    content_HTML += "</div>";
+    content_HTML += '<p>Difficulty level: ' + ques_details.difficulty + '</p>';
+    content_HTML += '<p>Score points: ' + ques_details.points + '</p>';
+
+    // Back button if they changed their mind
+    var back_button_HTML = '<div><button onclick="toggleMessageWindow();">Back</button>';
+
+    // Submit button to submit this question to database
+    var submit_button_HTML = '<button id="submitDataButton">Submit!</button></div>';
+
+    return preview_HTML + content_HTML + back_button_HTML + submit_button_HTML;
+
 }
 
 /************************************************************************************/
@@ -455,4 +521,52 @@ function _createVideo() {
 
     // Final display of create container
     create_container.html(head_HTML + preview_HTML.join(" ") + form_HTML.join(" "));
+}
+
+/* Display interface for creating a Multiple Choice question */
+function _createMatching() {
+    // Hide the Create Page Menu
+    $('#create_page_content').hide();
+
+    // Get the container element that will contain the quiz
+    var create_container = document.getElementById("create_container");
+    create_container.innerHTML = "";  // Reset the container element for each use
+
+    // HTML Strings for MCQ Page
+    var head_HTML = '<div id="create_header"><h1>Create your matching pairs!</h1></div>';
+    var create_content_HTML = '<div id="create_content">';
+
+    // HTML String for form element to input question details
+    var form_HTML = [];
+    form_HTML.push('<form id="createQuestion" class="pair-matching" onsubmit="submitQuestion(event)">');
+    form_HTML.push('<p class="container_text">Make four pairs of matching options:</p>');
+
+    // HTML String for alternate answer options
+    var input_container_HTML = [];
+    input_container_HTML.push('<div id="input_fields_match" class="input_fields_wrap">');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-1 pairs" type="text" name="pair_1_a" required>');
+    input_container_HTML.push('<input class="pair-1 pairs" type="text" name="pair_1_b" required></div>');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-2 pairs" type="text" name="pair_2_a" required>');
+    input_container_HTML.push('<input class="pair-2 pairs" type="text" name="pair_2_b" required></div>');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-3 pairs" type="text" name="pair_3_a" required>');
+    input_container_HTML.push('<input class="pair-3 pairs" type="text" name="pair_3_b" required></div>');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-4 pairs" type="text" name="pair_4_a" required>');
+    input_container_HTML.push('<input class="pair-4 pairs" type="text" name="pair_4_b" required></div>');
+    input_container_HTML.push('</div>');
+    form_HTML.push(input_container_HTML.join(" "));
+
+    //HTML String for input of some extra information
+    form_HTML.push('<p class="container-text">Difficulty Level: </p>');
+    form_HTML.push('<input type="number" name="difficulty" required>');
+    form_HTML.push('<p class="container-text">Score points: </p>');
+    form_HTML.push('<input type="number" name="points" required>');
+
+    // Complete the form element HTML string
+    form_HTML.push('<button type="submit">Submit!</button>');
+    form_HTML.push('</form>');
+
+    create_content_HTML += form_HTML.join(" ");
+
+    // Final display of create container
+    create_container.innerHTML = head_HTML + create_content_HTML;
 }

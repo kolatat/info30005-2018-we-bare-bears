@@ -1,6 +1,6 @@
 @import "master";
 @import "header";
-
+@import "create_quiz_popup";
 
 body{
   background: linear-gradient(to bottom, white 0%, $color-yellow 150%);
@@ -14,19 +14,12 @@ h1{
   color: $color-brown;
 }
 
-// CSS Grid Setup
 .page {
   margin: 5px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, max-content);
   grid-gap: 10px;
   grid-auto-flow: row;
-
-  div{
-    display: flex;
-    justify-content: center;
-  }
 
 
 }
@@ -38,6 +31,12 @@ h1{
   width: 40vw;
   height: auto;
 }
+
+
+button:disabled{
+  background-color: #768591;
+}
+
 
 #play_page, #create_page {
   display: none;
@@ -104,6 +103,7 @@ h1{
         box-shadow: 0px 0px 5px wheat;
       }
       .submit-btn {
+        margin: 10px;
         width: max-content;
         background-color: seashell;
       }
@@ -193,9 +193,6 @@ pre.blanks{
   background-color: $color-green;
 }
 
-button:disabled{
-  background-color: #768591;
-}
 
 /* Styling the button that closes the popup window */
 #close_popup_btn{
@@ -244,6 +241,13 @@ button:disabled{
   border-style: dotted; //Dotted border
   border-color: $color-beige; //Change border colour
   z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
+
+
+
+  button:disabled {
+    background-color: inherit;
+  }
+
 }
 
 /* Styling the secondary overlay to be less transparent */
@@ -281,7 +285,7 @@ button:disabled{
 
 
 /* Adjustments to styling on smaller screens */
-@media screen and (max-device-width: 500px) {
+@media screen and (max-width: 500px) {
   /* Stack the flags into a single column */
   .page {
     grid-template-columns: 1fr;
@@ -295,7 +299,7 @@ button:disabled{
 
 }
 /* More adjustments on smaller screens */
-@media screen and (max-device-width: 500px), screen and (max-device-height: 500px){
+@media screen and (max-width: 500px), screen and (max-height: 500px){
 
    // Make the popup cover the whole screen for better visibility
   .popup {

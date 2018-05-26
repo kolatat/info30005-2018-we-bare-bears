@@ -13,6 +13,27 @@ body{
   grid-template-columns: 1fr 1fr 1fr 1fr;
   margin: 50px 20px;
   grid-column-gap: 20px;
+  overflow: auto;
+}
+
+/* Adjustments to styling on narrower screens */
+@media screen and (max-width: 1130px) {
+
+  #content{
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+@media screen and (max-width: 600px) {
+
+  #content{
+    grid-template-columns: 1fr;
+  }
+
+}
+
+.section{
+  background-color: white;
 }
 
 .learn-title{
@@ -42,7 +63,6 @@ body{
 }
 
 .content-section{
-  background-color: white;
   padding: 10px;
 }
 

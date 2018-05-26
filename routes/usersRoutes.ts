@@ -1,6 +1,7 @@
 import * as debug from 'debug';
-import {WbbRouter} from "../utils";
+import {WbbError, WbbRouter} from "../utils";
 import {User} from "../model/user";
+import {isNullOrUndefined} from "util";
 
 const Log = debug('wbb:model:users');
 
@@ -23,6 +24,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
             });
         });
     }
+
 
     router.get('/me', (req, res) => {
         /*getUserByFbId(req.user.fbId).then(user => {
@@ -220,9 +222,11 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+
     /* New router below */
     /* Router for updating wallet value */
     router.put('/me/wallet', (req, res) => {
+
         // delete cache
         router.store.usersCache.del(req.user.fbId);
         let update_wallet = req.user.wallet;
@@ -230,12 +234,21 @@ export function initRouter(router: WbbRouter): WbbRouter {
 
         // Only update the wallet if input is valid
         if (change_amount != null && !isNaN(change_amount)) {
-
-            // console.log(req.body.value);
             if (req.body.action == "add") {
                 update_wallet += change_amount;
             } else if (req.body.action == "minus") {
+
                 update_wallet -= change_amount;
+                if(update_wallet < 0){
+                    return res.status(400).send({
+                        error: "Error: Insufficient honey pots!"
+                    });
+                }
+
+            } else {
+                res.status(400).send({
+                    error: "Bad request: Can only 'add' or 'minus' honey pots"
+                });
             }
 
             // Updates the user's wallet
@@ -255,13 +268,30 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }
     });
 
+
+    // Updates the user's inventory
     router.put('/me/inventory', (req, res) => {
+
         // TODO input validation
-        return res.sendPromise(router.mongo('users').updateOne({
+
+        res.sendPromise(router.mongo("users").updateOne({
             fbId: req.user.fbId
         }, {
             $set: req.body
+        }).then(r => {
+            return {result: r};
         }));
+
+    });
+
+
+    // Get the user's inventory
+    router.get('/me/inventory', (req, res) => {
+
+        res.sendPromise(getUserByFbId(req.user.fbId).then(function(me){
+            res.send(me.inventory);
+        }));
+
     });
 
     return router;

@@ -6,8 +6,8 @@ import {
     FillBlanksQuestion,
     MultipleChoiceQuestion,
     Question, validateFillBlanksQuestion, validateMultipleChoiceQuestion,
-    validateVideoQuestion,
-    VideoQuestion
+    validateVideoQuestion, validateMatchPairsQuestion,
+    VideoQuestion, MatchPairsQuestion
 } from "../model/question";
 
 const Log = debug('wbb:model:question');
@@ -21,6 +21,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
             question = validateFillBlanksQuestion(question);
         } else if (question.type == "multiple-choice") {
             question = validateMultipleChoiceQuestion(question);
+        } else if (question.type == "pair-matching"){
+            question = validateMatchPairsQuestion(question);
         } else {
             throw new ValidationError(`Invalid question.type '${question.type}'`, 400);
         }
@@ -123,7 +125,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
     /* TO DELETE CODE BELOW !! */
     router.get('/testQuery', (req, res) => {
         // what is this?
-        router.mongo('questions').find({}).toArray(function (error, documents) {
+        router.mongo('worlds').find({}).toArray(function (error, documents) {
             if (error) {
                 throw error;
             }

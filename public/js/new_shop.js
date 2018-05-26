@@ -1,111 +1,44 @@
 /* Toggle the PopUp Window that displays the quizzes */
 function toggleShopWindow() {
     //Set a variable to contain the DOM element of the overlay
-    // var overlay = document.getElementById("overlay_base");
+     var overlay = document.getElementById("overlay_base");
     //Set a variable to contain the DOM element of the popup
     var popup = document.getElementById("popup_base");
     // Toggle visibility of overlay and popup
     if (popup.style.display === "none" || popup.style.display === "") {
-        //  overlay.style.display = "block";
+          overlay.style.display = "block";
         popup.style.display = "block";
     } else {
-        //  overlay.style.display = "none";
+          overlay.style.display = "none";
         popup.style.display = "none";
         //document.getElementById("popup_base").innerHTML = "";
     }
+
+    const overlay_base = $('#overlay_base');
+    overlay_base.click(toggleShopWindow);
+}
+
+function closeShop(){
+    const overlay = $('#overlay');
+    const popup = $('#world-pop-up');
+
+    // Clear modified inline styles when popup is closed
+    popup.attr('style', '');
+
+    overlay.off('click');
+    overlay.hide();
+    popup.hide();
 }
 
 
-var testItemList = [
-    {
-        name: "Tree",
-        type: "plant",
-        price: 100,
-        image: "/assets/images/items/tree.png",
-        description: "A big tree."
-    },
-    {
-        name: "Penguin",
-        type: "animal",
-        price: 20,
-        image: "/assets/images/items/penguin.png",
-        description: "A cute little penguin."
-    },
-    {
-        name: "Ice Bear",
-        type: "animal",
-        price: 1000,
-        image: "/assets/images/items/ice_bear.png",
-        description: "The strongest and youngest bear."
-    },
-    {
-        name: "Yellow Bin",
-        type: "bin",
-        price: 10,
-        image: "/assets/images/items/yellow_bin.png",
-        description: "A bin that looks like it is made for disposing paper."
-    },
-    {
-        name: "Red Bin",
-        type: "bin",
-        price: 10,
-        image: "/assets/images/items/red_bin.png",
-        description: "A bin that looks like it is made for disposing plastic."
-    },
-    {
-        name: "Blue Bin",
-        type: "bin",
-        price: 10,
-        image: "/assets/images/items/blue_bin.png",
-        description: "A bin that looks like it is made for disposing metal."
-    },
-    {
-        name: "Green Bin",
-        type: "bin",
-        price: 10,
-        image: "/assets/images/items/green_bin.png",
-        description: "A bin that looks like it is made for disposing glass."
-    },
-    {
-        name: "Panda Bear",
-        type: "animal",
-        price: 1000,
-        image: "/assets/images/items/panda_bear.png",
-        description: "The bear link that holds them all together."
-    },
-    {
-        name: "Sunflower",
-        type: "plant",
-        price: 35,
-        image: "/assets/images/items/sunflower.png",
-        description: "Making your world more lively - one flower at a time."
-    },
-    {
-        name: "Grizzly Bear",
-        type: "animal",
-        price: 1000,
-        image: "/assets/images/items/grizzly_bear.png",
-        description: "The bubbly, hyperactive, loud and talkative bear."
-    },
-    {
-        name: "Turtle",
-        type: "animal",
-        price: 27,
-        image: "/assets/images/items/turtle.png",
-        description: "Save me from plastic bags!"
-    },
-    {
-        name: "Black Bin",
-        type: "bin",
-        price: 10,
-        image: "/assets/images/items/black_bin.png",
-        description: "A bin that looks like it is made for disposing landfill rubbish."
-    }
-
-];
-
+var items = [];
+var inventory = [];
 
 function populateShopMenu(show_type) {
+
+    if($('#popup_base').css("display") === "block"){
+        toggleShopWindow();
+    }
 
     // Get the items_container element of the HTML to add items for display
     var items_container = document.getElementById("items_container");
@@ -118,56 +51,57 @@ function populateShopMenu(show_type) {
     var add_item = 0;
     var new_item_HTML = "";
 
-    // Loop over items from database and determine whether to display them based on user selection
-    for (var i = 0; i < testItemList.length; i++) {
+    for (var index = 0; index < items.length; index++) {
 
         add_item = 0;
         new_item_HTML = "";
 
         // Determine whether to show the item
-        if (show_type == "tab_all") {
+        if (show_type === "tab_all") {
             add_item = 1;
         } else if (show_type === "tab_plants") {
-            if (testItemList[i].type === "plant") {
+            if (items[index].type === "plant") {
                 add_item = 1;
             }
         } else if (show_type === "tab_animals") {
-            if (testItemList[i].type === "animal") {
+            if (items[index].type === "animal") {
                 add_item = 1;
             }
         } else if (show_type === "tab_bins") {
-            if (testItemList[i].type === "bin") {
+            if (items[index].type === "bin") {
                 add_item = 1;
             }
         }
 
         // Add the HTML elements for the item if to be shown
-        if (add_item == 1) {
-            new_item_HTML +=
+        if (add_item === 1) {
+            new_item_HTML =
                 "<div>" +
-                "<button class='item_button' onclick='showDescription(" + JSON.stringify(testItemList[i]) + ")'>" +
-                "<img src='" + testItemList[i].image + "' class='shop_item' >" +
-                "<p>Name: <span class='name'>" + testItemList[i].name + "</span></p>" +
+                "<button class='item_button' onclick='showDescription(" + index + ")'>" +
+                "<img src='" + items[index].image + "' class='shop_item' >" +
+                "<p>Name: <span class='name'>" + items[index].name + "</span></p>" +
                 "<p class='price_container'>" +
                 "<span>Cost: </span>" +
-                "<span class='honey'>" + testItemList[i].price + "</span>" +
+                "<span class='honey'>" + items[index].price + "</span>" +
                 "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
                 "</p>" +
                 "</button>" +
                 "</div>";
         }
-
         items_container.innerHTML += new_item_HTML;
     }
+
 }
 
-function showDescription(item_obj) {
+
+function showDescription(item_index) {
     //Set a variable to contain the DOM element of the popup
     var popup_status = document.getElementById("popup_base").style.display;
     if (popup_status === "none" || popup_status === "") {
         toggleShopWindow();
     }
 
+    var item_obj = items[item_index];
     var name = item_obj.name;
     var price = item_obj.price;
     var description = item_obj.description;
@@ -185,15 +119,46 @@ function showDescription(item_obj) {
     attrib_container.innerHTML +=
         "<p class='price_container'>" +
         "<span>Cost: </span>" +
-        "<span class='honey'>" + price + "</span>" +
+        "<span id='honey_price' class='honey'>" + price + "</span>" +
         "<img src='/assets/images/honey_pot.png' width='25px' height='25px'>" +
-        "</p>"
-
+        "</p>";
 
     attrib_container.innerHTML += "<p><em>" + description + "</em></p>";
-    attrib_container.innerHTML += "<button onclick='alert(\"Credit card declined.\")'>Buy Item</button>";
-    attrib_container.innerHTML += "<button onclick='toggleShopWindow()'>Close</button>"
+    attrib_container.innerHTML += "<div class='purchase_detail'><button class='minus' onclick='updateQuantity(this)'>-</button>" +
+                                  "<pre>    <span id='purchase_quantity'>1</span>    </pre>" +
+                                  "<button class='add' onclick='updateQuantity(this)'>+</button></div>";
+
+    attrib_container.innerHTML += "<button onclick='purchaseItem(" + item_index + ")'>Buy Item</button>";
+    attrib_container.innerHTML += "<div ><button class='close-btn'onclick='toggleShopWindow()'>Close</button></div>"
+
 }
+
+
+function updateQuantity(updateButton){
+
+    var quantity_HTML = $('#purchase_quantity');
+    var price_HTML = $('#honey_price');
+
+    var amount = Number(quantity_HTML.html());
+    var item_price = Number(price_HTML.html())/amount;
+
+    if(updateButton.className === "minus"){
+        console.log("minus");
+        // cannot go below 0
+        if(amount <= 1){
+            return;
+        }
+        amount--;
+    } else if(updateButton.className === "add"){
+        console.log("plus");
+        amount++;
+    }
+
+    item_price *= amount;
+    quantity_HTML.html(amount);
+    price_HTML.html(item_price);
+}
+
 
 function changeActive(show_type) {
     var buttons_container = document.getElementById("tab_buttons");
@@ -205,6 +170,76 @@ function changeActive(show_type) {
     document.getElementById(show_type).className = "active";
 }
 
+
 wbbInit(function populateShopMenuHelper() {
-    populateShopMenu('tab_all');
+
+    Recyclabears.items.getShopItems().then(function(data){
+        items = data.docs;
+        populateShopMenu('tab_all');
+    });
+
+    Recyclabears.users.getInventory().then(function(data){
+        inventory = data;
+    });
+
 });
+
+
+function purchaseItem(item_index) {
+
+    alert("Purchasing!!! " + items[item_index].name);
+    var quantity = Number($('#purchase_quantity').html());
+    var total_price = items[item_index].price * quantity;
+    Recyclabears.users.updateWallet("minus", total_price).then(function () {
+
+        var purchase = items[item_index];
+        var inv_index = -1;
+        // search through the inventory to see if user already has one of the item
+        for(var i = 0; i < inventory.length; i++){
+            if(inventory[i].name === purchase.name){
+                inv_index = i;
+            }
+        }
+
+        if(inv_index === -1){
+
+            if(purchase.type === "bin"){
+                inventory.push({
+                    name: purchase.name,
+                    quantity: Number(quantity),
+                    image: purchase.image,
+                    type: purchase.type,
+                    bin_type: purchase.bin_type
+                })
+            } else {
+                inventory.push({
+                    name: purchase.name,
+                    quantity: Number(quantity),
+                    image: purchase.image,
+                    type: purchase.type
+                })
+            }
+
+        } else {
+            // how to save as number, not string ???
+            var new_quantity = Number(inventory[inv_index].quantity) + quantity;
+            inventory[inv_index].quantity = new_quantity;
+        }
+
+        Recyclabears.users.updateInventory(inventory).then(function (res) {
+            // TODO show popup showing purchase successful
+            console.log("Inventory successfully updated!");
+            alert(purchase.name + " x" + quantity + " bought!!");
+        }).catch(function (err) {
+            alert("Purchase failed");
+        });
+
+        updateHoney();
+
+    }).catch(function (err) {
+        // TODO show popup not enough honey
+        alert("Not enough honey!");
+    });
+
+}
+

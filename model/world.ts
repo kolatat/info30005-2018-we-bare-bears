@@ -6,10 +6,12 @@ export interface World {
     items: WorldItem[];
     rubbish: WorldRubbish[];
     lastDump: Date;
+    genesis: Date;
 };
 
 interface Item {
     name: string;
+    image: string;  // path to image
     x: number;
     y: number;
 };

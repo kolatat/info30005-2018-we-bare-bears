@@ -8,133 +8,137 @@ var quiz;
 
 /* Get input from user on number of questions to populate the quiz */
 function _generateQuizQuestions() {
-/*
+
     // Allow users to choose only between 1-5 questions
-    var num_questions = parseInt(prompt("How many questions would you like to answer? (1 - 5)"));
-    if (num_questions > 0 && num_questions <= 5) {
-        alert("Starting quiz with " + num_questions + " questions!");
-        _startQuiz(num_questions);
-    } else {
-        var quiz_container = document.getElementById("quiz_container");
-        quiz_container.innerHTML =
-            "<h2>Sorry! Please enter a valid integer between 1 and 5</h2>";
-    }
-    */
-    _startQuiz(1);
+    var quiz_container = $('#quiz_container');
+    quiz_container.attr('style', 'align-content: center');
+    quiz_container.html(
+        "<div id='quiz_content'>" +
+        "<h2>How many questions would you like to answer? (1 - 5)</h2>" +
+        "<div id='options_container'>" +
+        "<input id='answering_ques' type='number' min='1' max='5'>" +
+        "<button id='get_ques_btn' class='submit-btn'>Generate Questions!</button></div></div>"
+    );
+
+
+    document.getElementById("get_ques_btn").addEventListener("click", function () {
+        var num_questions = parseInt(document.getElementById("answering_ques").value);
+        if (num_questions > 0 && num_questions <= 5) {
+            //alert("Starting quiz with " + num_questions + " questions!");
+            _startQuiz(num_questions);
+
+            // Clear contents of container before displaying quizzes
+            var quiz_container = $('#quiz_container');
+            quiz_container.html("");
+
+            // Clear inline style
+            quiz_container.attr('style', '');
+
+        } else {
+            var quiz_container = document.getElementById("quiz_container");
+            quiz_container.innerHTML =
+                "<div id='quiz_content'>" +
+                "<h2>Sorry! Please enter a valid integer between 1 and 5</h2>" +
+                "<div id='options_container'>" +
+                "<button onclick='_generateQuizQuestions()' class='submit-btn'>Back</button></div></div>";
+        }
+
+    })
+
+
 }
 
 /* Start the Quiz */
 function _startQuiz(num_ques) {
 
-    // "{"docs":[
-    //      {"_id":"5af527c2e763b33fd8f6fef3",
-    //       "fill_blanks":[
-    //              {"type":"fill","value":"Glass made from"},
-    //              {"type":"blank","value":"recycled materials"},
-    //              {"type":"fill","value":"requires only"},
-    //              {"type":"blank","value":"40%"},
-    //              {"type":"fill","value":"of the energy needed to make glass from"},
-    //              {"type":"blank","value":"sand"}],
-    //       "answers":["recycled materials","40%","sand"],
-    //       "type":"fill-in-the-blanks",
-    //       "difficulty":"3",
-    //       "points":"2",
-    //       "created":"2018-05-11T05:18:58.947Z",
-    //       "createdBy":"1669233943192205"}]
-    // }"
-
-    //     this.question = ques_obj.fill_blanks;
-    //     this.answer = ques_obj.answers;
-    //     this.id = ques_obj.id;
-    //     this.points = Number(ques_obj.points);
-    //     this.difficulty = Number(ques_obj.difficulty);
-    var questions = [{
-        "type": "pair-matching",
-        "id": "1",
-        "points": "2",
-        "difficulty": "2",
-        "pairs": [
-            ["Cardboard", "pizza box"],
-            ["Landfill", "apple core"],
-            ["Glass", "empty jar of pasta sauce"],
-            ["Plastic", "water bottle"]
-        ]
-    },
-        {"fill_blanks" : [ { "type" : "fill", "value" : "Glass made from" }, { "type" : "blank", "value" : "recycled materials" }, { "type" : "fill", "value" : "requires only" }, { "type" : "blank", "value" : "40%" }, { "type" : "fill", "value" : "of the energy needed to make glass from" }, { "type" : "blank", "value" : "sand" } ], "answers" : [ "recycled materials", "40%", "sand" ], "type" : "fill-in-the-blanks", "difficulty" : "3", "points" : "2"},
-        {"question" : "Which of the following is not a benefit of recycling?", "type" : "multiple-choice", "answers" : { "correct" : "Speed up the extinction of turtles", "other" : [ "Decrease amount of rubbish sent to landfill", "Improve economy by encouraging innovation", "Save precious resources", "Reduce air and water pollution" ] }, "difficulty" : "2", "points" : "1"},
-        {"vid" : "kLtRi-w7AUE", "type" : "youtube-video", "difficulty" : "3", "points" : "2"},
-        {"fill_blanks" : [ { "type" : "fill", "value" : "A green bin is for" }, { "type" : "blank", "value" : "glass" }, { "type" : "fill", "value" : ", a blue bin is for" }, { "type" : "blank", "value" : "metal" }, { "type" : "fill", "value" : ", a" }, { "type" : "blank", "value" : "yellow" }, { "type" : "fill", "value" : "bin is for paper, and a " }, { "type" : "blank", "value" : "red" }, { "type" : "fill", "value" : "bin is for plastics." } ], "answers" : [ "glass", "metal", "yellow", "red" ], "type" : "fill-in-the-blanks", "difficulty" : "10", "points" : "10"},
-        {"question" : "Can I recycle empty milk bottles?", "type" : "multiple-choice", "answers" : { "correct" : "Yes, and no need to wash!", "other" : [ "Yes, but wash before!", "No, let's throw them away.", "I don't know.", "It depends on the weather." ] }, "difficulty" : "2", "points" : "1"},
-        {"vid" : "BaFpv03hq-4", "type" : "youtube-video", "difficulty" : "2", "points" : "2"}
-
-    ];
-
-    var question_list = [];
-    var numQues = 0;
-    var numVid = 0;
-
-    // Create new Question object based on the question type
-    for(var i = 0; i < questions.length; i++){
-        if (questions[i].type === "multiple-choice") {
-            var new_ques = new Mult_Question(questions[i]);
-            question_list.push(new_ques);
-            numQues++;
-        } else if(questions[i].type === "fill-in-the-blanks"){
-            var new_blanks = new Blanks_Question(questions[i]);
-            question_list.push(new_blanks);
-            numQues++;
-        } else if (questions[i].type === "youtube-video") {
-            var new_vid = new Video(questions[i]);
-            question_list.push(new_vid);
-            numVid++;
-        } else if (questions[i].type === "pair-matching") {
-            var new_matching = new Matching_Question(questions[i]);
-            question_list.push(new_matching);
-            numQues++;
-        }
-    }
-
-    // Create new Quiz object for current round of quizzes
-    quiz = new Quiz(question_list, numQues, numVid);
-
-    // Display the quiz
-    populate();
-    return 'done';
-
-    // Recyclabears.questions.getRandomQuestion(num_ques).then(function(data){
-    //     var questions = data.docs;
-    //     var question_list = [];
-    //     var numQues = 0;
-    //     var numVid = 0;
+    // Hard-coded questions - easier when modifying CSS
+    // var questions = [{
+    //     "type": "pair-matching",
+    //     "id": "1",
+    //     "points": "2",
+    //     "difficulty": "2",
+    //     "pairs": [
+    //         ["Cardboard", "pizza box"],
+    //         ["Landfill", "apple core"],
+    //         ["Glass", "empty jar of pasta sauce"],
+    //         ["Plastic", "water bottle"]
+    //     ]
+    // },
+    //     {"fill_blanks" : [ { "type" : "fill", "value" : "Glass made from" }, { "type" : "blank", "value" : "recycled materials" }, { "type" : "fill", "value" : "requires only" }, { "type" : "blank", "value" : "40%" }, { "type" : "fill", "value" : "of the energy needed to make glass from" }, { "type" : "blank", "value" : "sand" } ], "answers" : [ "recycled materials", "40%", "sand" ], "type" : "fill-in-the-blanks", "difficulty" : "3", "points" : "2"},
+    //     {"question" : "Which of the following is not a benefit of recycling?", "type" : "multiple-choice", "answers" : { "correct" : "Speed up the extinction of turtles", "other" : [ "Decrease amount of rubbish sent to landfill", "Improve economy by encouraging innovation", "Save precious resources", "Reduce air and water pollution" ] }, "difficulty" : "2", "points" : "1"},
+    //     {"vid" : "kLtRi-w7AUE", "type" : "youtube-video", "difficulty" : "3", "points" : "2"},
+    //     {"fill_blanks" : [ { "type" : "fill", "value" : "A green bin is for" }, { "type" : "blank", "value" : "glass" }, { "type" : "fill", "value" : ", a blue bin is for" }, { "type" : "blank", "value" : "metal" }, { "type" : "fill", "value" : ", a" }, { "type" : "blank", "value" : "yellow" }, { "type" : "fill", "value" : "bin is for paper, and a " }, { "type" : "blank", "value" : "red" }, { "type" : "fill", "value" : "bin is for plastics." } ], "answers" : [ "glass", "metal", "yellow", "red" ], "type" : "fill-in-the-blanks", "difficulty" : "10", "points" : "10"},
+    //     {"question" : "Can I recycle empty milk bottles?", "type" : "multiple-choice", "answers" : { "correct" : "Yes, and no need to wash!", "other" : [ "Yes, but wash before!", "No, let's throw them away.", "I don't know.", "It depends on the weather." ] }, "difficulty" : "2", "points" : "1"},
+    //     {"vid" : "BaFpv03hq-4", "type" : "youtube-video", "difficulty" : "2", "points" : "2"}
     //
-    //     // Create new Question object based on the question type
-    //     for(var i = 0; i < questions.length; i++){
-    //         if (questions[i].type === "multiple-choice") {
-    //             var new_ques = new Mult_Question(questions[i]);
-    //             question_list.push(new_ques);
-    //             numQues++;
-    //         } else if(questions[i].type === "fill-in-the-blanks"){
-    //             var new_blanks = new Blanks_Question(questions[i]);
-    //             question_list.push(new_blanks);
-    //             numQues++;
-    //         } else if (questions[i].type === "youtube-video") {
-    //             var new_vid = new Video(questions[i]);
-    //             question_list.push(new_vid);
-    //             numVid++;
-    //         } else if (questions[i].type === "pair-matching") {
-    //             var new_matching = new Matching_Question(questions[i]);
-    //             question_list.push(new_matching);
-    //             numQues++;
-    //         }
+    // ];
+    //
+    // var question_list = [];
+    // var numQues = 0;
+    // var numVid = 0;
+    //
+    // // Create new Question object based on the question type
+    // for(var i = 0; i < questions.length; i++){
+    //     if (questions[i].type === "multiple-choice") {
+    //         var new_ques = new Mult_Question(questions[i]);
+    //         question_list.push(new_ques);
+    //         numQues++;
+    //     } else if(questions[i].type === "fill-in-the-blanks"){
+    //         var new_blanks = new Blanks_Question(questions[i]);
+    //         question_list.push(new_blanks);
+    //         numQues++;
+    //     } else if (questions[i].type === "youtube-video") {
+    //         var new_vid = new Video(questions[i]);
+    //         question_list.push(new_vid);
+    //         numVid++;
+    //     } else if (questions[i].type === "pair-matching") {
+    //         var new_matching = new Matching_Question(questions[i]);
+    //         question_list.push(new_matching);
+    //         numQues++;
     //     }
+    // }
     //
-    //     // Create new Quiz object for current round of quizzes
-    //     quiz = new Quiz(question_list, numQues, numVid);
+    // // Create new Quiz object for current round of quizzes
+    // quiz = new Quiz(question_list, numQues, numVid);
     //
-    //     // Display the quiz
-    //     populate();
-    //     return 'done';
-    // });
+    // // Display the quiz
+    // populate();
+    // return 'done';
+
+    Recyclabears.questions.getRandomQuestion(num_ques).then(function(data){
+        var questions = data.docs;
+        var question_list = [];
+        var numQues = 0;
+        var numVid = 0;
+
+        // Create new Question object based on the question type
+        for(var i = 0; i < questions.length; i++){
+            if (questions[i].type === "multiple-choice") {
+                var new_ques = new Mult_Question(questions[i]);
+                question_list.push(new_ques);
+                numQues++;
+            } else if(questions[i].type === "fill-in-the-blanks"){
+                var new_blanks = new Blanks_Question(questions[i]);
+                question_list.push(new_blanks);
+                numQues++;
+            } else if (questions[i].type === "youtube-video") {
+                var new_vid = new Video(questions[i]);
+                question_list.push(new_vid);
+                numVid++;
+            } else if (questions[i].type === "pair-matching") {
+                var new_matching = new Matching_Question(questions[i]);
+                question_list.push(new_matching);
+                numQues++;
+            }
+        }
+
+        // Create new Quiz object for current round of quizzes
+        quiz = new Quiz(question_list, numQues, numVid);
+
+        // Display the quiz
+        populate();
+        return 'done';
+    });
 }
 
 /* Populate the page with a question Object */
@@ -147,7 +151,7 @@ function populate() {
 
         // Can only earn honey if user completed the whole quiz
         Recyclabears.users.updateWallet("add", Number(quiz.totalHoney)).then(function () {
-            updatePrice();
+            updateHoney();
         });
     }
 

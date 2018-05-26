@@ -26,14 +26,13 @@ export function initRouter(router: WbbRouter): WbbRouter {
             $setOnInsert: <World>{
                 owner: owner,
                 items: [],
-                rubbish: []
+                rubbish: [],
+                genesis: new Date()
             },
-            /* Commenting out so that lastDump is not always being updated
             $currentDate: {
                 lastDump: {$type: 'date'},
-                genesis: {$type: 'date'}
+               // genesis: {$type: 'date'}
             }
-            */
         }, {
             new: true,
             upsert: true

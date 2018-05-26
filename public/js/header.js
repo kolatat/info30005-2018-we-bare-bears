@@ -30,18 +30,19 @@ function toggleNavMenu() {
 // Check size of window for handling of navigation element styles
 $(window).resize(function () {
 
-    // Clear inline styles when window is resized beyond 720px or maximised
-    if (!window.matchMedia("(max-width: 720px)").matches || screen.width === window.innerWidth) {
+    if (!window.matchMedia("(max-width: 760px)").matches || screen.width === window.innerWidth) {
+
+        // Clear inline styles when window is resized beyond 760px or maximised
         $('#navigation').attr('style', '');
     }
 
-    // If the screen is 720px or less -- do nothing
+    // If the screen is 760px or less -- do nothing
 
 });
 
 
 /* Updates the strings that should show the user's waller amount */
-updatePrice = function () {
+updateHoney = function () {
     Recyclabears.users.me().then(function (data) {
         var user_name = data.name;
         var honey_amount = data.wallet;
@@ -67,7 +68,7 @@ updatePrice = function () {
     });
 };
 
-wbbInit(updatePrice);
+wbbInit(updateHoney);
 
 function updateProfilePicture() {
     $('img#user_dp').attr('src', Recyclabears.users.getUserDpUrl());
