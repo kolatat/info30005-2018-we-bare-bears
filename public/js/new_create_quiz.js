@@ -153,8 +153,8 @@ function submitQuestion(event) {
 
             // Create the question object
             new_question = {
-                question: form["question"].value,
                 type: form.className,
+                question: form["question"].value,
                 answers: {
                     correct: form["correct_ans"].value,
                     other: answer_options
@@ -190,9 +190,9 @@ function submitQuestion(event) {
             }
 
             new_question = {
+                type: form.className,
                 fill_blanks: fill_blanks,
                 answers: answers,
-                type: form.className,
                 difficulty: Number(form["difficulty"].value),
                 points: Number(form["points"].value)
             };
@@ -206,8 +206,8 @@ function submitQuestion(event) {
         } else if (input_fields_wrap.id === "input_fields_video") {
 
             new_question = {
-                vid: form["vid"].value,
                 type: form.className,
+                vid: form["vid"].value,
                 difficulty: Number(form["difficulty"].value),
                 points: Number(form["points"].value)
             };
@@ -328,6 +328,8 @@ function previewBlanks(ques_details, preview) {
 
     // Preview Content
     var content_HTML = preview + '<br>';
+    content_HTML += '<p>Difficulty level: ' + ques_details.difficulty + '</p>';
+    content_HTML += '<p>Score points: ' + ques_details.points + '</p>';
 
     // Back button if they changed their mind
     var back_button_HTML = '<button onclick="toggleMessageWindow();">Back</button>';
@@ -359,6 +361,8 @@ function previewMatching(ques_details){
         content_HTML += " ]</p></div>";
     }
     content_HTML += "</div>";
+    content_HTML += '<p>Difficulty level: ' + ques_details.difficulty + '</p>';
+    content_HTML += '<p>Score points: ' + ques_details.points + '</p>';
 
     // Back button if they changed their mind
     var back_button_HTML = '<div><button onclick="toggleMessageWindow();">Back</button>';
