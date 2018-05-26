@@ -202,6 +202,7 @@ function submitQuestion(event) {
             var msg_container = document.getElementById("msg_insert");
             var preview_text = document.getElementById("preview_container").innerHTML;
             msg_container.innerHTML = previewBlanks(new_question, preview_text);
+
         } else if (input_fields_wrap.id === "input_fields_video") {
 
             new_question = {
@@ -216,7 +217,28 @@ function submitQuestion(event) {
             var msg_container = document.getElementById("msg_insert");
             var preview_text = document.getElementById("preview_container").innerHTML;
             msg_container.innerHTML = previewBlanks(new_question, preview_text);
+
+        } else if (input_fields_wrap.id === "input_fields_match"){
+
+            new_question = {
+                type: form.className,
+                difficulty: Number(form["difficulty"].value),
+                points: Number(form["points"].value),
+                pairs: [
+                    [form["pair_1_a"].value, form["pair_1_b"].value],
+                    [form["pair_2_a"].value, form["pair_2_b"].value],
+                    [form["pair_3_a"].value, form["pair_3_b"].value],
+                    [form["pair_4_a"].value, form["pair_4_b"].value]
+                ]
+            };
+
+            // Preview the question to user before POST-ing to database
+            toggleMessageWindow();
+            var msg_container = document.getElementById("msg_insert");
+            msg_container.innerHTML = previewMatching(new_question);
+
         }
+
 
         console.log(new_question);
 
@@ -314,6 +336,38 @@ function previewBlanks(ques_details, preview) {
     var submit_button_HTML = '<button id="submitDataButton">Submit!</button>';
 
     return preview_HTML + content_HTML + back_button_HTML + submit_button_HTML;
+}
+
+
+function previewMatching(ques_details){
+    // Preview Header
+    var preview_HTML = '<h1>Preview Matching Pairs</h1>';
+
+    // Preview Content
+    var content_HTML = "<div><p>Your four pairs are: ";
+    console.log(ques_details.pairs);
+    for(var pairs = 0; pairs < ques_details.pairs.length; pairs++){
+        content_HTML += "<div><p>[ "
+        for(var match = 0; match < 2; match++){
+            content_HTML += "<span class='prev-pair'>" + ques_details.pairs[pairs][match] + "</span>";
+
+            if(match === 0){
+                content_HTML += " | ";
+            }
+
+        }
+        content_HTML += " ]</p></div>";
+    }
+    content_HTML += "</div>";
+
+    // Back button if they changed their mind
+    var back_button_HTML = '<div><button onclick="toggleMessageWindow();">Back</button>';
+
+    // Submit button to submit this question to database
+    var submit_button_HTML = '<button id="submitDataButton">Submit!</button></div>';
+
+    return preview_HTML + content_HTML + back_button_HTML + submit_button_HTML;
+
 }
 
 /************************************************************************************/
@@ -455,4 +509,52 @@ function _createVideo() {
 
     // Final display of create container
     create_container.html(head_HTML + preview_HTML.join(" ") + form_HTML.join(" "));
+}
+
+/* Display interface for creating a Multiple Choice question */
+function _createMatching() {
+    // Hide the Create Page Menu
+    $('#create_page_content').hide();
+
+    // Get the container element that will contain the quiz
+    var create_container = document.getElementById("create_container");
+    create_container.innerHTML = "";  // Reset the container element for each use
+
+    // HTML Strings for MCQ Page
+    var head_HTML = '<div id="create_header"><h1>Create your matching pairs!</h1></div>';
+    var create_content_HTML = '<div id="create_content">';
+
+    // HTML String for form element to input question details
+    var form_HTML = [];
+    form_HTML.push('<form id="createQuestion" class="pair-matching" onsubmit="submitQuestion(event)">');
+    form_HTML.push('<p class="container_text">Make four pairs of matching options:</p>');
+
+    // HTML String for alternate answer options
+    var input_container_HTML = [];
+    input_container_HTML.push('<div id="input_fields_match" class="input_fields_wrap">');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-1 pairs" type="text" name="pair_1_a" required>');
+    input_container_HTML.push('<input class="pair-1 pairs" type="text" name="pair_1_b" required></div>');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-2 pairs" type="text" name="pair_2_a" required>');
+    input_container_HTML.push('<input class="pair-2 pairs" type="text" name="pair_2_b" required></div>');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-3 pairs" type="text" name="pair_3_a" required>');
+    input_container_HTML.push('<input class="pair-3 pairs" type="text" name="pair_3_b" required></div>');
+    input_container_HTML.push('<div class="pair-div"><input class="pair-4 pairs" type="text" name="pair_4_a" required>');
+    input_container_HTML.push('<input class="pair-4 pairs" type="text" name="pair_4_b" required></div>');
+    input_container_HTML.push('</div>');
+    form_HTML.push(input_container_HTML.join(" "));
+
+    //HTML String for input of some extra information
+    form_HTML.push('<p class="container-text">Difficulty Level: </p>');
+    form_HTML.push('<input type="number" name="difficulty" required>');
+    form_HTML.push('<p class="container-text">Score points: </p>');
+    form_HTML.push('<input type="number" name="points" required>');
+
+    // Complete the form element HTML string
+    form_HTML.push('<button type="submit">Submit!</button>');
+    form_HTML.push('</form>');
+
+    create_content_HTML += form_HTML.join(" ");
+
+    // Final display of create container
+    create_container.innerHTML = head_HTML + create_content_HTML;
 }
