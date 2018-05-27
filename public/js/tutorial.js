@@ -26,16 +26,16 @@ function getTutorialPage(page){
 function getPrevNextButtons(page){
     var buttonsHTML = "";
     if(page - 1 >= 0){
-        buttonsHTML += "<button class='left-green-button' onclick='getTutorialPage(" + (page - 1) + ")'>Previous</button>";
+        buttonsHTML += "<button class='green-button' onclick='getTutorialPage(" + (page - 1) + ")'>Previous</button>";
     }
     else{
         buttonsHTML += "<button class='grayed-button'>Previous</button>";
     }
     if(page + 1 <= 4){
-        buttonsHTML += "<button class='left-green-button' onclick='getTutorialPage(" + (page + 1) + ")'>Next</button>";
+        buttonsHTML += "<button class='green-button' onclick='getTutorialPage(" + (page + 1) + ")'>Next</button>";
     }
     else{
-        buttonsHTML += "<button class='right-orange-button' onclick='closeWelcome()'>Close</button>";
+        buttonsHTML += "<button class='orange-button' onclick='closeWelcome()'>Close</button>";
     }
     return buttonsHTML;
 }
