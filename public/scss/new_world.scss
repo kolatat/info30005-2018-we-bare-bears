@@ -126,8 +126,84 @@ img.inv_item {
   top:0px;         //This positions the element to the top most position
   width:100%;      //This makes the element take up 100% of the parents width
   height:100%;     //This makes the element take up 100% of the parents height
-//  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  //  background: $color-transparent-50; //Give it a black background, with alpha-transparency
   z-index:50;   //Let overlay be below edit button
   overflow:hidden;
+
+}
+
+#tutorial {
+  background: url("/assets/images/halftone-yellow.png") repeat;
+  opacity: 0.9;
+  position: absolute;
+  width: 45%;
+  min-width: 300px;
+  top: 50%;
+  left: 50%;
+  padding: 20px 20px 20px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  font-family: Raleway, sans-serif;
+  font-size: medium;
+  text-align: center;
+  border: 3px dashed #f05249;
+  border-radius: 6px;
+  z-index: 101;
+
+  display: grid;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  grid-template-columns: auto;
+
+  p {
+    font-size: large;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: 0;
+  }
+
+  h2 {
+    color: #f05249;
+    line-height: 100%;
+    font-family: $averia-libre;
+    font-size: 40px;
+    grid-row-start: 1;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: 0;
+  }
+
+  .left-green-button{
+    background: $color-green;
+    //grid-row-end: 2;
+  }
+
+  .right-orange-button{
+    background: $color-orange;
+    //grid-row-end: 2;
+  }
+
+  .grayed-button{
+    background: #B6C1C9;
+    cursor: initial;
+  }
+
+  .grayed-button:hover{
+    color: initial;
+  }
+
+  button{
+    font-family: $raleway;
+    font-size: 1.3em;
+    cursor: pointer;
+    border: 0;
+    grid-row-start: 3;
+    //border-radius: 10px;
+  }
+
+  button:hover{
+    color: white;
+  }
 
 }

@@ -122,8 +122,69 @@ function checkFirstTime() {
     });
 }
 
+
+
 wbbInit(worldPageInit);
 wbbInit(checkFirstTime);
+wbbInit(welcomePopup);
+
+/*************************************************************************/
+/********************* FUNCTIONS FOR RUNNING TUTORIAL ********************/
+
+/*************************************************************************/
+
+function welcomePopup(){
+    Recyclabears.users.me().then(function (data){
+        var tutorialDiv = document.getElementById("tutorial");
+        tutorialDiv.innerHTML = "<h2>Welcome " + data.name.substr(0,data.name.indexOf(' ')) + "!</h2>";
+        tutorialDiv.innerHTML += "<button class='left-green-button' onclick='getTutorialPage(0)'>Take a Tour</button>";
+        tutorialDiv.innerHTML += "<button class='right-orange-button' onclick='closeWelcome()'>Close</button>";
+    });
+}
+
+function closeWelcome() {
+    document.getElementById("tutorial").style.display = 'none';
+}
+
+function getTutorialPage(page){
+    var tutorialDiv = document.getElementById("tutorial");
+    tutorialDiv.innerHTML = "";
+    if(page == 0){
+        tutorialDiv.innerHTML += "<h2>World</h2><p>This is where you decorate your house with items and clean up rubbish</p>";
+    }
+    if(page == 1){
+        tutorialDiv.innerHTML += "<h2>Play</h2><p>This is where you can play quizzes and earn honey pots to buy items with</p>";
+    }
+    if(page == 2){
+        tutorialDiv.innerHTML += "<h2>Learn</h2><p>This is where you can learn extra information on recycling.</p>";
+    }
+    if(page == 3){
+        tutorialDiv.innerHTML += "<h2>Friends</h2><p>This is where you add your friends and visit their worlds.</p>";
+    }
+    if(page == 4){
+        tutorialDiv.innerHTML += "<h2>Shop</h2><p>This is where you can buy items for your world with your honey pots.</p>";
+    }
+
+    tutorialDiv.innerHTML += getPrevNextButtons(page);
+
+}
+
+function getPrevNextButtons(page){
+    var buttonsHTML = "";
+    if(page - 1 >= 0){
+        buttonsHTML += "<button class='left-green-button' onclick='getTutorialPage(" + (page - 1) + ")'>Previous</button>";
+    }
+    else{
+        buttonsHTML += "<button class='grayed-button'>Previous</button>";
+    }
+    if(page + 1 <= 4){
+        buttonsHTML += "<button class='left-green-button' onclick='getTutorialPage(" + (page + 1) + ")'>Next</button>";
+    }
+    else{
+        buttonsHTML += "<button class='right-orange-button' onclick='closeWelcome()'>Close</button>";
+    }
+    return buttonsHTML;
+}
 
 /*************************************************************************/
 /********************* FUNCTIONS FOR POPULATING WORLD ********************/
@@ -353,7 +414,6 @@ function populateItemMenu(show_type) {
 
     // Show a message to indicate to users that there is nothing in inventory
     if (inventory.length == 0) {
-
         items_container.innerHTML += "<div id='no-item'><p>No items in your inventory yet. Play quizzes and buy items!</p></div>";
     }
 
