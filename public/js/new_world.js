@@ -116,8 +116,7 @@ function worldPageInit() {
 function checkFirstTime() {
     Recyclabears.users.isFirstTime().then(function (isFirstTime) {
         if (isFirstTime) {
-            alert('This is my first time idk how to play!!!');
-            // TODO show tutorial
+            welcomePopup();
         }
     });
 }
@@ -126,7 +125,6 @@ function checkFirstTime() {
 
 wbbInit(worldPageInit);
 wbbInit(checkFirstTime);
-wbbInit(welcomePopup);
 
 /*************************************************************************/
 /********************* FUNCTIONS FOR RUNNING TUTORIAL ********************/
@@ -149,6 +147,7 @@ function closeWelcome() {
     document.getElementById("overlay-tutorial").style.display = "none";
     highlightNav(-1);
     document.getElementById("navigation").style.zIndex = "200";
+    Recyclabears.users.completeTutorial();
 }
 
 function getTutorialPage(page){
