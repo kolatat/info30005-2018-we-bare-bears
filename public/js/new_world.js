@@ -139,6 +139,7 @@ function welcomePopup(){
         tutorialDiv.innerHTML = "<h2>Welcome " + data.name.substr(0,data.name.indexOf(' ')) + "!</h2>";
         tutorialDiv.innerHTML += "<button class='left-green-button' onclick='getTutorialPage(0)'>Take a Tour</button>";
         tutorialDiv.innerHTML += "<button class='right-orange-button' onclick='closeWelcome()'>Close</button>";
+        tutorialDiv.style.display = "grid";
         document.getElementById("overlay-tutorial").style.display = "block";
     });
 }
@@ -146,9 +147,12 @@ function welcomePopup(){
 function closeWelcome() {
     document.getElementById("tutorial").style.display = 'none';
     document.getElementById("overlay-tutorial").style.display = "none";
+    highlightNav(-1);
+    document.getElementById("navigation").style.zIndex = "200";
 }
 
 function getTutorialPage(page){
+    highlightNav(page);
     var tutorialDiv = document.getElementById("tutorial");
     tutorialDiv.innerHTML = "";
     if(page == 0){
@@ -167,12 +171,6 @@ function getTutorialPage(page){
         tutorialDiv.innerHTML += "<h2>Shop</h2><p>This is where you can buy items for your world with your honey pots.</p>";
     }
     tutorialDiv.innerHTML += getPrevNextButtons(page);
-
-    var naviDiv = document.getElementById("navigation");
-    for(var element in naviDiv.getElementsByTagName("a")){
-        element.style.backgroundColor = "green";
-    }
-
 }
 
 function getPrevNextButtons(page){
@@ -190,6 +188,20 @@ function getPrevNextButtons(page){
         buttonsHTML += "<button class='right-orange-button' onclick='closeWelcome()'>Close</button>";
     }
     return buttonsHTML;
+}
+
+function highlightNav(index){
+    var navNodes = document.getElementById("navigation").getElementsByTagName("a");
+    document.getElementById("navigation").style.zIndex = "500";
+    for(var i = 0; i < navNodes.length; i++) {
+        if (i == index){
+            navNodes[i].style.background = "#FCE185";
+
+        }
+        else{
+            navNodes[i].style.background = "none";
+        }
+    }
 }
 
 /*************************************************************************/

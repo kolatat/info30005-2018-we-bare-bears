@@ -150,7 +150,8 @@ img.inv_item {
   border-radius: 6px;
   z-index: 350;
 
-  display: grid;
+
+  display: none;
   grid-column-gap: 25px;
   grid-row-gap: 25px;
   grid-template-columns: auto;
