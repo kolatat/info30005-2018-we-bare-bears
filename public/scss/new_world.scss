@@ -126,8 +126,9 @@ img.inv_item {
   top:0px;         //This positions the element to the top most position
   width:100%;      //This makes the element take up 100% of the parents width
   height:100%;     //This makes the element take up 100% of the parents height
-//  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+  //  background: $color-transparent-50; //Give it a black background, with alpha-transparency
   z-index:50;   //Let overlay be below edit button
   overflow:hidden;
 
 }
+

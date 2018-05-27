@@ -101,7 +101,7 @@ function worldPageInit() {
     $overlay.css({"top": $('#container').css("top")});
 
     // Get inventory before populating world for checkItems() to work properly
-    Recyclabears.users.getInventory().then(function(data){
+    Recyclabears.users.getInventory().then(function (data) {
         inventory = data;
         populateItemMenu('tab_all');
 
@@ -113,20 +113,49 @@ function worldPageInit() {
     });
 }
 
+function checkFirstTime() {
+    Recyclabears.users.isFirstTime().then(function (isFirstTime) {
+        if (isFirstTime) {
+            welcomePopup();
+        }
+    });
+}
+
+
+
 wbbInit(worldPageInit);
+wbbInit(checkFirstTime);
+
+/*************************************************************************/
+/********************* FUNCTIONS FOR RUNNING TUTORIAL ********************/
+
+/*************************************************************************/
+
+function welcomePopup(){
+    Recyclabears.users.me().then(function (data){
+        var tutorialDiv = document.getElementById("tutorial");
+        tutorialDiv.innerHTML = "<h2>Welcome " + data.name.substr(0,data.name.indexOf(' ')) + "!</h2>";
+        tutorialDiv.innerHTML += "<button class='left-green-button' onclick='getTutorialPage(0)'>Take a Tour</button>";
+        tutorialDiv.innerHTML += "<button class='right-orange-button' onclick='closeWelcome()'>Close</button>";
+        tutorialDiv.style.display = "grid";
+        document.getElementById("overlay-tutorial").style.display = "block";
+    });
+}
+
 
 /*************************************************************************/
 /********************* FUNCTIONS FOR POPULATING WORLD ********************/
+
 /*************************************************************************/
 
 function populateWorld(world) {
     console.log("HELLO WORLD!!!!");
 
-  /*  // Display bins [TESTING COLLISION]
-    for (var item in worldItems) {
-        // console.log(JSON.stringify(worldItems[item]));
-        showInWorld(worldItems[item]);
-    }*/
+    /*  // Display bins [TESTING COLLISION]
+      for (var item in worldItems) {
+          // console.log(JSON.stringify(worldItems[item]));
+          showInWorld(worldItems[item]);
+      }*/
 
     // Display user placed items
     for (var item in world.items) {
@@ -137,7 +166,7 @@ function populateWorld(world) {
     }
 
     // Check how many of each item has been placed on world
-    for(var inv_item in inventory){
+    for (var inv_item in inventory) {
         checkItems(inventory[inv_item].name);
     }
 
@@ -172,22 +201,22 @@ function saveWorld() {
 
     // If array empty, send "empty" string and update the user's world items to empty array
     var updateObj;
-    if(updateList.length === 0){
-        updateObj = { items: "empty" };
+    if (updateList.length === 0) {
+        updateObj = {items: "empty"};
     } else {
-        updateObj = { items: updateList };
+        updateObj = {items: updateList};
     }
-    Recyclabears.worlds.updateWorld('me', updateObj ).then(function () {
+    Recyclabears.worlds.updateWorld('me', updateObj).then(function () {
         saveBtn.text('Saved');
 
         function restore() {
-           // saveBtn.text('Save');
+            // saveBtn.text('Save');
             saveBtn.text('Edit');
             saveBtn.prop('disabled', false);
             saveBtn.attr('onclick', "editWorld()");
-           // saveBtn.hide();
+            // saveBtn.hide();
 
-            $('.overlay').css({"display":"block"});
+            $('.overlay').css({"display": "block"});
             $('.delete-img').css("visibility", "hidden");
         }
 
@@ -225,7 +254,7 @@ function editWorld() {
     saveBtn.attr("onclick", "saveWorld()");
 
 
-    $('.overlay').css({"display":"none"});
+    $('.overlay').css({"display": "none"});
     $('.delete-img').css("visibility", "visible");
 
 
@@ -249,7 +278,7 @@ function checkDumpSession(world) {
     }
     // If world already has too much rubbish, stop producing more
     // P/s cleaning up x50 rubbish is not fun -- but i'm richer nao
-    if(world.rubbish.length >= 20){
+    if (world.rubbish.length >= 20) {
         rubbishAmt = 0;
         console.log("World is super dirty, no more rubbish to be added for now");
     }
@@ -309,10 +338,10 @@ function displayRubbish(world, rubbish) {
 }
 
 /* Get the index in rubbishList array of rubbish to be removed */
-function indexOfRubbishList(findObjId){
+function indexOfRubbishList(findObjId) {
 
-    for(var i = 0; i < rubbishList.length; i++){
-        if(findObjId !== rubbishList[i].id)
+    for (var i = 0; i < rubbishList.length; i++) {
+        if (findObjId !== rubbishList[i].id)
             continue;
 
         return i;
@@ -323,6 +352,7 @@ function indexOfRubbishList(findObjId){
 
 /*************************************************************************/
 /********************** FUNCTIONS FOR THE INVENTORY **********************/
+
 /*************************************************************************/
 
 function populateItemMenu(show_type) {
@@ -340,8 +370,7 @@ function populateItemMenu(show_type) {
     var new_item_HTML = "";
 
     // Show a message to indicate to users that there is nothing in inventory
-    if(inventory.length == 0){
-
+    if (inventory.length == 0) {
         items_container.innerHTML += "<div id='no-item'><p>No items in your inventory yet. Play quizzes and buy items!</p></div>";
     }
 
@@ -370,15 +399,15 @@ function populateItemMenu(show_type) {
 
         // Add the HTML elements for the item if to be shown
         if (add_item == 1) {
-            var functionName = "showInWorldEditable(" + JSON.stringify(inventory[i]) + "); checkItems(\""+inventory[i].name+"\")";
+            var functionName = "showInWorldEditable(" + JSON.stringify(inventory[i]) + "); checkItems(\"" + inventory[i].name + "\")";
             new_item_HTML +=
                 "<div class='item'>" +
                 "<button id='inv-btn-" + i + "' class='item_desc' onclick='" + functionName + "'>" +
                 "<img src='" + inventory[i].image + "' class='inv_item' >" +
                 "<p>Name: <span class='name'>" + inventory[i].name + "</span></p>" +
                 "<p>Placed: <span class='placed'>0</span> || Quantity: <span class='price'>" + inventory[i].quantity + "</span></p>" +
-            "</button>" +
-            "</div>";
+                "</button>" +
+                "</div>";
         }
 
         items_container.innerHTML += new_item_HTML;
@@ -418,12 +447,15 @@ var rubbishList = [];
 // Attach as id to the DOM element to allow referencing to rubbishList when needed
 var nextRubbishIndex = 0;
 
-function showInWorldEditable(obj, edit=true) {
+function showInWorldEditable(obj, edit) {
+    if (isNullOrUndefined(edit)) {
+        edit = true;
+    }
     var sf = getScaleFactors();
     var size = (120 * sf.mx) + 'px';
 
     var className = "item-to-move";
-    if(obj.type === "bin")
+    if (obj.type === "bin")
         className += " " + obj.bin_type;
 
     var gObj = {
@@ -484,7 +516,7 @@ function deleteDiv(obj) {
 }
 
 /* Check how many of the items have been placed on world */
-function checkItems(itemName){
+function checkItems(itemName) {
     console.log("In check Items");
 
     // find how many items of this type has been placed on world
@@ -492,8 +524,8 @@ function checkItems(itemName){
     console.log(onWorld + "x " + itemName);
 
     // find the matching item in the inventory list
-    for(var i = 0; i < inventory.length; i++){
-        if(itemName === inventory[i].name){
+    for (var i = 0; i < inventory.length; i++) {
+        if (itemName === inventory[i].name) {
             // get the HTML button of this item from item menu
             var button = $('#inv-btn-' + i);
 
@@ -501,8 +533,8 @@ function checkItems(itemName){
             $(button).find("span.placed").html(onWorld);
 
             // check the quantity of item in inventory, and enable/disable accordingly
-            if(onWorld >= inventory[i].quantity){
-               button.attr("disabled", true);
+            if (onWorld >= inventory[i].quantity) {
+                button.attr("disabled", true);
             } else {
                 button.attr("disabled", false);
             }
@@ -533,7 +565,7 @@ function dragElement2(obj) {
         cx = e.clientX;
         cy = e.clientY;
         obj.redraw();
-       // worldEdited();
+        // worldEdited();
     }
 
     function closeDrag(e) {
@@ -608,7 +640,7 @@ function checkCollision(dom, bins) {
             var removed_index = indexOfRubbishList(obj_id_to_remove);
             console.log("Found index: " + removed_index);
 
-            if(removed_index >= 0){
+            if (removed_index >= 0) {
                 rubbishList.splice(removed_index, 1);
                 console.log("Updated: Rubbish List");
                 console.log(rubbishList);
@@ -631,21 +663,21 @@ function checkCollision(dom, bins) {
 
                 // If array empty, send "empty" string and update the user's world rubbish to empty array
                 var send_obj;
-                if(updateRubbishList.length === 0){
-                    send_obj = { rubbish: "empty" };
+                if (updateRubbishList.length === 0) {
+                    send_obj = {rubbish: "empty"};
                 } else {
-                    send_obj = { rubbish: updateRubbishList };
+                    send_obj = {rubbish: updateRubbishList};
                 }
 
-                Recyclabears.worlds.updateWorld('me',send_obj).then(function(){
+                Recyclabears.worlds.updateWorld('me', send_obj).then(function () {
                     console.log("Removed rubbish!");
-                }).catch (function(error){
+                }).catch(function (error) {
                     console.log(error);
                 });
 
 
                 // Update wallet
-                Recyclabears.users.updateWallet("add", 1).then(function(){
+                Recyclabears.users.updateWallet("add", 1).then(function () {
                     updateHoney();
                 });
 
@@ -680,7 +712,7 @@ function collide(dom, obj) {
 }
 
 function overlap(point, obj) {
-   // console.log("point " + point);
+    // console.log("point " + point);
     //console.log("obj " + obj);
     // obj = coords as follows [left, right, top, bottom]
     if (obj[0] <= point[0] && point[0] <= obj[1] &&

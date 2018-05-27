@@ -106,6 +106,10 @@ function statusChangeCallback(response) {
     }
 }
 
+function isNullOrUndefined(variable) {
+    return variable == null || typeof(variable) === 'undefined';
+}
+
 var Recyclabears = {
     __fbAuth: null,
     __apiCall: function (method, url, data) {
@@ -155,6 +159,22 @@ var Recyclabears = {
     users: {
         me: function () {
             return Recyclabears.__apiCall('GET', '/api/users/me');
+        },
+        isFirstTime: function () {
+            return Recyclabears.users.me().then(function (me) {
+                // if it is not set, then this is an old user and not the first time,
+                // if it is set, check if its true or false
+                return (!isNullOrUndefined(me.isFirstTime)) && me.isFirstTime;
+            });
+        },
+        completeTutorial: function (status) {
+            // idk if default works or not
+            if (isNullOrUndefined(status)) {
+                status = true;
+            }
+            return Recyclabears.__apiCall('POST', '/api/users/me/tutorial', {
+                status: status ? 'completed' : 'incompleted'
+            });
         },
         getUserByFbId: function (fbId) {
             return Recyclabears.__apiCall('GET', '/api/users/' + fbId);
@@ -231,7 +251,7 @@ var Recyclabears = {
         }
     },
     items: {
-        getShopItems: function  () {
+        getShopItems: function () {
             return Recyclabears.__apiCall('GET', '/api/items/shop/');
         },
         testPath: function () {

@@ -1,7 +1,6 @@
 import * as debug from 'debug';
-import {WbbError, WbbRouter} from "../utils";
+import {sendError, WbbRouter} from "../utils";
 import {User} from "../model/user";
-import {isNullOrUndefined} from "util";
 
 const Log = debug('wbb:model:users');
 
@@ -33,6 +32,28 @@ export function initRouter(router: WbbRouter): WbbRouter {
             res.status(500).send(err);
         });*/
         res.send(req.user);
+    });
+
+    router.post('/me/tutorial', (req, res) => {
+        var status: boolean;
+        if (req.body.status == 'completed') {
+            status = false;
+        } else if (req.body.status == 'incompleted') {
+            status = true;
+        } else {
+            sendError(res, 'Invalid request. status=completed|incompleted', null, 400);
+            return;
+        }
+        res.sendPromise(router.mongo('users').updateOne({
+            fbId: req.user.fbId
+        }, {
+            $set: {
+                'isFirstTime': status
+            }
+        }).then(r => {
+            router.store.usersCache.del(req.user.fbId);
+            return r;
+        }));
     });
 
     router.get('/:uid', (req, res) => {
@@ -239,7 +260,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
             } else if (req.body.action == "minus") {
 
                 update_wallet -= change_amount;
-                if(update_wallet < 0){
+                if (update_wallet < 0) {
                     return res.status(400).send({
                         error: "Error: Insufficient honey pots!"
                     });
@@ -288,7 +309,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
     // Get the user's inventory
     router.get('/me/inventory', (req, res) => {
 
-        res.sendPromise(getUserByFbId(req.user.fbId).then(function(me){
+        res.sendPromise(getUserByFbId(req.user.fbId).then(function (me) {
             res.send(me.inventory);
         }));
 
