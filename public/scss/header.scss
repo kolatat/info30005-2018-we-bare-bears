@@ -47,6 +47,8 @@ $header-height: $header-padding*2+$header-content-size;
 }
 
 #navigation {
+  position: relative;
+  z-index: 200;
   float: right;
   font-size: 1.3em;
   color: $color-brown;
@@ -61,7 +63,8 @@ $header-height: $header-padding*2+$header-content-size;
 }
 
 #navigation a {
-  margin-right: 10px;
+  // 5px to let the profile nav be shown on same line too
+  margin-right: 5px;
   cursor: pointer;
   line-height: $header-height;
   padding: $header-padding;
@@ -94,7 +97,7 @@ $header-height: $header-padding*2+$header-content-size;
 
 .dropdown-content {
   display: none;
-  position: absolute;
+  position: fixed;  // z-index does not work with absolute positions
   right: 20px;
   background-color: #f9f9f9;
   min-width: 160px;
@@ -146,7 +149,7 @@ $header-height: $header-padding*2+$header-content-size;
 }
 
 /* Small-sized screens: Show the navigation menu in a toggeable drop-down */
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 760px) {
   #toggle_nav {
     display: inline;
     margin-top: 15px;
@@ -168,7 +171,7 @@ $header-height: $header-padding*2+$header-content-size;
     padding-left: 10px;
     padding-bottom: 10px;
     background-color: $color-yellow;
-    z-index: 10; // Overlay this navigation bar on top of everything when in display
+    z-index: 200; // Overlay this navigation bar on top of everything when in display
 
     .dropdown {
       float: none;
@@ -193,4 +196,94 @@ $header-height: $header-padding*2+$header-content-size;
     vertical-align: middle;
     display: inline-block;
   }
+}
+
+#tutorial {
+  background: url("/assets/images/halftone-yellow.png") repeat;
+  opacity: 0.95;
+  position: absolute;
+  width: 30%;
+  min-width: 300px;
+  top: 50%;
+  left: 50%;
+  padding: 50px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  font-family: Raleway, sans-serif;
+  font-size: medium;
+  text-align: center;
+  border: 3px dashed #f05249;
+  border-radius: 6px;
+  z-index: 350;
+
+
+  display: none;
+  grid-column-gap: 25px;
+  grid-row-gap: 25px;
+  grid-template-columns: auto;
+
+
+  p {
+    font-size: large;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: 0;
+  }
+
+  h2 {
+    color: #f05249;
+    line-height: 100%;
+    font-family: $averia-libre;
+    font-size: 40px;
+    grid-row-start: 1;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: 0;
+  }
+
+  .green-button{
+    background: $color-green;
+    //grid-row-end: 2;
+  }
+
+  .orange-button{
+    background: $color-orange;
+    //grid-row-end: 2;
+  }
+
+  .grayed-button{
+    background: #B6C1C9;
+    cursor: initial;
+  }
+
+  .grayed-button:hover{
+    color: initial;
+  }
+
+  button{
+    font-family: $raleway;
+    font-size: 1.3em;
+    cursor: pointer;
+    border: 0;
+    grid-row-start: 3;
+    //border-radius: 10px;
+  }
+
+  button:hover{
+    color: white;
+  }
+
+}
+
+#overlay-tutorial {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-30; //Give it a black background, with alpha-transparency
+  z-index:340;   //Change the z-index so it will be above everything else
+
 }

@@ -34,7 +34,7 @@ function populateWithUsers(div, friends) {
         div.innerHTML += "<span class='user-div-title'>Received Requests</span>";
         isFriend = 1;
     }
-    else if(div.id == 'req-sent') {
+    else if (div.id == 'req-sent') {
         div.innerHTML += "<span class='user-div-title'>Sent Requests</span>";
         isFriend = 2
     }
@@ -94,7 +94,9 @@ function openProfile(friend) {
     profileHTML += "<span class='score'>" + friend.wallet + "</span>";
 
     if (friend.isFriend == 0) {
-        profileHTML += "<button id='visit-world' class='left-green-button' onclick=''>Visit World</button>";
+
+        profileHTML += "<button id='visit-world' class='left-green-button' " +
+            "onclick='displayWorld(" + friend.fbId + ",\"" + friend.name + "\")'>Visit World</button>";
     }
     else if (friend.isFriend == 1) {
         var functionName = "acceptRequest(" + friend.fbId + ")";
@@ -170,10 +172,161 @@ function showFriendsDialog() {
     }, friendsDialogCallback);
 }
 
+
 function friendsDialogCallback(res) {
-    console.log(res.to);
+    console.log(res);
+    var promises = [];
+    var errors = [];
+
     for (var i = 0; i < res.to.length; i++) {
-        Recyclabears.users.sendFriendRequest(res.to[i]);
+        promises.push(Recyclabears.users.sendFriendRequest(res.to[i]).then(function(error_obj){
+            if(error_obj.message != null){
+                errors.push(error_obj);
+            } else {
+                loadRank();
+            }
+        }));
+    }
+
+    Promise.all(promises).then(function(){
+        if(errors.length > 0){
+            showAddFriendError(errors);
+        }
+    });
+
+}
+
+/* Show a popup message with the error(s) when trying to add friends */
+function showAddFriendError(errors){
+
+    toggleMessageWindow();
+    var popup = document.getElementById("pop-up");
+    popup.innerHTML = "";
+
+    var header_HTML = "<div class='error_container'><h2>Error!</h2>";
+
+    // HTML detailing the error(s) encountered when trying to send friend requests
+    var errors_HTML = "";
+    for(var i = 0; i < errors.length; i++){
+        errors_HTML += "<p><b>" + errors[i].message + ":</b> " + errors[i].friend_name + "</p>";
+    }
+
+    // Close popup button
+    var close_button_HTML = "<button onclick='toggleMessageWindow()'>Close</button>";
+
+    // Final display of popup window
+    popup.innerHTML += header_HTML + errors_HTML + close_button_HTML + "</div>";
+
+}
+
+
+/* Toggle the PopUp Window to show error messages */
+function toggleMessageWindow() {
+    var overlay = document.getElementById("overlay");
+    var popup = document.getElementById("pop-up");
+
+    // Toggle visibility of overlay and popup
+    if (overlay.style.display === "none" || overlay.style.display === "") {
+        overlay.style.display = "block";
+        popup.style.display = "block";
+
+    } else {
+        overlay.style.display = "none";
+        popup.style.display = "none";
+        // document.getElementById("msg_insert").innerHTML = "";
     }
     loadRank();
+}
+
+function displayWorld(fbId, friendName) {
+
+    const overlay = $('#overlay');
+    const popup = $('#world-pop-up');
+    overlay.show();
+    popup.html('');
+//    popup.show(); // Note: show popup after world obtained
+    // (prevent showing users the "moving world popup" when repositioning
+
+    var cont = $('<div/>', {id: 'world-container'});
+    var img = $('<img/>', {
+        id: 'world-img',
+        src: '/assets/images/world/background.png'
+    });
+
+    // Get first part of name
+    var name = friendName.split(" ")[0];
+    var text = $("<h1 id='world-name'>" + name + "'s World</h1>");
+
+    cont.append(img);
+    cont.append(text);
+    popup.append(cont);
+
+    const realX = 1122, realY = 626;
+    // execute image loading and world data loading in parallel
+    Promise.all([new Promise(function (resolve) {
+        img.on('load', resolve);
+    }), Recyclabears.worlds.getWorld(fbId)]).then(function (res) {
+
+        // Show popup here to prevent users seeing the popup "move"
+        popup.show();
+
+        var world = res[1];
+        const mx = img.width() / realX, my = img.height() / realY;
+        for (var i in world.items) {
+            displayWorldItem(cont, mx, my, world.items[i]);
+        }
+
+
+
+        /* Reposition the popup so that it is in center of screen
+           Repositioning done after the world has loaded to accurately obtain
+           height and width of popup window */
+        popup.css({
+            'margin-top': -(popup.height()/2),
+            'margin-left': -(popup.width()/2)
+        });
+
+    });
+    overlay.click(closeWorld);
+
+}
+
+function displayWorldItem(cont, mx, my, item) {
+    const size = (120 * mx) + 'px';
+    var gObj = {
+        div: $('<div/>', {
+            'class': 'item-to-move'
+        }),
+        redraw: function () {
+            gObj.div.css('left', (gObj.x * mx) + 'px');
+            gObj.div.css('top', (gObj.y * my) + 'px');
+        }
+    };
+    Object.assign(gObj, item); // copies and replace gObj with whats in obj
+    var delImg = $('<img/>', {
+        src: '/assets/images/world/delete2.png',
+        'class': 'delete-img',
+        width: size
+    });
+    delImg.css('visibility', 'hidden');
+    var objImg = $('<img/>', {
+        src: gObj.image,
+        width: size
+    });
+    gObj.div.append(delImg, objImg);
+    gObj.redraw();
+    cont.append(gObj.div);
+}
+
+function closeWorld() {
+    const overlay = $('#overlay');
+    const popup = $('#world-pop-up');
+
+    // Clear modified inline styles when popup is closed
+    popup.attr('style', '');
+
+    overlay.off('click');
+ //   overlay.hide();
+    popup.hide();
+
 }

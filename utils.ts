@@ -4,8 +4,11 @@ import {User} from "./model/user";
 import {MongoStore} from "./model";
 import {Collection} from "mongodb";
 import * as Q from 'q'
+import * as debug from 'debug';
 
 require('dotenv').config();
+
+const Log = debug('wbb:utils');
 
 export function sendError(res: express.Response, msg: string, err?: Error, code: number = 500) {
     var errObj: any = {
@@ -13,6 +16,11 @@ export function sendError(res: express.Response, msg: string, err?: Error, code:
     }
     if (!isNullOrUndefined(err)) {
         errObj.detail = msg;
+        if (err instanceof Error) {
+            errObj.originalMessage = err.message;
+            errObj.originalName = err.name;
+            Log('sendError: ' + msg + ' <' + err.name + '> ' + err.message);
+        }
         if (err instanceof WbbError) {
             code = err.errorCode;
         }
@@ -89,4 +97,24 @@ export class WbbRouter {
         this.router.delete(path, this.wrap(handler));
     }
 
+    public use(path: string, handler: RouteHandler) {
+        this.router.use(path, this.wrap(handler));
+    }
+
+}
+
+
+export function requireInput(field, errMsg: string) {
+    if (isNullOrUndefined(field)) {
+        throw new ValidationError(errMsg, 400);
+    }
+}
+
+export function requireArray(field, errMsg: string) {
+    if (!Array.isArray(field)) {
+        throw new ValidationError(errMsg, 400);
+    }
+}
+
+export class ValidationError extends WbbError {
 }

@@ -1,5 +1,5 @@
 import * as debug from 'debug';
-import {WbbRouter} from "../utils";
+import {sendError, WbbRouter} from "../utils";
 import {User} from "../model/user";
 
 const Log = debug('wbb:model:users');
@@ -24,6 +24,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         });
     }
 
+
     router.get('/me', (req, res) => {
         /*getUserByFbId(req.user.fbId).then(user => {
             res.send(user);
@@ -31,6 +32,28 @@ export function initRouter(router: WbbRouter): WbbRouter {
             res.status(500).send(err);
         });*/
         res.send(req.user);
+    });
+
+    router.post('/me/tutorial', (req, res) => {
+        var status: boolean;
+        if (req.body.status == 'completed') {
+            status = false;
+        } else if (req.body.status == 'incompleted') {
+            status = true;
+        } else {
+            sendError(res, 'Invalid request. status=completed|incompleted', null, 400);
+            return;
+        }
+        res.sendPromise(router.mongo('users').updateOne({
+            fbId: req.user.fbId
+        }, {
+            $set: {
+                'isFirstTime': status
+            }
+        }).then(r => {
+            router.store.usersCache.del(req.user.fbId);
+            return r;
+        }));
     });
 
     router.get('/:uid', (req, res) => {
@@ -73,6 +96,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         });
     });
 
+    // reject a friend request -- y so mean
     router.delete('/me/requests/:uid', (req: any, res) => {
         // delete cache
         router.store.usersCache.del([req.user.fbId, req.params.uid]);
@@ -97,8 +121,8 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+    // accepts a friend request
     router.put('/me/requests/:uid', (req: any, res) => {
-        // accepts a friend request
         // make sure they actually sent a request & they exists!
         if (req.body.action != 'accept') {
             res.status(400).send({
@@ -142,6 +166,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         });
     });
 
+    // send a friend request
     router.post('/:uid/request', (req: any, res) => {
         // delete cache
         router.store.usersCache.del([req.user.fbId, req.params.uid]);
@@ -154,17 +179,20 @@ export function initRouter(router: WbbRouter): WbbRouter {
 
             if (friend.friends.list.indexOf(req.user.fbId) >= 0) {
                 return {
-                    message: 'Already friends baka'
+                    message: 'Already friends baka',
+                    friend_name: friend.name
                 }
             }
             else if (friend.friends.reqReceived.indexOf(req.user.fbId) >= 0) {
                 return {
-                    message: 'Already sent a request to this friend'
+                    message: 'Already sent a request to this friend',
+                    friend_name: friend.name
                 }
             }
             else if (friend.friends.reqSent.indexOf(req.user.fbId) >= 0) {
                 return {
-                    message: 'Already received a request from this friend'
+                    message: 'Already received a request from this friend',
+                    friend_name: friend.name
                 }
             }
             else {
@@ -190,6 +218,7 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+    // cancel a sent friend request
     router.delete('/me/sent-requests/:uid', (req: any, res) => {
         // delete cache
         router.store.usersCache.del([req.user.fbId, req.params.uid]);
@@ -214,9 +243,11 @@ export function initRouter(router: WbbRouter): WbbRouter {
         }));
     });
 
+
     /* New router below */
     /* Router for updating wallet value */
     router.put('/me/wallet', (req, res) => {
+
         // delete cache
         router.store.usersCache.del(req.user.fbId);
         let update_wallet = req.user.wallet;
@@ -224,12 +255,21 @@ export function initRouter(router: WbbRouter): WbbRouter {
 
         // Only update the wallet if input is valid
         if (change_amount != null && !isNaN(change_amount)) {
-
-            // console.log(req.body.value);
             if (req.body.action == "add") {
                 update_wallet += change_amount;
             } else if (req.body.action == "minus") {
+
                 update_wallet -= change_amount;
+                if (update_wallet < 0) {
+                    return res.status(400).send({
+                        error: "Error: Insufficient honey pots!"
+                    });
+                }
+
+            } else {
+                res.status(400).send({
+                    error: "Bad request: Can only 'add' or 'minus' honey pots"
+                });
             }
 
             // Updates the user's wallet
@@ -247,6 +287,32 @@ export function initRouter(router: WbbRouter): WbbRouter {
                 error: "Bad request"
             });
         }
+    });
+
+
+    // Updates the user's inventory
+    router.put('/me/inventory', (req, res) => {
+
+        // TODO input validation
+
+        res.sendPromise(router.mongo("users").updateOne({
+            fbId: req.user.fbId
+        }, {
+            $set: req.body
+        }).then(r => {
+            return {result: r};
+        }));
+
+    });
+
+
+    // Get the user's inventory
+    router.get('/me/inventory', (req, res) => {
+
+        res.sendPromise(getUserByFbId(req.user.fbId).then(function (me) {
+            res.send(me.inventory);
+        }));
+
     });
 
     return router;

@@ -2,7 +2,7 @@
 @import "header";
 
 body{
-  background: linear-gradient(to bottom, $color-yellow 0%, $color-green 100%);
+  background: linear-gradient(to bottom, white 0%, $color-yellow 150%);
   background-repeat: no-repeat;
   height: 100%;
   background-attachment: fixed;
@@ -28,7 +28,6 @@ body{
       display: inline-block;
     }
   }
-
 }
 
 #items_container {
@@ -225,7 +224,7 @@ img.shop_item {
   top:0px;         //This positions the element to the top most position
   width:100%;      //This makes the element take up 100% of the parents width
   height:100%;     //This makes the element take up 100% of the parents height
-  background: $color-transparent-50; //Give it a black background, with alpha-transparency
+ // background: $color-transparent-50; //Give it a black background, with alpha-transparency
   z-index:99999;   //Change the z-index so it will be above everything else
 
 }
@@ -249,6 +248,8 @@ img.shop_item {
 
 }
 
+
+/* On smaller screens, show a big popup */
 @media only screen and (min-width: 600px) and (min-height: 600px){
   .popup {
     width: 100vw;
@@ -261,4 +262,24 @@ img.shop_item {
     grid-template-areas: "item_pic attributes";
   }
 
+  .overlay{
+    z-index: 500;
+  }
+
+}
+
+.overlay{
+  z-index: 10;
+}
+
+button{
+  z-index: 100;
+}
+
+.purchase_detail, button.close-btn{
+  margin: 10px;
+}
+
+pre{
+  display: inline;
 }

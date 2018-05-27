@@ -1,0 +1,46 @@
+
+
+#input_fields_match {
+
+  .pair-div{
+
+    margin: 5px;
+
+    .pairs{
+      width: 45%;
+    }
+
+    .pair-1{
+      // transparent green (Last two digits represent "Alpha"
+      background-color: #A2CCA57F;
+    }
+    .pair-2{
+      // transparent yellow (Last two digits represent "Alpha"
+      background-color: #FCE1857F;
+    }
+    .pair-3{
+      // transparent beige (Last two digits represent "Alpha"
+      background-color: #FABA667F;
+    }
+    .pair-4{
+      // transparent orange (Last two digits represent "Alpha"
+      background-color: #F77C3E7F;
+    }
+  }
+}
+
+.prev-pair{
+  color: seagreen;
+}
+
+
+@media screen and (max-width: 500px) {
+
+  #input_fields_match{
+    .pair-div{
+      .pairs{
+        width: 80%;
+      }
+    }
+  }
+}

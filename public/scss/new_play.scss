@@ -1,9 +1,9 @@
 @import "master";
 @import "header";
-
+@import "create_quiz_popup";
 
 body{
-  background: linear-gradient(to bottom, $color-yellow 0%, $color-green 100%);
+  background: linear-gradient(to bottom, white 0%, $color-yellow 150%);
   background-repeat: no-repeat;
   height: 100%;
   background-attachment: fixed;
@@ -14,80 +14,170 @@ h1{
   color: $color-brown;
 }
 
-// CSS Grid Setup
 .page {
   margin: 5px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 200px);
   grid-gap: 10px;
   grid-auto-flow: row;
 
-  div{
-    display: flex;
-    justify-content: center;
-  }
 
-  /*
-  button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: max-content;
-  }
-  */
 }
 
 .flag-img{
   //float: left;
   //position: relative;
   min-width: 50px;
-  width: 150px;
+  width: 40vw;
   height: auto;
 }
 
-#play_page{
 
-  #quiz_container{
-    
-    overflow: auto;
+button:disabled{
+  background-color: #768591;
+}
+
+
+#play_page, #create_page {
+  display: none;
+
+  #create_page_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  #options_container{
+  #quiz_container, #create_container {
+    overflow: auto;
+    height: 80vh;
     display: grid;
-    justify-content: center;
-    grid-template-columns: max-content max-content;
-    grid-template-rows: auto;
-    margin: 1vw;
+    grid-template-rows: max-content;
 
-    button{
-      display: flex;
-      font-size: 1em;
-      width: 100%;
+    #quiz_content {
+      display: grid;
+      /*
+            justify-content: center;*/
       align-items: center;
-      justify-content: space-evenly;
-      grid-gap: 10px;
+      height: 100%;
+
+      #ques_content.ques_fitb {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+
+      #preview_statement {
+        border: 5px groove $color-beige;
+        width: 70vw;
+      }
+
+      #options_container {
+        display: grid;
+        justify-content: center;
+        grid-template-columns: max-content;
+        grid-template-rows: auto;
+        margin: 1vw;
+      }
+
+      #fitb_container {
+        display: flex;
+        p {
+          margin: 0;
+        }
+      }
+
+      button {
+        font-size: 1em;
+        width: 100%;
+        margin-bottom: 5px;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: $color-green;
+      }
+      button:hover {
+        background-color: seashell;
+        box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+        box-shadow: 0px 0px 5px wheat;
+      }
+      .submit-btn {
+        margin: 10px;
+        width: max-content;
+        background-color: seashell;
+      }
+      .submit-btn:hover {
+        background-color: $color-green;
+        box-shadow: 0px 0px 5px darkgreen;
+      }
+
+
+      #items_container {
+        display: grid;
+        margin: 50px;
+        grid-column-gap: 100px;
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: 20px;
+
+        button {
+          background-color: #EEEEEE;
+          font-size: 1.2em;
+          padding: 10px;
+          border-radius: 10px;
+        }
+
+        button.left-item {
+          grid-column-start: 1;
+        }
+
+        button.right-item {
+          grid-column-start: 2;
+        }
+      }
+
 
     }
   }
 }
 
 
-#create_page{
-  #create_container{
-    max-height: 70vh;
-    overflow: auto;
-
-    // Forms containing the details of question to be created
-    #createQuestion{
-    }
-  }
-
+p.correct-pair{
+  color: $color-green;
 }
+
+span.incorrect-pair{
+  color: $color-orange;
+}
+
+span.answer-small-print{
+  font-size: 0.9em;
+  line-height: initial;
+}
+
+
+footer > hr{
+  margin: 0;
+}
+
+
+.proceed-btn{
+  padding: 10px;
+  border-radius: 10px;
+  background-color: seashell;
+}
+.proceed-btn:hover{
+  background-color: $color-green;
+  box-shadow: 0px 0px 5px darkgreen;
+ }
+
 
 #msg_insert{
-  max-height: 45vh;
-  max-width: 45vw;
+  position:absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   overflow: auto;
   -webkit-margin-before:0em;
   -webkit-margin-after:0em;
@@ -96,10 +186,30 @@ h1{
 /* Making pre elements stay on one line -- Mainly for "fill in the blanks" page */
 pre.fill-blanks{
   display: inline-block;
+  font-family: $raleway;
 }
 
-button:disabled{
-  background-color: #768591;
+pre.blanks{
+  background-color: $color-green;
+}
+
+
+/* Styling the button that closes the popup window */
+#close_popup_btn{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 20px;
+  border: 5px ridge cornsilk;
+  background-color: darksalmon;
+  p {
+    margin: 0 ;
+    font-size: 2em;
+  }
+}
+#close_popup_btn:hover{
+  background-color: #FE868C;
+  box-shadow: 0px 0px 5px #ffb9c8;
 }
 
 /* Styling the overlay covering the whole screen to prevent users from clicking layer below */
@@ -132,6 +242,12 @@ button:disabled{
   border-color: $color-beige; //Change border colour
   z-index:100000;      //Set z-index to 1 more than that of the overlay so the popup is over the overlay
 
+
+
+  button:disabled {
+    background-color: inherit;
+  }
+
 }
 
 /* Styling the secondary overlay to be less transparent */
@@ -149,19 +265,41 @@ button:disabled{
   z-index: 100002;
   margin-right: 0;
   align-content: center;
+
+  #msg_insert{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p, pre {
+      margin: 0 0 15px 0;
+    }
+
+    button{
+      width: max-content;
+    }
+
+  }
+
 }
 
 
 /* Adjustments to styling on smaller screens */
-@media screen and (max-device-width: 500px) {
+@media screen and (max-width: 500px) {
   /* Stack the flags into a single column */
   .page {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
+
+  .flag-img{
+    width: 80vw;
+    height: auto;
+  }
+
 }
 /* More adjustments on smaller screens */
-@media screen and (max-device-width: 500px), screen and (max-device-height: 500px){
+@media screen and (max-width: 500px), screen and (max-height: 500px){
 
    // Make the popup cover the whole screen for better visibility
   .popup {
@@ -188,9 +326,34 @@ button:disabled{
 
     #msg_insert{
       max-height: 75vh;
-      max-width: 75vw;
       overflow: auto;
     }
+  }
+
+  // Make preview container for FITB question wider
+  #preview_statement{
+    width: 90vw;
+  }
+
+  .submit-btn{
+    width: 90%
+  }
+
+  /* Styling the button that closes the popup window;
+     On small screens, place button at bottom of page*/
+  #close_popup_btn{
+    position: relative;
+    border-radius: 20px;
+    border: 5px ridge cornsilk;
+    background-color: darksalmon;
+    p {
+      margin: 0 ;
+      font-size: 2em;
+    }
+  }
+  #close_popup_btn:hover{
+    background-color: #FE868C;
+    box-shadow: 0px 0px 5px #ffb9c8;
   }
 
 
@@ -214,4 +377,11 @@ body{
   align-content: center;
 
 
+}
+
+
+
+.popup{
+
+  background: linear-gradient(to top, white 0%, $color-yellow 150%);
 }

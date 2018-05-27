@@ -8,11 +8,11 @@
     <link rel="stylesheet" type="text/css" href="/css/new_play.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="/js/main.js"></script>
-    <script type="text/javascript" src="/js/play_app.js"></script>
-    <script type="text/javascript" src="/js/new_play.js"></script>
-    <script type="text/javascript" src="/js/new_create.js"></script>
-    <script type="text/javascript" src="/js/edit_form.js"></script>
+    <script type="text/javascript" src="/js/new_play_quiz.js"></script>
+    <script type="text/javascript" src="/js/new_create_quiz.js"></script>
+    <script type="text/javascript" src="/js/new_play_page.js"></script>
     <script type="text/javascript" src="/js/header.js"></script>
+    <script type="text/javascript" src="/js/tutorial.js"></script>
 </head>
 <body>
 
@@ -20,27 +20,31 @@
 <nav id="header"></nav>
 <!-- End Navigation Menu -->
 
-<h1>Play</h1>
+<h1>Play Time</h1>
 
 <div class="page">
 
-    <div>
-        <p></p>
-    </div>
-    <div>
-        <p></p>
-    </div>
+
+
 
     <div>
-        <button class='page_buttons' onclick='showPage("play_page");_generateQuizQuestions();' disabled="true">
-            <img class="flag-img" src="/assets/images/png/flag-green.png">
+        <div>
+            <h3>Play!</h3>
+        </div>
+        <button class="page_buttons" onclick='showPage("play_page");_generateQuizQuestions();' disabled="true"
+                onmouseover="hoverImage('play');" onmouseout="defaultImage();">
+            <img id="play-flag" class="flag-img" src="/assets/images/play/play_main.png">
         </button>
 
     </div>
 
     <div>
-        <button class='page_buttons' onclick='showPage("create_page")' disabled="true">
-            <img class="flag-img" src="/assets/images/png/flag-red.png">
+        <div>
+            <h3>Create!</h3>
+        </div>
+        <button class="page_buttons" onclick='showPage("create_page")' disabled="true"
+                onmouseover="hoverImage('create');" onmouseout="defaultImage();">
+            <img id="create-flag" class="flag-img" src="/assets/images/play/create_main.png">
         </button>
 
     </div>
@@ -54,51 +58,59 @@
 <div class="overlay" id="overlay_base">
 </div>
 <div class="popup" id="popup_base">
-    <div id="play_page" style="display: none">
+    <div id="play_page">
         <div id="quiz_container">
         </div>
 
-        <!-- Temporary buttons to test the pages -->
-        <div class="toggle_buttons">
-            <button onclick="togglePageWindow()">Close</button>
-        </div>
-
+        <!-- Footer to show progress of quiz -->
         <footer>
-            <hr style="margin-top: 50px">
+            <hr>
             <p id="footer_text"></p>
         </footer>
+
     </div>
 
 
-    <div id="create_page" style="display: none">
+    <div id="create_page">
+
         <div id="create_page_content">
             <h1>Create your quiz</h1>
             <button id="create_mult" onclick="_createMult()">Multiple Choice</button>
             <button id="create_blanks" onclick="_createBlanks()">Fill in the Blanks</button>
-            <button id="create_video">Link a Video</button>
+            <button id="create_video" onclick="_createVideo()">Link a Video</button>
+            <button id="create_pairs" onclick="_createMatching()">Matching Pairs</button>
         </div>
+
         <div id="create_container">
         </div>
 
-        <!-- Temporary buttons to test the pages -->
-        <div class="toggle_buttons">
-            <button onclick="togglePageWindow()">Close</button>
-        </div>
+        <!-- Footer to show progress of quiz -->
+        <footer>
+            <hr>
+        </footer>
     </div>
+
+    <!-- Button to close the main popup -->
+    <button id="close_popup_btn" onclick="togglePageWindow()">
+        <p id="close_btn_txt">X</p>
+    </button>
 
     <!-- PopUp Window to display messages about the quiz -->
     <div class="overlay" id="overlay_message">
     </div>
     <div class="popup" id="popup_message">
 
-        <p id="msg_insert"></p>
+        <div id="msg_insert"></div>
     </div>
 
 </div>
 
+<div id="tutorial">
+</div>
+<div id="overlay-tutorial">
+</div>
 
-<script type="text/javascript" src="/js/play_app.js"></script>
-<script type="text/javascript" src="/js/play_quiz.js"></script>
-<script type="text/javascript" src="/js/play_ques.js"></script>
+<!-- Not sure if this is needed down here -->
+<script type="text/javascript" src="/js/new_play_quiz.js"></script>
 </body>
 </html>

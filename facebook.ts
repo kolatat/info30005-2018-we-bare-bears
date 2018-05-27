@@ -70,7 +70,9 @@ export function fbAuth(store: MongoStore) {
                             },
                             questions: [],
                             wallet: 10,
-                            home: []
+                            home: [],
+                            inventory: [],
+                            firstTime: true
                         },
                         $currentDate: {
                             'lastAccessed.time': {$type: 'date'}

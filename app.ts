@@ -7,6 +7,8 @@ import indexRouter from './routes/indexRoutes';
 import * as questionRoutes from './routes/questionsRoutes';
 import * as model from "./model";
 import * as usersRoutes from './routes/usersRoutes'
+import * as worldsRoutes from './routes/worldsRoutes'
+import * as itemsRoutes from './routes/itemsRoutes'
 import {sendError, WbbRouter} from './utils'
 import {fbAuth} from "./facebook";
 
@@ -46,6 +48,8 @@ apiRouter.use(bodyParser.json());
 apiRouter.use(fbAuth(store));
 apiRouter.use('/questions', questionRoutes.initRouter(new WbbRouter(store)).getRouter());
 apiRouter.use('/users', usersRoutes.initRouter(new WbbRouter(store)).getRouter());
+apiRouter.use('/worlds', worldsRoutes.initRouter(new WbbRouter(store)).getRouter());
+apiRouter.use('/items', itemsRoutes.initRouter(new WbbRouter(store)).getRouter());
 apiRouter.use((_, res) => {
     sendError(res, "Not Found", null, 404);
 })

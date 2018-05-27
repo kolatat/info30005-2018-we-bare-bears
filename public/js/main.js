@@ -92,6 +92,10 @@ function statusChangeCallback(response) {
     // console.log(response);
     if (response.status != 'connected') {
         window.location = '/login/';
+
+        // clear cached auth token when not logged in
+        sessionStorage.removeItem('fbAuth');
+        return;
     }
     Recyclabears.__fbAuth = response;
     if (firstTime) {
@@ -100,6 +104,10 @@ function statusChangeCallback(response) {
             wbbInitList[i]();
         }
     }
+}
+
+function isNullOrUndefined(variable) {
+    return variable == null || typeof(variable) === 'undefined';
 }
 
 var Recyclabears = {
@@ -152,8 +160,47 @@ var Recyclabears = {
         me: function () {
             return Recyclabears.__apiCall('GET', '/api/users/me');
         },
+        isFirstTime: function () {
+            return Recyclabears.users.me().then(function (me) {
+                // if it is not set, then this is an old user and not the first time,
+                // if it is set, check if its true or false
+                return (!isNullOrUndefined(me.isFirstTime)) && me.isFirstTime;
+            });
+        },
+        completeTutorial: function (status) {
+            // idk if default works or not
+            if (isNullOrUndefined(status)) {
+                status = true;
+            }
+            return Recyclabears.__apiCall('POST', '/api/users/me/tutorial', {
+                status: status ? 'completed' : 'incompleted'
+            });
+        },
         getUserByFbId: function (fbId) {
             return Recyclabears.__apiCall('GET', '/api/users/' + fbId);
+        },
+        getInventory: function () {
+            /* This returns a cached inventory i thk ?
+            When user buys something from the shop, the item cannot be seen on World's item menu
+
+            return Recyclabears.users.me().then(function (me) {
+                if (me.inventory) {
+                    return me.inventory;
+                } else {
+                    return [];
+                }
+            });
+            */
+
+            return Recyclabears.__apiCall('GET', '/api/users/me/inventory');
+        },
+        updateInventory: function (newInv) {
+
+            if (Array.isArray(newInv)) {
+                return Recyclabears.__apiCall('PUT', '/api/users/me/inventory', {inventory: newInv});
+            } else {
+                console.log('WARNING Recyclabears.users.updateInventory expects Array, ' + typeof(newInv) + ' given.');
+            }
         },
         getFriendRequests: function () {
             return Recyclabears.__apiCall('GET', '/api/users/me/requests');
@@ -175,27 +222,15 @@ var Recyclabears = {
         unFriend: function (fbId) {
             return Recyclabears.__apiCall('DELETE', '/api/users/me/friends/' + fbId);
         },
-        getUserDpUrl: function (fbId) {
-            /*return new Promise(function (resolve, reject) {
-                FB.api('/' + fbId + '/picture', 'GET', {type: 'large'}, function (response) {
-                    if (response) {
-                        console.log(response)
-                        if(response.error){
-                            //reject(response.error);
-                        } else {
-                            console.log(response);
-                            //resolve(response.data.url);
-                        }
-                    } else {
-                        reject();
-                    }
-                });
-            });*/
-            if(fbId==null){
+        getUserDpUrl: function (fbId=Recyclabears.loginId()) {
+            /*if(fbId==null){
                 fbId=Recyclabears.loginId();
             }
-            console.log("finding profile photo of " + fbId);
-            return "https://graph.facebook.com/v3.0/"+fbId+"/picture?type=large&access_token="+Recyclabears.__fbAuth.authResponse.accessToken;
+            console.log("finding profile photo of " + fbId);*/
+            return "https://graph.facebook.com/v3.0/"
+                + fbId
+                + "/picture?type=large&access_token="
+                + Recyclabears.__fbAuth.authResponse.accessToken;
         },
 
 
@@ -206,5 +241,22 @@ var Recyclabears = {
                 value: value
             });
         }
+    },
+    worlds: {
+        getWorld: function (fbId='me') {
+            return Recyclabears.__apiCall('GET', '/api/worlds/' + fbId);
+        },
+        updateWorld: function (fbId='me', update) {
+            return Recyclabears.__apiCall('PUT', '/api/worlds/' + fbId, update);
+        }
+    },
+    items: {
+        getShopItems: function () {
+            return Recyclabears.__apiCall('GET', '/api/items/shop/');
+        },
+        testPath: function () {
+            return Recyclabears.__apiCall('GET', '/api/items/shop/buy');
+        }
     }
+
 };
