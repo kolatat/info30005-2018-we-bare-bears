@@ -63,8 +63,6 @@ $header-height: $header-padding*2+$header-content-size;
 }
 
 #navigation a {
-  // 5px to let the profile nav be shown on same line too
-  margin-right: 5px;
   cursor: pointer;
   line-height: $header-height;
   padding: $header-padding;
