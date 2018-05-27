@@ -247,7 +247,6 @@ function checkDumpSession(world) {
     if (rubbishAmt <= 0) {
         return;
     }
-
     // If world already has too much rubbish, stop producing more
     // P/s cleaning up x50 rubbish is not fun -- but i'm richer nao
     if(world.rubbish.length >= 20){
@@ -424,8 +423,6 @@ function showInWorldEditable(obj, edit=true) {
     var size = (120 * sf.mx) + 'px';
 
     var className = "item-to-move";
-    console.log("output obj");
-    console.log(obj);
     if(obj.type === "bin")
         className += " " + obj.bin_type;
 

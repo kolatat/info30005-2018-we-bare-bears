@@ -27,12 +27,13 @@ export function initRouter(router: WbbRouter): WbbRouter {
                 owner: owner,
                 items: [],
                 rubbish: [],
-                genesis: new Date()
-            },
+                genesis: new Date(),
+                lastDump: new Date()
+            }/*, This modifies the lastDump and genesis each time the world is retrieved
             $currentDate: {
                 lastDump: {$type: 'date'},
-               // genesis: {$type: 'date'}
-            }
+                genesis: {$type: 'date'}
+            }*/
         }, {
             new: true,
             upsert: true
