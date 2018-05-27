@@ -139,21 +139,23 @@ function welcomePopup(){
         tutorialDiv.innerHTML = "<h2>Welcome " + data.name.substr(0,data.name.indexOf(' ')) + "!</h2>";
         tutorialDiv.innerHTML += "<button class='left-green-button' onclick='getTutorialPage(0)'>Take a Tour</button>";
         tutorialDiv.innerHTML += "<button class='right-orange-button' onclick='closeWelcome()'>Close</button>";
+        document.getElementById("overlay-tutorial").style.display = "block";
     });
 }
 
 function closeWelcome() {
     document.getElementById("tutorial").style.display = 'none';
+    document.getElementById("overlay-tutorial").style.display = "none";
 }
 
 function getTutorialPage(page){
     var tutorialDiv = document.getElementById("tutorial");
     tutorialDiv.innerHTML = "";
     if(page == 0){
-        tutorialDiv.innerHTML += "<h2>World</h2><p>This is where you decorate your house with items and clean up rubbish</p>";
+        tutorialDiv.innerHTML += "<h2>World</h2><p>This is where you decorate your house with items and clean up rubbish.</p>";
     }
     if(page == 1){
-        tutorialDiv.innerHTML += "<h2>Play</h2><p>This is where you can play quizzes and earn honey pots to buy items with</p>";
+        tutorialDiv.innerHTML += "<h2>Play</h2><p>This is where you can play quizzes and earn honey pots to buy items with.</p>";
     }
     if(page == 2){
         tutorialDiv.innerHTML += "<h2>Learn</h2><p>This is where you can learn extra information on recycling.</p>";
@@ -164,8 +166,12 @@ function getTutorialPage(page){
     if(page == 4){
         tutorialDiv.innerHTML += "<h2>Shop</h2><p>This is where you can buy items for your world with your honey pots.</p>";
     }
-
     tutorialDiv.innerHTML += getPrevNextButtons(page);
+
+    var naviDiv = document.getElementById("navigation");
+    for(var element in naviDiv.getElementsByTagName("a")){
+        element.style.backgroundColor = "green";
+    }
 
 }
 

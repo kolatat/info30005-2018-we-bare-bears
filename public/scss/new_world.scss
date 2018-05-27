@@ -136,11 +136,11 @@ img.inv_item {
   background: url("/assets/images/halftone-yellow.png") repeat;
   opacity: 0.9;
   position: absolute;
-  width: 45%;
+  width: 30%;
   min-width: 300px;
   top: 50%;
   left: 50%;
-  padding: 20px 20px 20px;
+  padding: 50px;
   margin-right: -50%;
   transform: translate(-50%, -50%);
   font-family: Raleway, sans-serif;
@@ -148,12 +148,13 @@ img.inv_item {
   text-align: center;
   border: 3px dashed #f05249;
   border-radius: 6px;
-  z-index: 101;
+  z-index: 350;
 
   display: grid;
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
+  grid-column-gap: 25px;
+  grid-row-gap: 25px;
   grid-template-columns: auto;
+
 
   p {
     font-size: large;
@@ -205,5 +206,17 @@ img.inv_item {
   button:hover{
     color: white;
   }
+
+}
+
+#overlay-tutorial {
+  display:none;    //This make it initially hidden
+  position:fixed;  //This makes it so it says in a fixed position even if they scroll around
+  left:0px;        //This positions the element to the left most position
+  top:0px;         //This positions the element to the top most position
+  width:100%;      //This makes the element take up 100% of the parents width
+  height:100%;     //This makes the element take up 100% of the parents height
+  background: $color-transparent-30; //Give it a black background, with alpha-transparency
+  z-index:340;   //Change the z-index so it will be above everything else
 
 }
